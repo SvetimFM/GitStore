@@ -1,0 +1,10 @@
+{
+  "name": "gitstore",
+  "description": "App store for GitHub — search, install, and run GitHub repos as local applications",
+  "version": "0.1.0",
+  "author": {
+    "name": "GitStore"
+  },
+  "license": "MIT",
+  "keywords": ["github", "apps", "install", "package-manager", "mcp"]
+}
