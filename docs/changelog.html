@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's New — GitStore</title>
+  <meta name="description" content="GitStore changelog — what's new in each version.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #05050a; --surface: #0b0b12; --border: rgba(255,255,255,0.06);
+      --border-h: rgba(255,255,255,0.1); --text: #dddde4; --text-2: #8b8ba0;
+      --text-3: #55556a; --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.12);
+      --green: #22c55e; --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5,5,10,0.75); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
+    .nav-in { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-b { display: flex; align-items: center; gap: 9px; }
+    .nav-mark { width: 26px; height: 26px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white; }
+    .nav-t { font-weight: 700; font-size: 14px; letter-spacing: -0.02em; }
+    .nav-r { display: flex; gap: 24px; align-items: center; }
+    .nav-r a { font-size: 13px; color: var(--text-2); transition: color 0.15s; }
+    .nav-r a:hover { color: var(--text); }
+    .nav-r .active { color: var(--text); }
+    .nav-dl { font-size: 12px; font-weight: 600; color: white !important; background: var(--accent); padding: 6px 16px; border-radius: 6px; }
+
+    .page { max-width: 720px; margin: 0 auto; padding: 120px 24px 80px; }
+    .page h1 { font-family: var(--serif); font-size: 48px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .page .sub { font-size: 15px; color: var(--text-2); margin-bottom: 56px; }
+
+    .release { margin-bottom: 64px; position: relative; padding-left: 28px; }
+    .release::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .release-dot { position: absolute; left: -5px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+    .release-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+    .release-ver { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .release-date { font-size: 12px; color: var(--text-3); }
+    .release-tag {
+      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 2px 8px; border-radius: 4px;
+    }
+    .release-tag.latest { background: rgba(34,197,94,0.12); color: var(--green); }
+
+    .release-section { margin-bottom: 20px; }
+    .release-section h3 { font-size: 13px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .release-section ul { list-style: none; }
+    .release-section li {
+      font-size: 14px; color: var(--text); line-height: 1.7;
+      padding: 4px 0; display: flex; gap: 8px; align-items: flex-start;
+    }
+    .release-section li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; margin-top: 9px; }
+    .release-section li code {
+      font-family: ui-monospace, monospace; font-size: 12px;
+      background: var(--accent-soft); color: var(--accent);
+      padding: 1px 5px; border-radius: 3px;
+    }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 0; }
+    .foot { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .foot-l { font-size: 11px; color: var(--text-3); }
+    .foot-r { display: flex; gap: 18px; }
+    .foot-r a { font-size: 11px; color: var(--text-3); transition: color 0.15s; }
+    .foot-r a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      .nav-r a:not(.nav-dl) { display: none; }
+      .foot { flex-direction: column; gap: 10px; }
+      .page h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-in">
+      <a href="./" class="nav-b">
+        <div class="nav-mark">G</div>
+        <span class="nav-t">GitStore</span>
+      </a>
+      <div class="nav-r">
+        <a href="./">Home</a>
+        <a href="changelog.html" class="active">What's New</a>
+        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
+        <a href="https://github.com/SvetimFM/GitStore/releases/latest" class="nav-dl">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>What's New</h1>
+    <p class="sub">Every release, from newest to oldest.</p>
+
+    <!-- v0.2 -->
+    <div class="release">
+      <div class="release-dot"></div>
+      <div class="release-head">
+        <span class="release-ver">v0.2.0</span>
+        <span class="release-date">March 22, 2026</span>
+        <span class="release-tag latest">Latest</span>
+      </div>
+
+      <div class="release-section">
+        <h3>GitHub Integration</h3>
+        <ul>
+          <li>Sign in with your GitHub personal access token</li>
+          <li><strong>My Stars</strong> — browse your GitHub starred repos with pagination</li>
+          <li><strong>User Lists</strong> — create custom lists and organize repos your way</li>
+          <li>Authenticated user profile shown in My Stars page</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>No More <code>gh</code> CLI Dependency</h3>
+        <ul>
+          <li>All GitHub API calls now use direct REST API via <code>fetch()</code></li>
+          <li>Works unauthenticated (60 req/hr) or with token (5,000 req/hr)</li>
+          <li>Rate limit errors show clear guidance to add a token</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>GitHub Trending</h3>
+        <ul>
+          <li>New <strong>Trending</strong> section on the Discover page</li>
+          <li>Daily, weekly, monthly filters with language selection</li>
+          <li>Results cached for 1 hour to reduce API usage</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>README Preview</h3>
+        <ul>
+          <li>Full README rendered with GitHub-flavored markdown on app detail pages</li>
+          <li>Dark-themed code blocks, tables, images, and links</li>
+          <li>Collapsible with show more / show less toggle</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Settings &amp; MCP</h3>
+        <ul>
+          <li>Settings page with GitHub token configuration and rate limit display</li>
+          <li>One-click <strong>"Configure for Claude"</strong> button writes MCP config automatically</li>
+          <li>MCP server command and Claude Desktop JSON config with copy buttons</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Install Experience</h3>
+        <ul>
+          <li>Install wizard modal replaces raw <code>alert()</code> dialogs</li>
+          <li>3-step flow: Confirm → Installing (with progress) → Done/Error</li>
+          <li>Docker moved to fallback — native runtimes detected first</li>
+          <li>Rust and Go runtime support added (<code>Cargo.toml</code>, <code>go.mod</code>)</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Catalog Expansion</h3>
+        <ul>
+          <li>3,547 repos across 746 collections from 30+ awesome-lists</li>
+          <li>Curate CLI: <code>gitstore curate</code> imports from awesome-lists</li>
+          <li>Community submit page for suggesting repos and sources</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Desktop App</h3>
+        <ul>
+          <li>Tauri v2 desktop app (3.7 MB on macOS)</li>
+          <li>GitHub Actions CI for macOS, Linux, and Windows builds</li>
+          <li>Onboarding flow for first-time users</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v0.1 -->
+    <div class="release">
+      <div class="release-dot" style="background: var(--text-3);"></div>
+      <div class="release-head">
+        <span class="release-ver">v0.1.0</span>
+        <span class="release-date">March 21, 2026</span>
+      </div>
+
+      <div class="release-section">
+        <h3>Initial Release</h3>
+        <ul>
+          <li>Express backend with search, inspect, install, start/stop lifecycle</li>
+          <li>React web frontend with dark theme UI</li>
+          <li>Auto runtime detection: Node.js, Python, Docker</li>
+          <li>Risk assessment scoring for repos</li>
+          <li>Curated collections with 5 categories and 9 collections</li>
+          <li>MCP server integration for AI assistants</li>
+          <li>SQLite-backed app registry</li>
+          <li>Environment variable configuration per app</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="foot">
+      <div class="foot-l">GitStore &middot; PolyForm Noncommercial 1.0.0</div>
+      <div class="foot-r">
+        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
+        <a href="https://github.com/SvetimFM/GitStore/releases">Releases</a>
+        <a href="https://github.com/SvetimFM/GitStore/blob/main/LICENSE">License</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
