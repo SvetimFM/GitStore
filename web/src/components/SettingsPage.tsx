@@ -16,9 +16,16 @@ export function SettingsPage() {
   // MCP copy state
   const [copied, setCopied] = useState<string | null>(null);
 
+  // MCP auto-config state
+  const [mcpConfigured, setMcpConfigured] = useState(false);
+  const [mcpLoading, setMcpLoading] = useState(true);
+  const [mcpMessage, setMcpMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [mcpConfigPath, setMcpConfigPath] = useState<string | null>(null);
+
   useEffect(() => {
     loadTokenStatus();
     loadRateLimit();
+    loadMcpStatus();
   }, []);
 
   const loadTokenStatus = async () => {
@@ -72,6 +79,33 @@ export function SettingsPage() {
       setTokenMessage({ type: 'error', text: err instanceof Error ? err.message : 'Failed to remove token' });
     } finally {
       setTokenSaving(false);
+    }
+  };
+
+  const loadMcpStatus = async () => {
+    try {
+      const data = await api.getMcpStatus();
+      setMcpConfigured(data.configured);
+      setMcpConfigPath(data.configPath);
+    } catch {
+      // ignore
+    } finally {
+      setMcpLoading(false);
+    }
+  };
+
+  const handleSetupMcp = async () => {
+    setMcpLoading(true);
+    setMcpMessage(null);
+    try {
+      const data = await api.setupMcp();
+      setMcpConfigured(true);
+      setMcpConfigPath(data.configPath);
+      setMcpMessage({ type: 'success', text: 'GitStore MCP configured successfully. Restart Claude to apply.' });
+    } catch (err) {
+      setMcpMessage({ type: 'error', text: err instanceof Error ? err.message : 'Failed to configure MCP' });
+    } finally {
+      setMcpLoading(false);
     }
   };
 
@@ -241,8 +275,65 @@ export function SettingsPage() {
         </h2>
 
         <div className="space-y-5">
+          {/* One-click Configure for Claude */}
           <div>
-            <p className="text-gray-500 text-xs mb-2">Run the MCP server with:</p>
+            <p className="text-gray-500 text-xs mb-3">
+              Automatically add GitStore as an MCP server in Claude Desktop or Claude Code.
+            </p>
+
+            {mcpLoading ? (
+              <div className="h-10 w-52 rounded-lg animate-shimmer" />
+            ) : mcpConfigured ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Configured for Claude
+                  </span>
+                  <button
+                    onClick={handleSetupMcp}
+                    className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline underline-offset-2"
+                  >
+                    Reconfigure
+                  </button>
+                </div>
+                {mcpConfigPath && (
+                  <p className="text-gray-600 text-xs font-mono">{mcpConfigPath}</p>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={handleSetupMcp}
+                disabled={mcpLoading}
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-blue-500/20"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3z" />
+                </svg>
+                Configure for Claude
+              </button>
+            )}
+
+            {/* Feedback message */}
+            {mcpMessage && (
+              <div className={`mt-3 text-sm px-3 py-2 rounded-lg ${
+                mcpMessage.type === 'success'
+                  ? 'bg-emerald-500/10 text-emerald-400'
+                  : 'bg-red-500/10 text-red-400'
+              }`}>
+                {mcpMessage.text}
+              </div>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-white/[0.06]" />
+
+          {/* Manual config fallback */}
+          <div>
+            <p className="text-gray-500 text-xs mb-2">Run the MCP server manually with:</p>
             <div className="flex items-center gap-2">
               <code className="flex-1 bg-white/5 rounded-lg px-3 py-2 text-sm text-gray-300 font-mono">
                 {mcpCommand}
@@ -260,7 +351,7 @@ export function SettingsPage() {
           </div>
 
           <div>
-            <p className="text-gray-500 text-xs mb-2">Claude Desktop configuration:</p>
+            <p className="text-gray-500 text-xs mb-2">Claude Desktop configuration (manual):</p>
             <div className="relative">
               <pre className="bg-white/5 rounded-lg p-3 text-xs text-gray-300 font-mono overflow-x-auto leading-relaxed">
                 {mcpConfigJson}

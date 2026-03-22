@@ -1,4 +1,8 @@
 import { Router } from 'express';
+import { homedir } from 'node:os';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { join, resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getGithubToken, setGithubToken, removeGithubToken } from '../../core/config.js';
 import { getRateLimit } from '../../core/github.js';
 
@@ -59,6 +63,60 @@ configRouter.get('/rate-limit', async (_req, res) => {
   try {
     const rateLimit = await getRateLimit();
     res.json(rateLimit);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// GET /mcp-status — check if GitStore MCP is configured in Claude Desktop config
+configRouter.get('/mcp-status', (_req, res) => {
+  try {
+    const configPath = join(homedir(), '.claude', 'claude_desktop_config.json');
+    if (!existsSync(configPath)) {
+      res.json({ configured: false, configPath: null });
+      return;
+    }
+    const raw = readFileSync(configPath, 'utf-8');
+    const config = JSON.parse(raw);
+    const hasGitstore = !!(config?.mcpServers?.gitstore);
+    res.json({ configured: hasGitstore, configPath: hasGitstore ? configPath : null });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// POST /mcp-setup — auto-configure GitStore MCP server in Claude's config
+configRouter.post('/mcp-setup', (_req, res) => {
+  try {
+    const configDir = join(homedir(), '.claude');
+    const configPath = join(configDir, 'claude_desktop_config.json');
+    const mcpEntryPoint = resolve(join(dirname(fileURLToPath(import.meta.url)), '../../mcp/index.js'));
+
+    // Ensure ~/.claude directory exists
+    if (!existsSync(configDir)) {
+      mkdirSync(configDir, { recursive: true });
+    }
+
+    // Read existing config or start fresh
+    let config: Record<string, unknown> = {};
+    if (existsSync(configPath)) {
+      const raw = readFileSync(configPath, 'utf-8');
+      config = JSON.parse(raw);
+    }
+
+    // Merge mcpServers.gitstore
+    if (!config.mcpServers || typeof config.mcpServers !== 'object') {
+      config.mcpServers = {};
+    }
+    (config.mcpServers as Record<string, unknown>).gitstore = {
+      command: 'node',
+      args: [mcpEntryPoint],
+    };
+
+    writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n', 'utf-8');
+    res.json({ success: true, configPath });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     res.status(500).json({ error: message });

@@ -262,4 +262,12 @@ export const api = {
   getRateLimit() {
     return apiFetch<{ remaining: number; limit: number; reset: number }>('/api/config/rate-limit');
   },
+
+  getMcpStatus() {
+    return apiFetch<{ configured: boolean; configPath: string | null }>('/api/config/mcp-status');
+  },
+
+  setupMcp() {
+    return apiFetch<{ success: boolean; configPath: string }>('/api/config/mcp-setup', { method: 'POST' });
+  },
 };
