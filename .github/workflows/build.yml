@@ -54,28 +54,25 @@ jobs:
             libsoup-3.0-dev \
             javascriptcoregtk-4.1-dev
 
-      # ── macOS: Import signing certificate ──
       - name: Import Apple certificate
         if: startsWith(matrix.platform, 'macos')
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        shell: bash
         run: |
           set +x
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           CERT_PATH=$RUNNER_TEMP/certificate.p12
-
-          security create-keychain -p "actions" $KEYCHAIN_PATH 2>/dev/null
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH 2>/dev/null
-          security unlock-keychain -p "actions" $KEYCHAIN_PATH 2>/dev/null
-
           echo -n "$APPLE_CERTIFICATE" | base64 --decode > $CERT_PATH
-          security import $CERT_PATH -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH 2>/dev/null
-          security set-key-partition-list -S apple-tool:,apple: -k "actions" $KEYCHAIN_PATH 2>/dev/null
-          security list-keychain -d user -s $KEYCHAIN_PATH 2>/dev/null
-
+          security create-keychain -p "actions" $KEYCHAIN_PATH > /dev/null 2>&1
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH > /dev/null 2>&1
+          security unlock-keychain -p "actions" $KEYCHAIN_PATH > /dev/null 2>&1
+          security import $CERT_PATH -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH > /dev/null 2>&1
+          security set-key-partition-list -S apple-tool:,apple: -k "actions" $KEYCHAIN_PATH > /dev/null 2>&1
+          security list-keychain -d user -s $KEYCHAIN_PATH > /dev/null 2>&1
           rm -f $CERT_PATH
-          echo "Certificate imported successfully"
+          echo "Done"
 
       - name: Install backend dependencies
         run: npm install
@@ -101,21 +98,15 @@ jobs:
       - name: Install Tauri CLI
         run: cargo install tauri-cli --version "^2" --locked
 
-      # ── Build with signing on macOS, without on other platforms ──
-      - name: Build Tauri app (macOS — signed + notarized)
+      - name: Build Tauri app (macOS)
         if: startsWith(matrix.platform, 'macos')
         working-directory: web/src-tauri
         env:
-          # Signing identity — Tauri reads the cert from the keychain imported above
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          # Notarization credentials
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          # Note: APPLE_CERTIFICATE and APPLE_CERTIFICATE_PASSWORD are NOT passed here.
-          # The cert is already in the keychain from the import step above.
-          # Passing them as env vars causes Tauri to log cert details in build output.
-        run: cargo tauri build --target ${{ matrix.target }}
+        run: cargo tauri build --target ${{ matrix.target }} 2>&1 | grep -v -i -E "certificate|signing|identity|found cert|keychain"
 
       - name: Build Tauri app (Linux/Windows)
         if: "!startsWith(matrix.platform, 'macos')"
@@ -148,9 +139,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
-
-      - name: List artifacts
-        run: find artifacts -type f | head -30
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
