@@ -29,12 +29,12 @@ Discover, install, and run GitHub repositories as native applications.
 
 ### Download
 
-Grab the latest `.dmg` from [Releases](https://github.com/user/gitstore/releases/latest).
+Grab the latest `.dmg` from [Releases](https://github.com/SvetimFM/GitStore/releases/latest).
 
 ### Run from Source
 
 ```bash
-git clone https://github.com/user/gitstore.git
+git clone https://github.com/SvetimFM/GitStore.git
 cd gitstore
 npm install
 npm run build
