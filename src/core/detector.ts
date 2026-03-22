@@ -35,6 +35,12 @@ export async function detectRemote(owner: string, repo: string): Promise<Detecti
   for (const runtime of runtimes) {
     const result = await runtime.detect(fileNames, getContent);
     if (result) {
+      // Skip runtimes that aren't available on this machine (e.g. Docker not running)
+      const available = await runtime.isAvailable();
+      if (!available) {
+        logger.info(`Detected ${result.primaryRuntime} for ${owner}/${repo} but runtime is not available, skipping`);
+        continue;
+      }
       logger.info(`Detected ${result.primaryRuntime} for ${owner}/${repo} (confidence: ${result.confidence})`);
       return result;
     }
@@ -55,6 +61,8 @@ export async function detectLocal(appDir: string): Promise<DetectionResult | nul
   for (const runtime of runtimes) {
     const result = await runtime.detect(entries, getContent);
     if (result) {
+      const available = await runtime.isAvailable();
+      if (!available) continue;
       return result;
     }
   }

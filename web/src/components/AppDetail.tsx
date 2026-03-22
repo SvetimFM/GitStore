@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { api, type InspectResult } from '../api/client';
+import { api, getBaseUrl, type InspectResult } from '../api/client';
 import { githubAvatarUrl } from '../utils/format';
 import { ReadmePreview } from './ReadmePreview';
 import { ReleaseInfo } from './ReleaseInfo';
@@ -22,29 +22,45 @@ function InstallWizard({
 }) {
   const [step, setStep] = useState<WizardStep>('confirm');
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [statusText, setStatusText] = useState('Cloning repository...');
+  const [statusText, setStatusText] = useState('Starting...');
+  const [logOutput, setLogOutput] = useState('');
 
   const { detection: d, risk: rk } = data;
 
-  const handleConfirmInstall = async () => {
+  const handleConfirmInstall = () => {
     setStep('installing');
-    setStatusText('Cloning repository...');
+    setStatusText('Starting...');
+    setLogOutput('');
 
-    // Simulate progress text updates
-    const timer1 = setTimeout(() => setStatusText('Installing dependencies...'), 3000);
-    const timer2 = setTimeout(() => setStatusText('Building...'), 7000);
+    const base = getBaseUrl();
+    const url = `${base}/api/install-stream?repo=${encodeURIComponent(`${owner}/${repo}`)}`;
+    const es = new EventSource(url);
 
-    try {
-      await api.install(`${owner}/${repo}`);
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+    es.addEventListener('status', (e) => {
+      const data = JSON.parse(e.data);
+      setStatusText(data.message);
+    });
+
+    es.addEventListener('output', (e) => {
+      const data = JSON.parse(e.data);
+      setLogOutput(prev => prev + data.text);
+    });
+
+    es.addEventListener('complete', () => {
+      es.close();
       setStep('done');
-    } catch (err) {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      setErrorMessage(err instanceof Error ? err.message : 'Install failed');
+    });
+
+    es.addEventListener('error', (e) => {
+      try {
+        const data = JSON.parse((e as MessageEvent).data);
+        setErrorMessage(data.message);
+      } catch {
+        setErrorMessage('Installation failed');
+      }
+      es.close();
       setStep('error');
-    }
+    });
   };
 
   const handleOverlayClick = () => {
@@ -138,6 +154,17 @@ function InstallWizard({
               <p className="text-white font-medium">Installing {repo}</p>
               <p className="text-gray-500 text-sm">{statusText}</p>
             </div>
+            {logOutput && (
+              <div style={{
+                maxHeight: '200px', overflow: 'auto',
+                background: 'rgba(255,255,255,0.03)', borderRadius: '8px',
+                padding: '10px', marginTop: '16px', width: '100%',
+                fontFamily: 'ui-monospace, monospace', fontSize: '11px',
+                color: '#8b8ba0', whiteSpace: 'pre-wrap', wordBreak: 'break-all',
+              }}>
+                {logOutput.slice(-3000)}
+              </div>
+            )}
           </div>
         )}
 

@@ -141,7 +141,7 @@ export interface GitHubRelease {
 
 // In Tauri desktop app, API is served on port 3456.
 // In browser dev mode, Vite proxies /api to the backend.
-function getBaseUrl(): string {
+export function getBaseUrl(): string {
   if (typeof window !== 'undefined' && '__TAURI__' in window) {
     return 'http://127.0.0.1:3456';
   }
