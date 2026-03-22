@@ -16,3 +16,5 @@ web/src-tauri/backend/
 *.cer
 *.keychain
 *.keychain-db
+.claude-plugin
+.superpowers
