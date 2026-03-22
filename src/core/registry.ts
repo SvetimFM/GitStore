@@ -76,6 +76,26 @@ function initSchema(): void {
     );
     CREATE INDEX IF NOT EXISTS idx_suggestions_status ON suggestions(status);
   `);
+
+  db!.exec(`
+    CREATE TABLE IF NOT EXISTS user_lists (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT,
+      icon TEXT DEFAULT '📁',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS user_list_items (
+      id TEXT PRIMARY KEY,
+      list_id TEXT NOT NULL REFERENCES user_lists(id) ON DELETE CASCADE,
+      repo_full_name TEXT NOT NULL,
+      note TEXT,
+      added_at TEXT NOT NULL,
+      UNIQUE(list_id, repo_full_name)
+    );
+  `);
 }
 
 function rowToApp(row: Record<string, unknown>): App {
@@ -304,5 +324,111 @@ export function listSuggestions(status?: string): Suggestion[] {
     note: r.note as string | null,
     status: r.status as 'pending' | 'approved' | 'rejected',
     createdAt: r.created_at as string,
+  }));
+}
+
+// --- User Lists ---
+
+export interface UserList {
+  id: string;
+  name: string;
+  description: string | null;
+  icon: string;
+  createdAt: string;
+  itemCount: number;
+}
+
+export interface UserListItem {
+  id: string;
+  listId: string;
+  repoFullName: string;
+  note: string | null;
+  addedAt: string;
+}
+
+export function createUserList(name: string, description?: string, icon?: string): UserList {
+  const id = randomUUID();
+  const now = new Date().toISOString();
+  getDb().prepare(`
+    INSERT INTO user_lists (id, name, description, icon, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(id, name, description ?? null, icon ?? '📁', now, now);
+
+  return { id, name, description: description ?? null, icon: icon ?? '📁', createdAt: now, itemCount: 0 };
+}
+
+export function listUserLists(): UserList[] {
+  const rows = getDb().prepare(`
+    SELECT ul.*, COUNT(uli.id) as item_count
+    FROM user_lists ul
+    LEFT JOIN user_list_items uli ON uli.list_id = ul.id
+    GROUP BY ul.id
+    ORDER BY ul.created_at DESC
+  `).all() as Array<Record<string, unknown>>;
+
+  return rows.map(r => ({
+    id: r.id as string,
+    name: r.name as string,
+    description: r.description as string | null,
+    icon: r.icon as string,
+    createdAt: r.created_at as string,
+    itemCount: r.item_count as number,
+  }));
+}
+
+export function getUserList(id: string): UserList | null {
+  const row = getDb().prepare(`
+    SELECT ul.*, COUNT(uli.id) as item_count
+    FROM user_lists ul
+    LEFT JOIN user_list_items uli ON uli.list_id = ul.id
+    WHERE ul.id = ?
+    GROUP BY ul.id
+  `).get(id) as Record<string, unknown> | undefined;
+
+  if (!row) return null;
+
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    description: row.description as string | null,
+    icon: row.icon as string,
+    createdAt: row.created_at as string,
+    itemCount: row.item_count as number,
+  };
+}
+
+export function deleteUserList(id: string): void {
+  getDb().prepare('DELETE FROM user_lists WHERE id = ?').run(id);
+}
+
+export function addToUserList(listId: string, repoFullName: string, note?: string): void {
+  const id = randomUUID();
+  const now = new Date().toISOString();
+  getDb().prepare(`
+    INSERT INTO user_list_items (id, list_id, repo_full_name, note, added_at)
+    VALUES (?, ?, ?, ?, ?)
+    ON CONFLICT(list_id, repo_full_name) DO UPDATE SET note = excluded.note
+  `).run(id, listId, repoFullName, note ?? null, now);
+
+  // Update list's updated_at
+  getDb().prepare('UPDATE user_lists SET updated_at = ? WHERE id = ?').run(now, listId);
+}
+
+export function removeFromUserList(listId: string, repoFullName: string): void {
+  getDb().prepare('DELETE FROM user_list_items WHERE list_id = ? AND repo_full_name = ?').run(listId, repoFullName);
+  getDb().prepare('UPDATE user_lists SET updated_at = ? WHERE id = ?').run(new Date().toISOString(), listId);
+}
+
+export function getUserListItems(listId: string): UserListItem[] {
+  const rows = getDb().prepare(
+    'SELECT * FROM user_list_items WHERE list_id = ? ORDER BY added_at DESC'
+  ).all(listId) as Array<Record<string, unknown>>;
+
+  return rows.map(r => ({
+    id: r.id as string,
+    listId: r.list_id as string,
+    repoFullName: r.repo_full_name as string,
+    note: r.note as string | null,
+    addedAt: r.added_at as string,
   }));
 }

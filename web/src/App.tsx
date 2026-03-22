@@ -11,6 +11,9 @@ import { CategoryPage } from './components/CategoryPage';
 import { Onboarding, useOnboarding } from './components/Onboarding';
 import { SettingsPage } from './components/SettingsPage';
 import { TrendingSection } from './components/TrendingSection';
+import { StarsPage } from './components/StarsPage';
+import { ListsPage } from './components/ListsPage';
+import { ListDetailPage } from './components/ListDetailPage';
 import { useSearch } from './hooks/useSearch';
 import { useDiscovery } from './hooks/useCollections';
 import { api, type RepoInfo } from './api/client';
@@ -143,6 +146,30 @@ function Layout() {
               My Apps
             </NavLink>
             <NavLink
+              to="/my-stars"
+              className={({ isActive }) =>
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
+              }
+            >
+              My Stars
+            </NavLink>
+            <NavLink
+              to="/lists"
+              className={({ isActive }) =>
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
+              }
+            >
+              Lists
+            </NavLink>
+            <NavLink
               to="/submit"
               className={({ isActive }) =>
                 `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
@@ -178,6 +205,9 @@ function Layout() {
         <Routes>
           <Route path="/" element={<StorePage />} />
           <Route path="/my-apps" element={<InstalledApps />} />
+          <Route path="/my-stars" element={<StarsPage />} />
+          <Route path="/lists" element={<ListsPage />} />
+          <Route path="/lists/:id" element={<ListDetailPage />} />
           <Route path="/app/:owner/:repo" element={<AppDetail />} />
           <Route path="/category/:id" element={<CategoryPage />} />
           <Route path="/submit" element={<SubmitPage />} />

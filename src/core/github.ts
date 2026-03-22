@@ -4,7 +4,12 @@ import { logger } from '../utils/logger.js';
 
 // ── GitHub REST API client ─────────────────────────────────
 
-async function githubFetch<T = unknown>(endpoint: string): Promise<T> {
+interface GitHubFetchResult<T> {
+  data: T;
+  headers: Headers;
+}
+
+async function githubFetchRaw<T = unknown>(endpoint: string): Promise<GitHubFetchResult<T>> {
   const token = getGithubToken();
   const headers: Record<string, string> = {
     'Accept': 'application/vnd.github+json',
@@ -32,7 +37,13 @@ async function githubFetch<T = unknown>(endpoint: string): Promise<T> {
     throw new Error(`GitHub API ${res.status}: ${body.message ?? res.statusText}`);
   }
 
-  return res.json() as Promise<T>;
+  const data = await res.json() as T;
+  return { data, headers: res.headers };
+}
+
+async function githubFetch<T = unknown>(endpoint: string): Promise<T> {
+  const result = await githubFetchRaw<T>(endpoint);
+  return result.data;
 }
 
 // ── Parsers ────────────────────────────────────────────────
@@ -168,6 +179,48 @@ export async function getRateLimit(): Promise<{ remaining: number; limit: number
     '/rate_limit'
   );
   return data.rate;
+}
+
+export async function getStarredRepos(page = 1, perPage = 30): Promise<{ repos: RepoInfo[]; hasMore: boolean }> {
+  const token = getGithubToken();
+  if (!token) {
+    throw new Error('A GitHub personal access token is required to view starred repos. Add one in Settings.');
+  }
+
+  const params = new URLSearchParams({
+    page: String(page),
+    per_page: String(perPage),
+    sort: 'created',
+    direction: 'desc',
+  });
+
+  const { data, headers } = await githubFetchRaw<GitHubSearchItem[]>(
+    `/user/starred?${params}`
+  );
+
+  const repos = data.map(parseRepo);
+
+  // Check Link header for rel="next" to determine if there are more pages
+  const linkHeader = headers.get('link') ?? '';
+  const hasMore = linkHeader.includes('rel="next"');
+
+  return { repos, hasMore };
+}
+
+export async function getAuthenticatedUser(): Promise<{ login: string; avatarUrl: string; name: string | null } | null> {
+  const token = getGithubToken();
+  if (!token) return null;
+
+  try {
+    const data = await githubFetch<{ login: string; avatar_url: string; name: string | null }>('/user');
+    return {
+      login: data.login,
+      avatarUrl: data.avatar_url,
+      name: data.name,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export function parseRepoString(input: string): { owner: string; repo: string } {

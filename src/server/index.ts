@@ -11,6 +11,8 @@ import { readmeRouter } from './routes/readme.js';
 import { suggestionsRouter } from './routes/suggestions.js';
 import { trendingRouter } from './routes/trending.js';
 import { configRouter } from './routes/config.js';
+import { starsRouter } from './routes/stars.js';
+import { listsRouter } from './routes/lists.js';
 import { ensureDirs } from '../utils/paths.js';
 import { logger } from '../utils/logger.js';
 
@@ -41,6 +43,8 @@ export function createExpressApp() {
   app.use('/api/trending', trendingRouter);
   app.use('/api/suggestions', suggestionsRouter);
   app.use('/api/config', configRouter);
+  app.use('/api', starsRouter);
+  app.use('/api/lists', listsRouter);
 
   // Serve static frontend (production)
   // Check multiple locations: standard dev path and Tauri bundle path

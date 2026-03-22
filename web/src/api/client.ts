@@ -114,6 +114,23 @@ export interface FeaturedAppInfo {
   info: RepoInfo | null;
 }
 
+export interface UserList {
+  id: string;
+  name: string;
+  description: string | null;
+  icon: string;
+  createdAt: string;
+  itemCount: number;
+}
+
+export interface UserListItem {
+  id: string;
+  listId: string;
+  repoFullName: string;
+  note: string | null;
+  addedAt: string;
+}
+
 // In Tauri desktop app, API is served on port 3456.
 // In browser dev mode, Vite proxies /api to the backend.
 function getBaseUrl(): string {
@@ -269,5 +286,48 @@ export const api = {
 
   setupMcp() {
     return apiFetch<{ success: boolean; configPath: string }>('/api/config/mcp-setup', { method: 'POST' });
+  },
+
+  // Stars
+  getStars(page?: number, perPage?: number) {
+    const params = new URLSearchParams();
+    if (page) params.set('page', String(page));
+    if (perPage) params.set('perPage', String(perPage));
+    return apiFetch<{ repos: RepoInfo[]; hasMore: boolean }>(`/api/stars?${params}`);
+  },
+
+  getUser() {
+    return apiFetch<{ authenticated: boolean; user?: { login: string; avatarUrl: string; name: string | null } }>('/api/user');
+  },
+
+  // User Lists
+  getLists() {
+    return apiFetch<{ lists: UserList[] }>('/api/lists');
+  },
+
+  createList(name: string, description?: string, icon?: string) {
+    return apiFetch<{ list: UserList }>('/api/lists', {
+      method: 'POST',
+      body: JSON.stringify({ name, description, icon }),
+    });
+  },
+
+  getList(id: string) {
+    return apiFetch<{ list: UserList; items: UserListItem[] }>(`/api/lists/${id}`);
+  },
+
+  deleteList(id: string) {
+    return apiFetch<{ success: boolean }>(`/api/lists/${id}`, { method: 'DELETE' });
+  },
+
+  addToList(id: string, repoFullName: string, note?: string) {
+    return apiFetch<{ success: boolean }>(`/api/lists/${id}/items`, {
+      method: 'POST',
+      body: JSON.stringify({ repoFullName, note }),
+    });
+  },
+
+  removeFromList(id: string, repoFullName: string) {
+    return apiFetch<{ success: boolean }>(`/api/lists/${id}/items/${encodeURIComponent(repoFullName)}`, { method: 'DELETE' });
   },
 };
