@@ -5,6 +5,7 @@ import { pythonRuntime } from '../runtimes/python.js';
 import { dockerRuntime } from '../runtimes/docker.js';
 import { rustRuntime } from '../runtimes/rust.js';
 import { goRuntime } from '../runtimes/go.js';
+import { staticRuntime } from '../runtimes/static.js';
 import { getRepoFiles, getFileContent } from './github.js';
 import { logger } from '../utils/logger.js';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -18,6 +19,7 @@ const runtimes: RuntimeHandler[] = [
   pythonRuntime,
   rustRuntime,
   goRuntime,
+  staticRuntime,
   dockerRuntime,
 ];
 

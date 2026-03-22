@@ -131,6 +131,14 @@ export interface UserListItem {
   addedAt: string;
 }
 
+export interface GitHubRelease {
+  tagName: string;
+  name: string;
+  publishedAt: string;
+  body: string;
+  assets: Array<{ name: string; size: number; downloadUrl: string; downloadCount: number }>;
+}
+
 // In Tauri desktop app, API is served on port 3456.
 // In browser dev mode, Vite proxies /api to the backend.
 function getBaseUrl(): string {
@@ -259,6 +267,10 @@ export const api = {
 
   getReadme(owner: string, repo: string) {
     return apiFetch<{ html: string | null }>(`/api/repos/${owner}/${repo}/readme`);
+  },
+
+  getRelease(owner: string, repo: string) {
+    return apiFetch<{ release: GitHubRelease | null }>(`/api/repos/${owner}/${repo}/releases`);
   },
 
   getTokenStatus() {

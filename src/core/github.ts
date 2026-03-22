@@ -223,6 +223,53 @@ export async function getAuthenticatedUser(): Promise<{ login: string; avatarUrl
   }
 }
 
+// ── Releases ──────────────────────────────────────────────
+
+export interface GitHubRelease {
+  tagName: string;
+  name: string;
+  publishedAt: string;
+  body: string;
+  assets: Array<{
+    name: string;
+    size: number;
+    downloadUrl: string;
+    downloadCount: number;
+  }>;
+}
+
+export async function getLatestRelease(owner: string, repo: string): Promise<GitHubRelease | null> {
+  try {
+    const data = await githubFetch<{
+      tag_name: string;
+      name: string;
+      published_at: string;
+      body: string;
+      assets: Array<{
+        name: string;
+        size: number;
+        browser_download_url: string;
+        download_count: number;
+      }>;
+    }>(`/repos/${owner}/${repo}/releases/latest`);
+
+    return {
+      tagName: data.tag_name,
+      name: data.name || data.tag_name,
+      publishedAt: data.published_at,
+      body: data.body || '',
+      assets: data.assets.map(a => ({
+        name: a.name,
+        size: a.size,
+        downloadUrl: a.browser_download_url,
+        downloadCount: a.download_count,
+      })),
+    };
+  } catch {
+    return null; // No releases
+  }
+}
+
 const SAFE_NAME_RE = /^[a-zA-Z0-9_.-]+$/;
 
 export function parseRepoString(input: string): { owner: string; repo: string } {

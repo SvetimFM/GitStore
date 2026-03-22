@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api, type InspectResult } from '../api/client';
 import { githubAvatarUrl } from '../utils/format';
 import { ReadmePreview } from './ReadmePreview';
+import { ReleaseInfo } from './ReleaseInfo';
 
 type WizardStep = 'confirm' | 'installing' | 'done' | 'error';
 
@@ -402,6 +403,9 @@ export function AppDetail() {
 
       {/* README */}
       <ReadmePreview owner={owner!} repo={repo!} />
+
+      {/* Release */}
+      <ReleaseInfo owner={owner!} repo={repo!} />
     </div>
   );
 }

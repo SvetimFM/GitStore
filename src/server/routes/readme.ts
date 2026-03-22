@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getReadme, renderMarkdown } from '../../core/github.js';
+import { getReadme, renderMarkdown, getLatestRelease } from '../../core/github.js';
 
 export const readmeRouter = Router();
 
@@ -37,6 +37,17 @@ readmeRouter.get('/:owner/:repo/readme', async (req, res) => {
     cache.set(key, { html, expires: Date.now() + TTL });
 
     res.json({ html });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// GET /:owner/:repo/releases — latest release info
+readmeRouter.get('/:owner/:repo/releases', async (req, res) => {
+  try {
+    const release = await getLatestRelease(req.params.owner, req.params.repo);
+    res.json({ release });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     res.status(500).json({ error: message });
