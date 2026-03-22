@@ -35,7 +35,6 @@ export function ListDetailPage() {
     try {
       await api.removeFromList(id, repoFullName);
       setItems(prev => prev.filter(i => i.repoFullName !== repoFullName));
-      setList(prev => prev ? { ...prev, itemCount: prev.itemCount - 1 } : prev);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to remove repo');
     } finally {
@@ -104,7 +103,7 @@ export function ListDetailPage() {
               <p className="text-gray-500 text-sm mt-0.5">{list.description}</p>
             )}
             <p className="text-gray-600 text-xs mt-1">
-              {list.itemCount} {list.itemCount === 1 ? 'repo' : 'repos'}
+              {items.length} {items.length === 1 ? 'repo' : 'repos'}
             </p>
           </div>
         </div>

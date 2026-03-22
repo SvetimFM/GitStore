@@ -54,6 +54,30 @@ jobs:
             libsoup-3.0-dev \
             javascriptcoregtk-4.1-dev
 
+      # ── macOS: Import signing certificate ──
+      - name: Import Apple certificate
+        if: startsWith(matrix.platform, 'macos')
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          CERT_PATH=$RUNNER_TEMP/certificate.p12
+
+          # Create temporary keychain
+          security create-keychain -p "actions" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "actions" $KEYCHAIN_PATH
+
+          # Import certificate
+          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERT_PATH
+          security import $CERT_PATH -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "actions" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # Cleanup
+          rm $CERT_PATH
+
       - name: Install backend dependencies
         run: npm install
 
@@ -64,27 +88,36 @@ jobs:
         working-directory: web
         run: npm install
 
-      - name: Copy backend to Tauri bundle
-        shell: bash
-        run: |
-          rm -rf web/src-tauri/backend
-          cp -r dist web/src-tauri/backend
-          # Build frontend and copy to backend for serving
-          cd web && npx vite build
-          cp -r dist ../web/src-tauri/backend/web-dist 2>/dev/null || cp -r dist web/src-tauri/backend/web-dist 2>/dev/null || true
-
       - name: Build frontend
         working-directory: web
         run: npx tsc -b && npx vite build
 
-      - name: Copy web dist to Tauri backend
+      - name: Prepare Tauri bundle
         shell: bash
-        run: cp -r web/dist web/src-tauri/backend/web-dist
+        run: |
+          rm -rf web/src-tauri/backend
+          cp -r dist web/src-tauri/backend
+          cp -r web/dist web/src-tauri/backend/web-dist
 
       - name: Install Tauri CLI
         run: cargo install tauri-cli --version "^2" --locked
 
-      - name: Build Tauri app
+      # ── Build with signing on macOS, without on other platforms ──
+      - name: Build Tauri app (macOS — signed + notarized)
+        if: startsWith(matrix.platform, 'macos')
+        working-directory: web/src-tauri
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          TAURI_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: cargo tauri build --target ${{ matrix.target }}
+
+      - name: Build Tauri app (Linux/Windows)
+        if: "!startsWith(matrix.platform, 'macos')"
         working-directory: web/src-tauri
         run: cargo tauri build --target ${{ matrix.target }}
 

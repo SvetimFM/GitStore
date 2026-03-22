@@ -143,8 +143,8 @@ function getBaseUrl(): string {
 async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const base = getBaseUrl();
   const res = await fetch(`${base}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
     ...options,
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
   });
   const data = await res.json();
   if (!res.ok) throw new Error((data as { error: string }).error ?? 'Request failed');

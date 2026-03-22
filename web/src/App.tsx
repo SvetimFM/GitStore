@@ -119,6 +119,11 @@ function StorePage() {
   );
 }
 
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+    isActive ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-white'
+  }`;
+
 function Layout() {
   return (
     <div className="min-h-screen bg-[#0a0a0f]" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
@@ -134,61 +139,31 @@ function Layout() {
             <NavLink
               to="/"
               end
-              className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
-                }`
-              }
+              className={navLinkClass}
             >
               Discover
             </NavLink>
             <NavLink
               to="/my-apps"
-              className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
-                }`
-              }
+              className={navLinkClass}
             >
               My Apps
             </NavLink>
             <NavLink
               to="/my-stars"
-              className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
-                }`
-              }
+              className={navLinkClass}
             >
               My Stars
             </NavLink>
             <NavLink
               to="/lists"
-              className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
-                }`
-              }
+              className={navLinkClass}
             >
               Lists
             </NavLink>
             <NavLink
               to="/submit"
-              className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white'
-                }`
-              }
+              className={navLinkClass}
             >
               Submit
             </NavLink>
