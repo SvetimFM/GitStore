@@ -144,8 +144,11 @@
           });
 
           // Set primary button based on detected platform
+          // Apple Silicon detection: Chrome/Safari on ARM Macs do NOT put "ARM" in the UA.
+          // Instead, check if the UA explicitly says "Intel" — if not, assume Apple Silicon
+          // (all Macs sold since late 2020 are ARM).
           if (p.includes('Mac') || u.includes('Mac')) {
-            if (u.includes('Intel') || (u.includes('Mac') && !u.includes('ARM') && navigator.hardwareConcurrency <= 4)) {
+            if (u.includes('Intel')) {
               btn.href = urls['mac-intel'] || fallback;
               btn.textContent = '↓  Download for macOS (Intel)';
               label.textContent = 'Detected: macOS · Intel';

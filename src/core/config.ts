@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, chmodSync } from 'node:fs';
 import { paths } from '../utils/paths.js';
 
 export interface GitStoreConfig {
@@ -14,7 +14,8 @@ export function loadConfig(): GitStoreConfig {
 }
 
 export function saveConfig(config: GitStoreConfig): void {
-  writeFileSync(paths.config, JSON.stringify(config, null, 2) + '\n');
+  writeFileSync(paths.config, JSON.stringify(config, null, 2) + '\n', { mode: 0o600 });
+  try { chmodSync(paths.config, 0o600); } catch { /* ignore on Windows */ }
 }
 
 export function getGithubToken(): string | undefined {

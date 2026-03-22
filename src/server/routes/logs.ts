@@ -13,7 +13,7 @@ logsRouter.get('/:id', (req, res) => {
       return;
     }
 
-    const lines = parseInt(req.query.lines as string ?? '50', 10);
+    const lines = Math.min(Math.max(1, parseInt(req.query.lines as string, 10) || 50), 1000);
     const logs = getAppLogs(req.params.id, lines);
     res.json({ app: app.fullName, logs });
   } catch (err) {

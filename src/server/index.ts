@@ -24,12 +24,26 @@ export function createExpressApp() {
   const app = express();
   app.use(express.json());
 
-  // CORS — allow Tauri webview and local dev origins
-  app.use((_req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+  // CORS — restrict to Tauri webview and local dev origins only
+  const ALLOWED_ORIGINS = new Set([
+    'tauri://localhost',
+    'http://tauri.localhost',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:3456',
+    'http://127.0.0.1:3456',
+  ]);
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && ALLOWED_ORIGINS.has(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    } else if (!origin) {
+      // Same-origin requests (no Origin header) — allow
+      res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3456');
+    }
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-    if (_req.method === 'OPTIONS') { res.sendStatus(204); return; }
+    if (req.method === 'OPTIONS') { res.sendStatus(204); return; }
     next();
   });
 

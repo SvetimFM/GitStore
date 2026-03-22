@@ -71,6 +71,11 @@ collectionsRouter.post('/curate', async (req, res) => {
       res.status(400).json({ error: 'repo is required (or set all: true)' });
       return;
     }
+    // Validate repo format: must be owner/repo with safe characters
+    if (!/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(body.repo)) {
+      res.status(400).json({ error: 'Invalid repo format. Use owner/repo.' });
+      return;
+    }
 
     if (!body.categoryId) {
       // Preview mode: return parsed sections

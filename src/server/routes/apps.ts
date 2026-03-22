@@ -52,6 +52,11 @@ appsRouter.post('/install', async (req, res) => {
       res.status(400).json({ error: 'Missing "repo" in request body' });
       return;
     }
+    // Validate ref: must not start with '-' (prevents git argument injection)
+    if (ref && (ref.startsWith('-') || !/^[a-zA-Z0-9_./-]+$/.test(ref))) {
+      res.status(400).json({ error: 'Invalid ref format' });
+      return;
+    }
 
     const result = await installApp(repo, { alias, ref });
     res.json(result);
@@ -65,7 +70,12 @@ appsRouter.post('/install', async (req, res) => {
 appsRouter.post('/:id/start', async (req, res) => {
   try {
     const { port, env } = req.body as { port?: number; env?: Record<string, string> };
-    const app = await startApp(req.params.id, { port, env });
+    // Strip dangerous env vars that could enable code injection
+    const BLOCKED_ENV = new Set(['PATH', 'LD_PRELOAD', 'DYLD_INSERT_LIBRARIES', 'LD_LIBRARY_PATH', 'NODE_OPTIONS', 'PYTHONPATH', 'RUBYOPT']);
+    const safeEnv = env ? Object.fromEntries(
+      Object.entries(env).filter(([k]) => !BLOCKED_ENV.has(k.toUpperCase()))
+    ) : undefined;
+    const app = await startApp(req.params.id, { port, env: safeEnv });
     res.json(app);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -126,7 +136,9 @@ appsRouter.get('/:id/env', (req, res) => {
       res.status(404).json({ error: 'App not found' });
       return;
     }
-    const vars = getAppEnv(app.id);
+    const vars = getAppEnv(app.id).map(v =>
+      v.isSecret ? { ...v, value: '••••••••' } : v
+    );
     res.json({ vars });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

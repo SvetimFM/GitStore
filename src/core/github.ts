@@ -223,16 +223,33 @@ export async function getAuthenticatedUser(): Promise<{ login: string; avatarUrl
   }
 }
 
+const SAFE_NAME_RE = /^[a-zA-Z0-9_.-]+$/;
+
 export function parseRepoString(input: string): { owner: string; repo: string } {
+  let owner: string;
+  let repo: string;
+
   const urlMatch = input.match(/github\.com\/([^/]+)\/([^/\s#?]+)/);
   if (urlMatch) {
-    return { owner: urlMatch[1], repo: urlMatch[2].replace(/\.git$/, '') };
+    owner = urlMatch[1];
+    repo = urlMatch[2].replace(/\.git$/, '');
+  } else {
+    const parts = input.split('/');
+    if (parts.length === 2 && parts[0] && parts[1]) {
+      owner = parts[0];
+      repo = parts[1];
+    } else {
+      throw new Error(`Invalid repo format: "${input}". Use owner/repo or a GitHub URL.`);
+    }
   }
 
-  const parts = input.split('/');
-  if (parts.length === 2 && parts[0] && parts[1]) {
-    return { owner: parts[0], repo: parts[1] };
+  // Prevent path traversal — owner and repo must be safe filesystem names
+  if (!SAFE_NAME_RE.test(owner) || !SAFE_NAME_RE.test(repo)) {
+    throw new Error(`Invalid characters in repo name: "${owner}/${repo}"`);
+  }
+  if (owner.startsWith('.') || repo.startsWith('.')) {
+    throw new Error(`Repo name cannot start with a dot: "${owner}/${repo}"`);
   }
 
-  throw new Error(`Invalid repo format: "${input}". Use owner/repo or a GitHub URL.`);
+  return { owner, repo };
 }
