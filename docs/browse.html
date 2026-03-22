@@ -91,6 +91,18 @@
       flex-shrink: 0; white-space: nowrap;
     }
 
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 32px 0 8px; }
+    .page-btn {
+      padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-2);
+      cursor: pointer; font-family: var(--sans); transition: all 0.15s;
+    }
+    .page-btn:hover:not(:disabled) { border-color: var(--border-h); color: var(--text); }
+    .page-btn:disabled { opacity: 0.3; cursor: default; }
+    .page-info { font-size: 13px; color: var(--text-2); }
+    .page-dim { color: var(--text-3); }
+
     /* Empty / loading */
     .empty { text-align: center; padding: 60px 0; color: var(--text-3); font-size: 14px; }
     .loading { text-align: center; padding: 80px 0; }
@@ -165,6 +177,8 @@
     var data = null;
     var activeCategory = 'all';
     var searchQuery = '';
+    var currentPage = 1;
+    var PAGE_SIZE = 20;
 
     fetch('collections.json')
       .then(function(r) { return r.json(); })
@@ -178,6 +192,7 @@
         render();
         document.getElementById('search').addEventListener('input', function(e) {
           searchQuery = e.target.value.toLowerCase().trim();
+          currentPage = 1;
           render();
         });
       });
@@ -193,6 +208,7 @@
 
     function setCategory(id) {
       activeCategory = id;
+      currentPage = 1;
       renderTabs();
       render();
     }
@@ -220,8 +236,15 @@
         return;
       }
 
+      // Paginate collections
+      var totalCollections = collections.length;
+      var totalPages = Math.ceil(totalCollections / PAGE_SIZE);
+      if (currentPage > totalPages) currentPage = totalPages;
+      var start = (currentPage - 1) * PAGE_SIZE;
+      var pageCollections = collections.slice(start, start + PAGE_SIZE);
+
       var html = '';
-      collections.forEach(function(col) {
+      pageCollections.forEach(function(col) {
         html += '<div class="collection">';
         html += '<div class="collection-head" onclick="toggleCollection(\'' + col.id + '\')">';
         html += '<span class="collection-name">' + escapeHtml(col.name) + '</span>';
@@ -245,7 +268,22 @@
         html += '</div></div>';
       });
 
+      // Pagination controls
+      if (totalPages > 1) {
+        html += '<div class="pagination">';
+        html += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')"' + (currentPage <= 1 ? ' disabled' : '') + '>&larr; Prev</button>';
+        html += '<span class="page-info">Page ' + currentPage + ' of ' + totalPages + ' <span class="page-dim">(' + totalCollections + ' collections)</span></span>';
+        html += '<button class="page-btn" onclick="goPage(' + (currentPage + 1) + ')"' + (currentPage >= totalPages ? ' disabled' : '') + '>Next &rarr;</button>';
+        html += '</div>';
+      }
+
       document.getElementById('results').innerHTML = html;
+    }
+
+    function goPage(p) {
+      currentPage = p;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function toggleCollection(id) {
