@@ -3,8 +3,9 @@
   "version": "0.2.0",
   "identifier": "com.gitstore.app",
   "build": {
-    "frontendDist": "http://127.0.0.1:3456",
-    "devUrl": "http://127.0.0.1:3456",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },
   "app": {
@@ -19,8 +20,9 @@
       }
     ],
     "security": {
-      "csp": null
-    }
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:3456 https://api.github.com https://github.com; img-src 'self' https://github.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;"
+    },
+    "withGlobalTauri": true
   },
   "bundle": {
     "active": true,

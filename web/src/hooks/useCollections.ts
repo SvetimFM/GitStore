@@ -11,25 +11,32 @@ export function useDiscovery() {
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
+    async function load(retries = 5) {
       setLoading(true);
       setError(null);
-      try {
-        const [collectionsData, featuredData] = await Promise.all([
-          api.getCollections(),
-          api.getFeatured(),
-        ]);
-        if (!cancelled) {
-          setCategories(collectionsData.categories);
-          setCollections(collectionsData.collections);
-          setFeatured(featuredData.featured);
+
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+          const [collectionsData, featuredData] = await Promise.all([
+            api.getCollections(),
+            api.getFeatured(),
+          ]);
+          if (!cancelled) {
+            setCategories(collectionsData.categories);
+            setCollections(collectionsData.collections);
+            setFeatured(featuredData.featured);
+            setLoading(false);
+          }
+          return;
+        } catch (err) {
+          // If backend isn't ready yet, wait and retry
+          if (attempt < retries) {
+            await new Promise(r => setTimeout(r, 1000));
+          } else if (!cancelled) {
+            setError(err instanceof Error ? err.message : 'Failed to load. Is the backend running?');
+            setLoading(false);
+          }
         }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Failed to load discovery data');
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     }
 
