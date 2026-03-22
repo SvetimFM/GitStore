@@ -106,7 +106,11 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: cargo tauri build --target ${{ matrix.target }} 2>&1 | grep -v -i -E "certificate|signing|identity|found cert|keychain"
+        run: cargo tauri build --target ${{ matrix.target }}
+
+      - name: Cleanup keychain
+        if: always() && startsWith(matrix.platform, 'macos')
+        run: security delete-keychain $RUNNER_TEMP/app-signing.keychain-db > /dev/null 2>&1 || true
 
       - name: Build Tauri app (Linux/Windows)
         if: "!startsWith(matrix.platform, 'macos')"

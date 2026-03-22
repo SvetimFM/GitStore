@@ -8,3 +8,11 @@ web/src-tauri/backend/
 *.dmg
 .env
 .DS_Store
+
+# Signing/cert material — never commit
+*.p12
+*.pem
+*.key
+*.cer
+*.keychain
+*.keychain-db
