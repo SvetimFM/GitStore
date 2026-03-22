@@ -16,6 +16,7 @@ import { ListsPage } from './components/ListsPage';
 import { ListDetailPage } from './components/ListDetailPage';
 import { useSearch } from './hooks/useSearch';
 import { useDiscovery } from './hooks/useCollections';
+import { useUpdateCheck } from './hooks/useUpdateCheck';
 import { api, type RepoInfo } from './api/client';
 
 function StorePage() {
@@ -124,9 +125,31 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'bg-white/10 text-white shadow-sm' : 'text-gray-400 hover:text-white'
   }`;
 
+function UpdateBanner() {
+  const { update, dismiss } = useUpdateCheck();
+  if (!update) return null;
+  return (
+    <div className="bg-blue-500/10 border-b border-blue-500/15 px-6 py-2.5 flex items-center justify-center gap-3 text-sm">
+      <span className="text-blue-300">GitStore v{update.version} is available</span>
+      <a
+        href={update.downloadUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-3 py-1 bg-blue-500 text-white text-xs font-semibold rounded-full hover:bg-blue-400 transition-colors"
+      >
+        Download Update
+      </a>
+      <button onClick={dismiss} className="text-blue-400/50 hover:text-blue-300 transition-colors ml-1" title="Dismiss">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  );
+}
+
 function Layout() {
   return (
     <div className="min-h-screen bg-[#0a0a0f]" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <UpdateBanner />
       <nav className="border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2.5 group">
