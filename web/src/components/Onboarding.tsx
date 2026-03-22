@@ -41,12 +41,12 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const steps = [
     // Step 0: Welcome
     <div key="welcome" className="flex flex-col items-center text-center space-y-6">
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl font-bold shadow-xl shadow-blue-500/20">
+      <div className="w-20 h-20 rounded-2xl bg-[#3b82f6] flex items-center justify-center text-3xl font-bold shadow-xl shadow-blue-500/20">
         G
       </div>
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-white">Welcome to GitStore</h1>
-        <p className="text-gray-400 text-lg max-w-md">
+      <div className="space-y-3">
+        <h1 className="text-4xl font-normal text-white" style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}>Welcome to GitStore</h1>
+        <p className="text-gray-400 text-base max-w-md leading-relaxed">
           Your personal app store for GitHub. Discover, install, and run open-source apps with one click.
         </p>
       </div>

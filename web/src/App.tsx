@@ -48,6 +48,17 @@ function StorePage() {
 
   return (
     <div className="space-y-10">
+      {!hasSearched && (
+        <div className="pt-4 pb-2">
+          <h1
+            className="text-5xl font-normal text-white tracking-tight leading-tight"
+            style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+          >
+            Discover
+          </h1>
+          <p className="text-gray-400 text-lg mt-2">Curated open-source apps, ready to run.</p>
+        </div>
+      )}
       <SearchBar onSearch={handleSearch} loading={loading} />
 
       {error && (
@@ -110,11 +121,11 @@ function StorePage() {
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
+    <div className="min-h-screen bg-[#0a0a0f]" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <nav className="border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/20">
+            <div className="w-8 h-8 rounded-lg bg-[#3b82f6] flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/20">
               G
             </div>
             <span className="text-lg font-semibold text-white tracking-tight">GitStore</span>

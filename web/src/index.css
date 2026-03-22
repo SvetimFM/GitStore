@@ -1,7 +1,14 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+}
 
 body {
   margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
 /* Hide scrollbar for featured carousel */

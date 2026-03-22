@@ -41,7 +41,7 @@ export function InstalledApps() {
     <div className="space-y-8">
       {running.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: '1.35rem' }}>
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-glow" />
             Running
             <span className="text-gray-600 font-normal text-sm ml-1">({running.length})</span>
@@ -55,7 +55,7 @@ export function InstalledApps() {
       )}
       {other.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: '1.35rem' }}>
             {running.length > 0 ? 'Stopped' : 'Installed'}
             <span className="text-gray-600 font-normal text-sm ml-2">({other.length})</span>
           </h2>
