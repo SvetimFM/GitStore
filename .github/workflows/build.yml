@@ -106,13 +106,15 @@ jobs:
         if: startsWith(matrix.platform, 'macos')
         working-directory: web/src-tauri
         env:
+          # Signing identity — Tauri reads the cert from the keychain imported above
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          # Notarization credentials
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          TAURI_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          # Note: APPLE_CERTIFICATE and APPLE_CERTIFICATE_PASSWORD are NOT passed here.
+          # The cert is already in the keychain from the import step above.
+          # Passing them as env vars causes Tauri to log cert details in build output.
         run: cargo tauri build --target ${{ matrix.target }}
 
       - name: Build Tauri app (Linux/Windows)
