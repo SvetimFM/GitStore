@@ -114,24 +114,27 @@
       var note = document.getElementById('auto-note');
       var base = 'https://github.com/SvetimFM/GitStore/releases/latest/download/';
 
+      // Default to macOS Apple Silicon (most common for our audience)
+      btn.href = base + 'GitStore_0.2.0_aarch64.dmg';
+      btn.textContent = '↓  Download for macOS (Apple Silicon)';
+      label.textContent = 'macOS · Apple Silicon';
+      note.innerHTML = '';
+
       if (p.includes('Mac') || u.includes('Mac')) {
-        if (u.includes('ARM') || (navigator.hardwareConcurrency > 4 && !u.includes('Intel'))) {
-          btn.href = base + 'GitStore_0.1.0_aarch64.dmg';
-          btn.textContent = '↓  Download for macOS (Apple Silicon)';
-          label.textContent = 'Detected: macOS · Apple Silicon';
-        } else {
-          btn.href = base + 'GitStore_0.1.0_x64.dmg';
+        if (u.includes('Intel') || (u.includes('Mac') && !u.includes('ARM') && navigator.hardwareConcurrency <= 4)) {
+          btn.href = base + 'GitStore_0.2.0_x64.dmg';
           btn.textContent = '↓  Download for macOS (Intel)';
           label.textContent = 'Detected: macOS · Intel';
+        } else {
+          label.textContent = 'Detected: macOS · Apple Silicon';
         }
-        note.innerHTML = 'After install, you may need to run: <code>xattr -cr /Applications/GitStore.app</code>';
       } else if (p.includes('Linux') || u.includes('Linux')) {
-        btn.href = base + 'git-store_0.1.0_amd64.AppImage';
+        btn.href = base + 'git-store_0.2.0_amd64.AppImage';
         btn.textContent = '↓  Download for Linux';
         label.textContent = 'Detected: Linux · x64';
         note.textContent = '.AppImage — also available as .deb and .rpm below';
       } else if (p.includes('Win') || u.includes('Windows')) {
-        btn.href = base + 'GitStore_0.1.0_x64-setup.exe';
+        btn.href = base + 'GitStore_0.2.0_x64-setup.exe';
         btn.textContent = '↓  Download for Windows';
         label.textContent = 'Detected: Windows · x64';
         note.textContent = '.exe installer — also available as .msi below';
@@ -173,7 +176,7 @@
 
     <!-- All platform downloads -->
     <div class="platforms">
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.1.0_aarch64.dmg">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.2.0_aarch64.dmg">
         <div class="platform-icon">🍎</div>
         <div class="platform-info">
           <div class="platform-name">macOS</div>
@@ -181,7 +184,7 @@
           <div class="platform-ext">.dmg</div>
         </div>
       </a>
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.1.0_x64.dmg">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.2.0_x64.dmg">
         <div class="platform-icon">🍎</div>
         <div class="platform-info">
           <div class="platform-name">macOS</div>
@@ -189,7 +192,7 @@
           <div class="platform-ext">.dmg</div>
         </div>
       </a>
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/git-store_0.1.0_amd64.AppImage">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/git-store_0.2.0_amd64.AppImage">
         <div class="platform-icon">🐧</div>
         <div class="platform-info">
           <div class="platform-name">Linux</div>
@@ -197,7 +200,7 @@
           <div class="platform-ext">.AppImage</div>
         </div>
       </a>
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/git-store_0.1.0_amd64.deb">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/git-store_0.2.0_amd64.deb">
         <div class="platform-icon">🐧</div>
         <div class="platform-info">
           <div class="platform-name">Linux</div>
@@ -205,7 +208,7 @@
           <div class="platform-ext">.deb</div>
         </div>
       </a>
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.1.0_x64-setup.exe">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.2.0_x64-setup.exe">
         <div class="platform-icon">🪟</div>
         <div class="platform-info">
           <div class="platform-name">Windows</div>
@@ -213,7 +216,7 @@
           <div class="platform-ext">.exe</div>
         </div>
       </a>
-      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.1.0_x64_en-US.msi">
+      <a class="platform-card" href="https://github.com/SvetimFM/GitStore/releases/latest/download/GitStore_0.2.0_x64_en-US.msi">
         <div class="platform-icon">🪟</div>
         <div class="platform-info">
           <div class="platform-name">Windows</div>
