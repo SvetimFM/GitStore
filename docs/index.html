@@ -11,7 +11,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="GitStore — The App Store GitHub Never Built">
-  <meta property="og:description" content="Discover, install, and run 800+ open-source GitHub repos as native apps. One click. No config. 3.7MB.">
+  <meta property="og:description" content="Discover, install, and run 3,500+ open-source GitHub repos as native apps. One click. No config. 3.7MB.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://svetimfm.github.io/GitStore/">
   <meta property="og:site_name" content="GitStore">
@@ -22,7 +22,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="GitStore — App Store for GitHub">
-  <meta name="twitter:description" content="Discover, install, and run 800+ open-source GitHub repos. One click. No config. Free forever.">
+  <meta name="twitter:description" content="Discover, install, and run 3,500+ open-source GitHub repos. One click. No config. Free forever.">
   <meta name="twitter:image" content="https://svetimfm.github.io/GitStore/og-image.png">
 
   <!-- Canonical -->
@@ -346,19 +346,33 @@
 
     /* ── App Showcase ────────────────────── */
     .showcase { padding: 80px 0; text-align: center; }
-    .showcase-grid {
-      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-      margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto;
+    .showcase-categories {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin: 48px auto 32px; max-width: 900px;
+    }
+    .showcase-cat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 14px; text-align: left;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .showcase-cat:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .showcase-cat-icon { font-size: 24px; margin-bottom: 8px; }
+    .showcase-cat-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .showcase-cat-count { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+    .showcase-apps {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      margin-top: 24px; max-width: 860px; margin-left: auto; margin-right: auto;
     }
     .showcase-chip {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 16px 8px 8px; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 14px 6px 6px; border-radius: 999px;
       background: var(--surface-2); border: 1px solid var(--border);
-      font-size: 13px; font-weight: 500; color: var(--text-mid);
+      font-size: 12px; font-weight: 500; color: var(--text-mid);
       transition: border-color 0.2s;
     }
     .showcase-chip:hover { border-color: var(--border-hover); }
-    .showcase-chip img { width: 22px; height: 22px; border-radius: 6px; }
+    .showcase-chip img { width: 20px; height: 20px; border-radius: 5px; }
+    @media (max-width: 768px) { .showcase-categories { grid-template-columns: repeat(2, 1fr); } }
 
     /* ── CTA ──────────────────────────────── */
     .cta {
@@ -460,12 +474,12 @@
   <div class="container">
     <div class="stats">
       <div class="stat">
-        <div class="stat-value">800+</div>
+        <div class="stat-value">3,500+</div>
         <div class="stat-label">Curated Apps</div>
       </div>
       <div class="stat">
-        <div class="stat-value">13</div>
-        <div class="stat-label">Categories</div>
+        <div class="stat-value">746</div>
+        <div class="stat-label">Collections</div>
       </div>
       <div class="stat">
         <div class="stat-value">5</div>
@@ -554,7 +568,7 @@
       <div class="how-step">
         <div class="how-num">1</div>
         <h3>Discover</h3>
-        <p>Browse 800+ curated apps across 13 categories. Check trending repos. Read the README right in the app. See risk scores and requirements.</p>
+        <p>Browse 3,500+ curated apps across 746 collections. Check trending repos. Read the README right in the app. See risk scores and requirements.</p>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
@@ -660,28 +674,45 @@
 
   <!-- App Showcase -->
   <section class="showcase container">
-    <div class="section-label">What You Can Install</div>
-    <h2 class="section-title">Real repos. One click each.</h2>
-    <p class="section-desc" style="margin-left:auto;margin-right:auto;">From AI tools to media servers, dev utilities to game engines.</p>
+    <div class="section-label">The Catalog</div>
+    <h2 class="section-title">3,547 repos. 13 categories.<br>All one click away.</h2>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">Curated from 30+ awesome-lists. Every repo is real, maintained, and installable.</p>
 
-    <div class="showcase-grid">
-      <a class="showcase-chip" href="https://github.com/ollama/ollama"><img src="https://github.com/ollama.png?size=44" alt="">ollama</a>
-      <a class="showcase-chip" href="https://github.com/immich-app/immich"><img src="https://github.com/immich-app.png?size=44" alt="">immich</a>
-      <a class="showcase-chip" href="https://github.com/nextcloud/server"><img src="https://github.com/nextcloud.png?size=44" alt="">nextcloud</a>
-      <a class="showcase-chip" href="https://github.com/jellyfin/jellyfin"><img src="https://github.com/jellyfin.png?size=44" alt="">jellyfin</a>
-      <a class="showcase-chip" href="https://github.com/grafana/grafana"><img src="https://github.com/grafana.png?size=44" alt="">grafana</a>
-      <a class="showcase-chip" href="https://github.com/vercel/next.js"><img src="https://github.com/vercel.png?size=44" alt="">next.js</a>
-      <a class="showcase-chip" href="https://github.com/tailscale/tailscale"><img src="https://github.com/tailscale.png?size=44" alt="">tailscale</a>
-      <a class="showcase-chip" href="https://github.com/supabase/supabase"><img src="https://github.com/supabase.png?size=44" alt="">supabase</a>
-      <a class="showcase-chip" href="https://github.com/hoppscotch/hoppscotch"><img src="https://github.com/hoppscotch.png?size=44" alt="">hoppscotch</a>
-      <a class="showcase-chip" href="https://github.com/godotengine/godot"><img src="https://github.com/godotengine.png?size=44" alt="">godot</a>
-      <a class="showcase-chip" href="https://github.com/n8n-io/n8n"><img src="https://github.com/n8n-io.png?size=44" alt="">n8n</a>
-      <a class="showcase-chip" href="https://github.com/louislam/uptime-kuma"><img src="https://github.com/louislam.png?size=44" alt="">uptime-kuma</a>
-      <a class="showcase-chip" href="https://github.com/fastapi/fastapi"><img src="https://github.com/fastapi.png?size=44" alt="">fastapi</a>
-      <a class="showcase-chip" href="https://github.com/BurntSushi/ripgrep"><img src="https://github.com/BurntSushi.png?size=44" alt="">ripgrep</a>
-      <a class="showcase-chip" href="https://github.com/actualbudget/actual"><img src="https://github.com/actualbudget.png?size=44" alt="">actual</a>
+    <div class="showcase-categories">
+      <div class="showcase-cat"><div class="showcase-cat-icon">⌨️</div><div class="showcase-cat-name">CLI Tools</div><div class="showcase-cat-count">645 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🌐</div><div class="showcase-cat-name">Web Frameworks</div><div class="showcase-cat-count">553 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🏠</div><div class="showcase-cat-name">Self-Hosted</div><div class="showcase-cat-count">547 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🔒</div><div class="showcase-cat-name">Security</div><div class="showcase-cat-count">336 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🔧</div><div class="showcase-cat-name">Dev Tools</div><div class="showcase-cat-count">284 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">📡</div><div class="showcase-cat-name">DevOps</div><div class="showcase-cat-count">199 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">📝</div><div class="showcase-cat-name">Productivity</div><div class="showcase-cat-count">175 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🎮</div><div class="showcase-cat-name">Games</div><div class="showcase-cat-count">163 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">💬</div><div class="showcase-cat-name">Communication</div><div class="showcase-cat-count">162 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">🤖</div><div class="showcase-cat-name">AI & LLM</div><div class="showcase-cat-count">160 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">📊</div><div class="showcase-cat-name">Data Science</div><div class="showcase-cat-count">140 repos</div></div>
+      <div class="showcase-cat"><div class="showcase-cat-icon">💰</div><div class="showcase-cat-name">Finance</div><div class="showcase-cat-count">121 repos</div></div>
     </div>
-    <p style="color: var(--text-dim); font-size: 13px; margin-top: 24px;">...and 800 more across self-hosted, AI, dev tools, CLI, games, and more.</p>
+
+    <div class="showcase-apps">
+      <a class="showcase-chip" href="https://github.com/ollama/ollama"><img src="https://github.com/ollama.png?size=40" alt="" loading="lazy">ollama</a>
+      <a class="showcase-chip" href="https://github.com/immich-app/immich"><img src="https://github.com/immich-app.png?size=40" alt="" loading="lazy">immich</a>
+      <a class="showcase-chip" href="https://github.com/nextcloud/server"><img src="https://github.com/nextcloud.png?size=40" alt="" loading="lazy">nextcloud</a>
+      <a class="showcase-chip" href="https://github.com/jellyfin/jellyfin"><img src="https://github.com/jellyfin.png?size=40" alt="" loading="lazy">jellyfin</a>
+      <a class="showcase-chip" href="https://github.com/grafana/grafana"><img src="https://github.com/grafana.png?size=40" alt="" loading="lazy">grafana</a>
+      <a class="showcase-chip" href="https://github.com/vercel/next.js"><img src="https://github.com/vercel.png?size=40" alt="" loading="lazy">next.js</a>
+      <a class="showcase-chip" href="https://github.com/tailscale/tailscale"><img src="https://github.com/tailscale.png?size=40" alt="" loading="lazy">tailscale</a>
+      <a class="showcase-chip" href="https://github.com/supabase/supabase"><img src="https://github.com/supabase.png?size=40" alt="" loading="lazy">supabase</a>
+      <a class="showcase-chip" href="https://github.com/hoppscotch/hoppscotch"><img src="https://github.com/hoppscotch.png?size=40" alt="" loading="lazy">hoppscotch</a>
+      <a class="showcase-chip" href="https://github.com/godotengine/godot"><img src="https://github.com/godotengine.png?size=40" alt="" loading="lazy">godot</a>
+      <a class="showcase-chip" href="https://github.com/n8n-io/n8n"><img src="https://github.com/n8n-io.png?size=40" alt="" loading="lazy">n8n</a>
+      <a class="showcase-chip" href="https://github.com/louislam/uptime-kuma"><img src="https://github.com/louislam.png?size=40" alt="" loading="lazy">uptime-kuma</a>
+      <a class="showcase-chip" href="https://github.com/fastapi/fastapi"><img src="https://github.com/fastapi.png?size=40" alt="" loading="lazy">fastapi</a>
+      <a class="showcase-chip" href="https://github.com/BurntSushi/ripgrep"><img src="https://github.com/BurntSushi.png?size=40" alt="" loading="lazy">ripgrep</a>
+      <a class="showcase-chip" href="https://github.com/actualbudget/actual"><img src="https://github.com/actualbudget.png?size=40" alt="" loading="lazy">actual</a>
+      <a class="showcase-chip" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui"><img src="https://github.com/AUTOMATIC1111.png?size=40" alt="" loading="lazy">stable-diffusion</a>
+      <a class="showcase-chip" href="https://github.com/pi-hole/pi-hole"><img src="https://github.com/pi-hole.png?size=40" alt="" loading="lazy">pi-hole</a>
+      <a class="showcase-chip" href="https://github.com/syncthing/syncthing"><img src="https://github.com/syncthing.png?size=40" alt="" loading="lazy">syncthing</a>
+    </div>
   </section>
 
   <!-- CTA -->
@@ -689,7 +720,7 @@
     <div class="cta-glow"></div>
     <div class="container">
       <h2>Stop reading READMEs.<br>Start running apps.</h2>
-      <p>Free. Open source. 3.7 MB. No account required.</p>
+      <p>3,547 repos. 13 categories. 3.7 MB. Free forever.</p>
       <a href="https://github.com/SvetimFM/GitStore/releases/latest" class="btn btn-glow">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download GitStore
