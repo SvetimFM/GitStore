@@ -16,8 +16,9 @@ Handles the full installation pipeline: inspect, clone, detect runtime, install 
    - Prerequisites status
    - Required environment variables
 3. **Get confirmation** — especially for medium/high risk repos
-4. **Install** with `gitstore_install` — provide alias if the user wants a friendly name
-5. **Offer to start** the app after successful installation
+4. **Install** with `gitstore_install` — provide alias if the user wants a friendly name. If prerequisites show a Docker fallback is available, installation auto-uses Docker as the runtime.
+5. **Configure** with `gitstore_configure` if the app needs environment variables (shown in inspect output)
+6. **Offer to start** the app after successful installation
 
 ## Tool Reference
 
@@ -27,17 +28,19 @@ Handles the full installation pipeline: inspect, clone, detect runtime, install 
 | Install with defaults | `gitstore_install` | `repo: "owner/repo"` |
 | Install with alias | `gitstore_install` | `repo: "owner/repo", alias: "my-app"` |
 | Install specific version | `gitstore_install` | `repo: "owner/repo", ref: "v2.0.0"` |
+| Configure env vars | `gitstore_configure` | `app: "owner/repo", env: { "API_KEY": "xxx" }` |
 | Start after install | `gitstore_start` | `app: "owner/repo"` |
 
 ## Troubleshooting
 
-- **"Missing prerequisites"** — the required runtime (Node.js, Python, Docker) isn't installed on the machine
+- **"Missing prerequisites"** — the required runtime (Node.js, Python, Docker) isn't installed on the machine. If a Docker fallback is available, the installer will use it automatically.
+- **"Missing environment variables"** — the app requires env vars to run. Use `gitstore_configure` to set them before starting.
 - **"Could not detect runtime"** — the repo doesn't have a recognized manifest (package.json, requirements.txt, Dockerfile, etc.)
 - **"Already installed"** — use `gitstore_update` instead, or `gitstore_uninstall` first
 - **Build/install failure** — check `gitstore_logs` for the error output; common causes:
   - Wrong Node/Python version
   - Missing native build dependencies
-  - Repo needs environment variables configured
+  - Repo needs environment variables configured — use `gitstore_configure` to set them
 - **High risk score** — explain the risk factors to the user; suggest Docker runtime if a Dockerfile is available
 
 ## Safety Notes

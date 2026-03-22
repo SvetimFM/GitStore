@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { RuntimeHandler } from './base.js';
 import type { DetectionResult } from '../types/detection.js';
+import { parseEnvVars } from './utils.js';
 import { logger } from '../utils/logger.js';
 
 const execFileAsync = promisify(execFile);
@@ -75,19 +76,7 @@ export const pythonRuntime: RuntimeHandler = {
       } catch { /* use default */ }
     }
 
-    // Check for env vars
-    const envVarsRequired: string[] = [];
-    if (files.includes('.env.example') || files.includes('.env.sample')) {
-      try {
-        const envFile = files.includes('.env.example') ? '.env.example' : '.env.sample';
-        const content = await getFileContent(envFile);
-        const vars = content.split('\n')
-          .filter(l => l.includes('=') && !l.startsWith('#'))
-          .map(l => l.split('=')[0].trim())
-          .filter(Boolean);
-        envVarsRequired.push(...vars);
-      } catch { /* ignore */ }
-    }
+    const envVarsRequired = await parseEnvVars(files, getFileContent);
 
     // Detect python version
     let runtimeVersion: string | null = null;

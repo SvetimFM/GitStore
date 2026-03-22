@@ -72,10 +72,14 @@ export function registerInspectTools(server: McpServer): void {
         lines.push(
           '',
           '### Prerequisites',
-          p.met
-            ? '✅ All prerequisites met'
-            : `❌ Missing: ${p.missing.join(', ')}`,
         );
+        if (p.met) {
+          lines.push('✅ All prerequisites met');
+        } else if (p.fallbackDetection) {
+          lines.push(`⚠️ Missing: ${p.missing.join(', ')} — Docker fallback available`);
+        } else {
+          lines.push(`❌ Missing: ${p.missing.join(', ')}`);
+        }
       }
 
       return {

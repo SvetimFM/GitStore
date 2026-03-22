@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitStore — App Store for GitHub</title>
+  <meta name="description" content="GitHub has 400 million repos. You've installed maybe 10. GitStore changes that. Discover, install, and run open-source apps with one click.">
+  <meta property="og:title" content="GitStore — App Store for GitHub">
+  <meta property="og:description" content="Discover, install, and run open-source GitHub repos as native apps. One-click setup. 800+ curated apps.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #06060b;
+      --surface: #0d0d14;
+      --surface-2: #13131d;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --text: #e8e8f0;
+      --text-dim: #6e6e82;
+      --text-mid: #9d9db5;
+      --blue: #4f7df7;
+      --purple: #9333ea;
+      --glow-blue: rgba(79,125,247,0.15);
+      --glow-purple: rgba(147,51,234,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── Nav ──────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(6,6,11,0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px; margin: 0 auto; padding: 0 28px;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(135deg, #4f7df7, #9333ea);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; color: white;
+    }
+    .nav-name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { font-size: 13px; color: var(--text-dim); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: 13px; font-weight: 600; color: white !important;
+      background: linear-gradient(135deg, #4f7df7, #7c3aed);
+      padding: 7px 18px; border-radius: 8px;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.9; }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      position: relative; padding: 160px 0 100px; text-align: center;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center,
+        var(--glow-blue) 0%, var(--glow-purple) 40%, transparent 70%);
+      filter: blur(60px); pointer-events: none; opacity: 0.8;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 6px 5px 14px; border-radius: 999px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      font-size: 13px; color: var(--text-mid); margin-bottom: 36px;
+    }
+    .hero-pill-badge {
+      background: linear-gradient(135deg, #4f7df7, #7c3aed);
+      color: white; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .hero h1 {
+      font-size: clamp(44px, 7vw, 76px); font-weight: 900;
+      letter-spacing: -0.04em; line-height: 1.0;
+      margin-bottom: 8px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #7ba0ff 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px); color: var(--text-dim);
+      max-width: 480px; margin: 20px auto 0; line-height: 1.7;
+    }
+    .hero-sub strong { color: var(--text-mid); font-weight: 500; }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px; border-radius: 12px;
+      font-size: 15px; font-weight: 600; border: none; cursor: pointer;
+      transition: all 0.25s;
+    }
+    .btn-glow {
+      background: linear-gradient(135deg, #4f7df7, #7c3aed);
+      color: white; position: relative;
+      box-shadow: 0 0 0 1px rgba(79,125,247,0.3), 0 8px 40px rgba(79,125,247,0.25);
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 0 1px rgba(79,125,247,0.5), 0 8px 50px rgba(79,125,247,0.35);
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      background: var(--surface-2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); background: #181824; }
+    .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+
+    /* ── Stats ────────────────────────────── */
+    .stats {
+      display: flex; justify-content: center; gap: 48px;
+      padding: 56px 0; border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-value {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #7ba0ff, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+    /* ── The Problem ─────────────────────── */
+    .problem { padding: 100px 0; text-align: center; }
+    .problem-quote {
+      font-size: clamp(22px, 3.5vw, 32px); font-weight: 600;
+      letter-spacing: -0.02em; line-height: 1.4;
+      max-width: 700px; margin: 0 auto 20px;
+      color: var(--text);
+    }
+    .problem-quote em {
+      font-style: normal;
+      color: #7ba0ff;
+    }
+    .problem-answer {
+      font-size: 16px; color: var(--text-dim); max-width: 500px; margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Features ─────────────────────────── */
+    .features { padding: 80px 0 100px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, #7ba0ff, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px); font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15;
+    }
+    .section-desc { color: var(--text-dim); font-size: 15px; max-width: 480px; margin-bottom: 52px; line-height: 1.7; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .f-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 24px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .f-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .f-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; font-size: 20px;
+    }
+    .f-icon-blue { background: rgba(79,125,247,0.12); color: #7ba0ff; }
+    .f-icon-purple { background: rgba(147,51,234,0.12); color: #c084fc; }
+    .f-icon-green { background: rgba(34,197,94,0.12); color: #4ade80; }
+    .f-icon-amber { background: rgba(245,158,11,0.12); color: #fbbf24; }
+    .f-icon-pink { background: rgba(236,72,153,0.12); color: #f472b6; }
+    .f-icon-cyan { background: rgba(34,211,238,0.12); color: #22d3ee; }
+    .f-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .f-card p { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+    /* ── How It Works ─────────────────────── */
+    .how { padding: 80px 0 100px; }
+    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; }
+    .how-steps::before {
+      content: ''; position: absolute; top: 28px; left: 15%; right: 15%;
+      height: 2px; background: linear-gradient(90deg, var(--border), var(--blue), var(--purple), var(--border));
+      opacity: 0.3;
+    }
+    .how-step {
+      text-align: center; position: relative;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 24px 28px;
+    }
+    .how-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #4f7df7, #7c3aed);
+      font-size: 15px; font-weight: 800; color: white;
+      margin-bottom: 18px; position: relative; z-index: 1;
+    }
+    .how-step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .how-step p { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+    /* ── App Showcase ────────────────────── */
+    .showcase { padding: 80px 0; text-align: center; }
+    .showcase-grid {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto;
+    }
+    .showcase-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px 8px 8px; border-radius: 999px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      font-size: 13px; font-weight: 500; color: var(--text-mid);
+      transition: border-color 0.2s;
+    }
+    .showcase-chip:hover { border-color: var(--border-hover); }
+    .showcase-chip img { width: 22px; height: 22px; border-radius: 6px; }
+
+    /* ── CTA ──────────────────────────────── */
+    .cta {
+      padding: 100px 0; text-align: center; position: relative;
+    }
+    .cta-glow {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse at center, var(--glow-purple) 0%, transparent 70%);
+      filter: blur(80px); pointer-events: none; opacity: 0.5;
+    }
+    .cta h2 {
+      font-size: clamp(28px, 4vw, 42px); font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .cta p {
+      color: var(--text-dim); font-size: 16px; margin-bottom: 36px;
+      position: relative; z-index: 1;
+    }
+    .cta .btn { position: relative; z-index: 1; }
+
+    /* ── Footer ───────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 0;
+    }
+    .footer-inner {
+      max-width: 1120px; margin: 0 auto; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 12px; color: var(--text-dim); }
+    .footer-right { display: flex; gap: 20px; }
+    .footer-right a { font-size: 12px; color: var(--text-dim); transition: color 0.2s; }
+    .footer-right a:hover { color: var(--text); }
+
+    /* ── Responsive ──────────────────────── */
+    @media (max-width: 768px) {
+      .hero { padding: 130px 0 70px; }
+      .stats { gap: 28px; }
+      .features-grid, .how-steps { grid-template-columns: 1fr; }
+      .how-steps::before { display: none; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .footer-inner { flex-direction: column; gap: 12px; }
+      .stat-value { font-size: 24px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        <div class="nav-logo">G</div>
+        <span class="nav-name">GitStore</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="https://github.com/user/gitstore">GitHub</a>
+        <a href="https://github.com/user/gitstore/releases/latest" class="nav-cta">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content container">
+      <div class="hero-pill">
+        Open source &amp; free forever
+        <span class="hero-pill-badge">v0.1.0</span>
+      </div>
+      <h1>
+        The <span class="gradient">app store</span><br>
+        GitHub never built.
+      </h1>
+      <p class="hero-sub">
+        GitHub has 400 million repositories. You've installed maybe 10.<br>
+        <strong>GitStore fixes that.</strong> Discover, install, and run open-source apps with one click. No Docker required. No config files. Just click and go.
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/user/gitstore/releases/latest" class="btn btn-glow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for macOS
+        </a>
+        <a href="https://github.com/user/gitstore" class="btn btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View Source
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="container">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">800+</div>
+        <div class="stat-label">Curated Apps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">13</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Runtimes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">3.7 MB</div>
+        <div class="stat-label">App Size</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem -->
+  <div class="container">
+    <div class="problem">
+      <p class="problem-quote">
+        You find an amazing repo on GitHub.<br>
+        Then you read the README. Then the <em>setup instructions</em>.<br>
+        Then you close the tab.
+      </p>
+      <p class="problem-answer">
+        GitStore eliminates the friction between discovering a repo and actually running it. Clone, detect, install, launch &mdash; one click.
+      </p>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features" class="features container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything between<br>discovery and running.</h2>
+    <p class="section-desc">GitStore handles runtime detection, dependency installation, and process management so you don't have to.</p>
+
+    <div class="features-grid">
+      <div class="f-card">
+        <div class="f-icon f-icon-blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <h3>Smart Discovery</h3>
+        <p>Curated collections from awesome-lists, GitHub trending, and community suggestions. Not just a list &mdash; a catalog.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon f-icon-green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>One-Click Install</h3>
+        <p>Click GET. GitStore clones the repo, detects the runtime, installs dependencies, and builds. You wait 30 seconds, not 30 minutes.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon f-icon-purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Auto Runtime Detection</h3>
+        <p>Node.js, Python, Rust, Go, Docker &mdash; automatically detected from the repo's manifest files. No manual configuration.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon f-icon-amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <h3>GitHub Trending</h3>
+        <p>See what's blowing up on GitHub right now. Daily, weekly, monthly &mdash; filtered by language. Install trending repos before everyone else.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon f-icon-pink">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <h3>Risk Assessment</h3>
+        <p>Every repo gets a safety score based on stars, age, license, and suspicious patterns. Know what you're running before you run it.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon f-icon-cyan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3>AI-Native (MCP)</h3>
+        <p>Built-in MCP server. Ask Claude to "find me a markdown editor and install it" and it just works. Your AI assistant manages your apps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="how container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three clicks to running.</h2>
+    <p class="section-desc">From GitHub URL to running application in under a minute.</p>
+
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <h3>Discover</h3>
+        <p>Browse 800+ curated apps across 13 categories. Check trending repos. Read the README right in the app. See risk scores and requirements.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <h3>Install</h3>
+        <p>Click GET. GitStore detects the runtime (Node, Python, Rust, Go, Docker), clones the repo, installs dependencies, and builds &mdash; automatically.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <h3>Run</h3>
+        <p>Hit Start. Your app launches on localhost with the right ports and environment. Stop, restart, update, or uninstall from one dashboard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Showcase -->
+  <section class="showcase container">
+    <div class="section-label">What You Can Install</div>
+    <h2 class="section-title">Real repos. One click each.</h2>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">From AI tools to media servers, dev utilities to game engines.</p>
+
+    <div class="showcase-grid">
+      <a class="showcase-chip" href="https://github.com/ollama/ollama"><img src="https://github.com/ollama.png?size=44" alt="">ollama</a>
+      <a class="showcase-chip" href="https://github.com/immich-app/immich"><img src="https://github.com/immich-app.png?size=44" alt="">immich</a>
+      <a class="showcase-chip" href="https://github.com/nextcloud/server"><img src="https://github.com/nextcloud.png?size=44" alt="">nextcloud</a>
+      <a class="showcase-chip" href="https://github.com/jellyfin/jellyfin"><img src="https://github.com/jellyfin.png?size=44" alt="">jellyfin</a>
+      <a class="showcase-chip" href="https://github.com/grafana/grafana"><img src="https://github.com/grafana.png?size=44" alt="">grafana</a>
+      <a class="showcase-chip" href="https://github.com/vercel/next.js"><img src="https://github.com/vercel.png?size=44" alt="">next.js</a>
+      <a class="showcase-chip" href="https://github.com/tailscale/tailscale"><img src="https://github.com/tailscale.png?size=44" alt="">tailscale</a>
+      <a class="showcase-chip" href="https://github.com/supabase/supabase"><img src="https://github.com/supabase.png?size=44" alt="">supabase</a>
+      <a class="showcase-chip" href="https://github.com/hoppscotch/hoppscotch"><img src="https://github.com/hoppscotch.png?size=44" alt="">hoppscotch</a>
+      <a class="showcase-chip" href="https://github.com/godotengine/godot"><img src="https://github.com/godotengine.png?size=44" alt="">godot</a>
+      <a class="showcase-chip" href="https://github.com/n8n-io/n8n"><img src="https://github.com/n8n-io.png?size=44" alt="">n8n</a>
+      <a class="showcase-chip" href="https://github.com/louislam/uptime-kuma"><img src="https://github.com/louislam.png?size=44" alt="">uptime-kuma</a>
+      <a class="showcase-chip" href="https://github.com/fastapi/fastapi"><img src="https://github.com/fastapi.png?size=44" alt="">fastapi</a>
+      <a class="showcase-chip" href="https://github.com/BurntSushi/ripgrep"><img src="https://github.com/BurntSushi.png?size=44" alt="">ripgrep</a>
+      <a class="showcase-chip" href="https://github.com/actualbudget/actual"><img src="https://github.com/actualbudget.png?size=44" alt="">actual</a>
+    </div>
+    <p style="color: var(--text-dim); font-size: 13px; margin-top: 24px;">...and 800 more across self-hosted, AI, dev tools, CLI, games, and more.</p>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-glow"></div>
+    <div class="container">
+      <h2>Stop reading READMEs.<br>Start running apps.</h2>
+      <p>Free. Open source. 3.7 MB. No account required.</p>
+      <a href="https://github.com/user/gitstore/releases/latest" class="btn btn-glow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download GitStore
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">GitStore &middot; PolyForm Noncommercial 1.0.0 &middot; Built with Tauri, React &amp; TypeScript</div>
+      <div class="footer-right">
+        <a href="https://github.com/user/gitstore">GitHub</a>
+        <a href="https://github.com/user/gitstore/releases">Releases</a>
+        <a href="https://github.com/user/gitstore/blob/main/LICENSE">License</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

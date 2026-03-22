@@ -27,4 +27,6 @@ export interface App {
   updatedAt: string | null;
   lastStartedAt: string | null;
   lastStoppedAt: string | null;
+  envVarsRequired: string[];
+  envConfigured: boolean;
 }

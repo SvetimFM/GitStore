@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { basename } from 'node:path';
 import type { RuntimeHandler } from './base.js';
 import type { DetectionResult } from '../types/detection.js';
+import { parseEnvVars } from './utils.js';
 import { logger } from '../utils/logger.js';
 
 const execFileAsync = promisify(execFile);
@@ -50,21 +51,7 @@ export const dockerRuntime: RuntimeHandler = {
       } catch { /* ignore */ }
     }
 
-    // Check for env vars
-    const envVarsRequired: string[] = [];
-    for (const envFile of ['.env.example', '.env.sample']) {
-      if (files.includes(envFile)) {
-        try {
-          const content = await getFileContent(envFile);
-          const vars = content.split('\n')
-            .filter(l => l.includes('=') && !l.startsWith('#'))
-            .map(l => l.split('=')[0].trim())
-            .filter(Boolean);
-          envVarsRequired.push(...vars);
-        } catch { /* ignore */ }
-        break;
-      }
-    }
+    const envVarsRequired = await parseEnvVars(files, getFileContent);
 
     return {
       primaryRuntime: 'docker',

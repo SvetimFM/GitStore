@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { RuntimeHandler } from './base.js';
 import type { DetectionResult } from '../types/detection.js';
+import { parseEnvVars } from './utils.js';
 import { logger } from '../utils/logger.js';
 
 const execFileAsync = promisify(execFile);
@@ -58,18 +59,7 @@ export const nodeRuntime: RuntimeHandler = {
       else if (deps['express'] || deps['fastify'] || deps['koa']) detectedPort = 3000;
     }
 
-    // Check for env vars
-    const envVarsRequired: string[] = [];
-    if (files.includes('.env.example')) {
-      try {
-        const envContent = await getFileContent('.env.example');
-        const vars = envContent.split('\n')
-          .filter(l => l.includes('=') && !l.startsWith('#'))
-          .map(l => l.split('=')[0].trim())
-          .filter(Boolean);
-        envVarsRequired.push(...vars);
-      } catch { /* ignore */ }
-    }
+    const envVarsRequired = await parseEnvVars(files, getFileContent);
 
     const hasPostinstall = !!(scripts.postinstall || scripts.preinstall);
     const installCmd = pm === 'npm' ? 'npm install' : pm === 'yarn' ? 'yarn' : pm === 'pnpm' ? 'pnpm install' : 'bun install';

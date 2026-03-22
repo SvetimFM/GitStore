@@ -3,15 +3,22 @@ import type { RuntimeHandler } from '../runtimes/base.js';
 import { nodeRuntime } from '../runtimes/node.js';
 import { pythonRuntime } from '../runtimes/python.js';
 import { dockerRuntime } from '../runtimes/docker.js';
+import { rustRuntime } from '../runtimes/rust.js';
+import { goRuntime } from '../runtimes/go.js';
 import { getRepoFiles, getFileContent } from './github.js';
 import { logger } from '../utils/logger.js';
 import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
-// Ordered by detection priority — Docker first so it's always detected as an alternative
+// Ordered by detection priority — native runtimes first, Docker last as fallback.
+// Each native runtime already advertises 'docker' in alternativeRuntimes when a
+// Dockerfile is present, and checkPrerequisites handles the Docker fallback case.
 const runtimes: RuntimeHandler[] = [
-  dockerRuntime,
   nodeRuntime,
   pythonRuntime,
+  rustRuntime,
+  goRuntime,
+  dockerRuntime,
 ];
 
 /** Detect project type from a remote GitHub repo (no clone needed). */
@@ -40,7 +47,7 @@ export async function detectLocal(appDir: string): Promise<DetectionResult | nul
   const entries = readdirSync(appDir);
 
   const getContent = async (path: string): Promise<string> => {
-    return readFileSync(`${appDir}/${path}`, 'utf-8');
+    return readFileSync(join(appDir, path), 'utf-8');
   };
 
   for (const runtime of runtimes) {
@@ -63,6 +70,7 @@ export async function checkPrerequisites(detection: DetectionResult): Promise<{
   met: boolean;
   missing: string[];
   available: string[];
+  fallbackDetection?: DetectionResult;
 }> {
   const handler = getRuntimeHandler(detection);
   if (!handler) {
@@ -72,6 +80,28 @@ export async function checkPrerequisites(detection: DetectionResult): Promise<{
   const isAvailable = await handler.isAvailable();
   if (isAvailable) {
     return { met: true, missing: [], available: handler.getRequirements() };
+  }
+
+  // Primary runtime not available — check for Docker fallback
+  if (detection.alternativeRuntimes.includes('docker')) {
+    const dockerAvailable = await dockerRuntime.isAvailable();
+    if (dockerAvailable) {
+      const fallbackDetection: DetectionResult = {
+        primaryRuntime: 'docker',
+        alternativeRuntimes: [],
+        confidence: detection.confidence,
+        manifest: 'Dockerfile',
+        installCommand: 'docker build -t gitstore-app .',
+        buildCommand: null,
+        startCommand: detection.detectedPort
+          ? `docker run -d -p ${detection.detectedPort}:${detection.detectedPort} --name gitstore-app`
+          : 'docker run -d --name gitstore-app',
+        detectedPort: detection.detectedPort,
+        runtimeVersion: null,
+        envVarsRequired: detection.envVarsRequired,
+      };
+      return { met: false, missing: handler.getRequirements(), available: [], fallbackDetection };
+    }
   }
 
   return { met: false, missing: handler.getRequirements(), available: [] };

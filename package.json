@@ -4,16 +4,23 @@
   "description": "App store for GitHub — install and run repos as applications",
   "type": "module",
   "bin": {
+    "gitstore": "./dist/cli.js",
     "gitstore-mcp": "./dist/mcp/index.js"
   },
+  "files": [
+    "dist/",
+    "web/dist/"
+  ],
   "scripts": {
-    "build": "tsc && cd web && npx vite build",
+    "build": "tsc && cp -r src/data dist/data && cd web && npx vite build",
     "build:backend": "tsc",
     "build:web": "cd web && npx vite build",
     "dev": "tsc --watch",
     "dev:web": "cd web && npx vite",
+    "start": "node dist/cli.js",
     "start:mcp": "node dist/mcp/index.js",
-    "start:server": "node dist/server/index.js"
+    "start:server": "node dist/server/start.js",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",

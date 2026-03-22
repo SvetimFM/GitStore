@@ -1,4 +1,4 @@
-import { findApp, updateAppStatus, listApps } from './registry.js';
+import { findApp, updateAppStatus, listApps, getAppEnvAsRecord } from './registry.js';
 import { detectLocal, getRuntimeHandler } from './detector.js';
 import { spawnApp, killProcess, isProcessRunning, readLogs } from '../utils/process-manager.js';
 import { paths } from '../utils/paths.js';
@@ -37,7 +37,8 @@ export async function startApp(
 
   const logFile = paths.appLog(app.owner, app.repo);
 
-  const env: Record<string, string> = { ...options.env };
+  const storedEnv = getAppEnvAsRecord(app.id);
+  const env: Record<string, string> = { ...storedEnv, ...options.env };
   if (options.port) {
     env.PORT = String(options.port);
   } else if (app.port) {

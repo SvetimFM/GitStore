@@ -5,6 +5,8 @@ import { registerInstallTools } from './tools/install.js';
 import { registerLifecycleTools } from './tools/lifecycle.js';
 import { registerListTools } from './tools/list.js';
 import { registerLogTools } from './tools/logs.js';
+import { registerConfigureTools } from './tools/configure.js';
+import { registerBrowseTools } from './tools/browse.js';
 
 export function createServer(): McpServer {
   const server = new McpServer({
@@ -18,6 +20,8 @@ export function createServer(): McpServer {
   registerLifecycleTools(server);
   registerListTools(server);
   registerLogTools(server);
+  registerConfigureTools(server);
+  registerBrowseTools(server);
 
   return server;
 }

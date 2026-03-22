@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { startApp, stopApp, restartApp } from '../../core/lifecycle.js';
 import { updateApp, uninstallApp } from '../../core/installer.js';
+import { getAppEnvAsRecord } from '../../core/registry.js';
 
 export function registerLifecycleTools(server: McpServer): void {
   server.tool(
@@ -15,10 +16,20 @@ export function registerLifecycleTools(server: McpServer): void {
     async ({ app, port, env }) => {
       const result = await startApp(app, { port, env });
       const portInfo = result.port ? ` on port ${result.port}` : '';
+      let text = `▶️ **${result.fullName}** started (PID: ${result.pid})${portInfo}\n\nUse \`gitstore_logs\` to view output, \`gitstore_stop\` to stop.`;
+
+      if (result.envVarsRequired.length > 0) {
+        const storedEnv = getAppEnvAsRecord(result.id);
+        const missing = result.envVarsRequired.filter(k => !(k in storedEnv));
+        if (missing.length > 0) {
+          text += `\n\n⚠️ Missing environment variables: **${missing.join(', ')}**. Use \`gitstore_configure\` to set them.`;
+        }
+      }
+
       return {
         content: [{
           type: 'text' as const,
-          text: `▶️ **${result.fullName}** started (PID: ${result.pid})${portInfo}\n\nUse \`gitstore_logs\` to view output, \`gitstore_stop\` to stop.`,
+          text,
         }],
       };
     }

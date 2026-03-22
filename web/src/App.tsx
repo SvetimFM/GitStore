@@ -4,13 +4,28 @@ import { SearchBar } from './components/SearchBar';
 import { AppCard } from './components/AppCard';
 import { AppDetail } from './components/AppDetail';
 import { InstalledApps } from './components/InstalledApps';
+import { SubmitPage } from './components/SubmitPage';
+import { FeaturedApps } from './components/FeaturedApps';
+import { CategoryCard } from './components/CategoryCard';
+import { CategoryPage } from './components/CategoryPage';
+import { Onboarding, useOnboarding } from './components/Onboarding';
+import { SettingsPage } from './components/SettingsPage';
+import { TrendingSection } from './components/TrendingSection';
 import { useSearch } from './hooks/useSearch';
+import { useDiscovery } from './hooks/useCollections';
 import { api, type RepoInfo } from './api/client';
 
 function StorePage() {
   const { results, loading, error, search } = useSearch();
+  const { categories, collections, featured, loading: discoveryLoading } = useDiscovery();
   const navigate = useNavigate();
   const [installingRepo, setInstallingRepo] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const handleSearch = (query: string, opts?: { language?: string; minStars?: number }) => {
+    setHasSearched(!!query.trim());
+    search(query, opts);
+  };
 
   const handleInstall = async (repo: RepoInfo) => {
     setInstallingRepo(repo.fullName);
@@ -29,33 +44,61 @@ function StorePage() {
   };
 
   return (
-    <div className="space-y-6">
-      <SearchBar onSearch={search} loading={loading} />
+    <div className="space-y-10">
+      <SearchBar onSearch={handleSearch} loading={loading} />
 
       {error && (
-        <div className="bg-red-900/20 border border-red-800 rounded-lg p-3 text-red-400 text-sm">
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-400 text-sm">
           {error}
         </div>
       )}
 
-      {results.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {results.map(repo => (
-            <AppCard
-              key={repo.fullName}
-              repo={repo}
-              onInstall={handleInstall}
-              onInspect={handleInspect}
-              installing={installingRepo === repo.fullName}
-            />
-          ))}
+      {hasSearched && results.length > 0 && (
+        <div>
+          <h2 className="text-xl font-semibold text-white mb-4">Search Results</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {results.map(repo => (
+              <AppCard
+                key={repo.fullName}
+                repo={repo}
+                onInstall={handleInstall}
+                onInspect={handleInspect}
+                installing={installingRepo === repo.fullName}
+              />
+            ))}
+          </div>
         </div>
       )}
 
-      {!loading && results.length === 0 && (
+      {hasSearched && !loading && results.length === 0 && (
         <div className="text-center py-16">
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome to GitStore</h2>
-          <p className="text-gray-400">Search GitHub to discover and install applications</p>
+          <div className="text-4xl mb-3">🔍</div>
+          <p className="text-gray-400 text-lg">No results found</p>
+          <p className="text-gray-600 text-sm mt-1">Try a different search query</p>
+        </div>
+      )}
+
+      {!hasSearched && (
+        <div className="space-y-12">
+          <FeaturedApps apps={featured} loading={discoveryLoading} />
+
+          <TrendingSection />
+
+          <div className="space-y-5">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">Browse Categories</h2>
+              <span className="text-sm text-gray-500">{categories.length} categories</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {categories.map(category => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  collectionCount={collections.filter(c => c.categoryId === category.id).length}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -64,39 +107,81 @@ function StorePage() {
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-gray-900">
-      <nav className="border-b border-gray-800 bg-gray-900/80 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <NavLink to="/" className="text-xl font-bold text-white tracking-tight">
-            GitStore
+    <div className="min-h-screen bg-[#0a0a0f]">
+      <nav className="border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+          <NavLink to="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold shadow-lg shadow-blue-500/20">
+              G
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight">GitStore</span>
           </NavLink>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-1 bg-white/5 rounded-full p-0.5">
             <NavLink
               to="/"
               end
               className={({ isActive }) =>
-                `px-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
               }
             >
-              Store
+              Discover
             </NavLink>
             <NavLink
               to="/my-apps"
               className={({ isActive }) =>
-                `px-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
               }
             >
               My Apps
+            </NavLink>
+            <NavLink
+              to="/submit"
+              className={({ isActive }) =>
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
+              }
+            >
+              Submit
+            </NavLink>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                `px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                  isActive
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`
+              }
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              Settings
             </NavLink>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-6 py-8">
         <Routes>
           <Route path="/" element={<StorePage />} />
           <Route path="/my-apps" element={<InstalledApps />} />
           <Route path="/app/:owner/:repo" element={<AppDetail />} />
+          <Route path="/category/:id" element={<CategoryPage />} />
+          <Route path="/submit" element={<SubmitPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </main>
     </div>
@@ -104,6 +189,12 @@ function Layout() {
 }
 
 export default function App() {
+  const { needsOnboarding, complete } = useOnboarding();
+
+  if (needsOnboarding) {
+    return <Onboarding onComplete={complete} />;
+  }
+
   return (
     <BrowserRouter>
       <Layout />

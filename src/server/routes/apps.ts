@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listApps, findApp } from '../../core/registry.js';
+import { listApps, findApp, getAppEnv, setAppEnvBulk, deleteAppEnvVar } from '../../core/registry.js';
 import { installApp, updateApp, uninstallApp } from '../../core/installer.js';
 import { startApp, stopApp, restartApp } from '../../core/lifecycle.js';
 import { isProcessRunning } from '../../utils/process-manager.js';
@@ -111,6 +111,60 @@ appsRouter.delete('/:id', async (req, res) => {
   try {
     const keepData = req.query.keepData === 'true';
     await uninstallApp(req.params.id, keepData);
+    res.json({ success: true });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// Get env vars for an app
+appsRouter.get('/:id/env', (req, res) => {
+  try {
+    const app = findApp(req.params.id);
+    if (!app) {
+      res.status(404).json({ error: 'App not found' });
+      return;
+    }
+    const vars = getAppEnv(app.id);
+    res.json({ vars });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// Set env vars for an app
+appsRouter.put('/:id/env', (req, res) => {
+  try {
+    const app = findApp(req.params.id);
+    if (!app) {
+      res.status(404).json({ error: 'App not found' });
+      return;
+    }
+    const { vars, secret } = req.body as { vars: Record<string, string>; secret?: boolean };
+    if (!vars || typeof vars !== 'object') {
+      res.status(400).json({ error: 'Missing "vars" in request body' });
+      return;
+    }
+    setAppEnvBulk(app.id, vars, secret ?? false);
+    const allVars = getAppEnv(app.id);
+    res.json({ vars: allVars });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: message });
+  }
+});
+
+// Delete a single env var
+appsRouter.delete('/:id/env/:key', (req, res) => {
+  try {
+    const app = findApp(req.params.id);
+    if (!app) {
+      res.status(404).json({ error: 'App not found' });
+      return;
+    }
+    deleteAppEnvVar(app.id, req.params.key);
     res.json({ success: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

@@ -1,7 +1,10 @@
 node_modules/
 dist/
 web/dist/
+web/src-tauri/target/
+web/src-tauri/backend/
 *.db
 *.log
+*.dmg
 .env
 .DS_Store

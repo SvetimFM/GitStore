@@ -48,10 +48,39 @@ function initSchema(): void {
     CREATE INDEX IF NOT EXISTS idx_apps_status ON apps(status);
     CREATE INDEX IF NOT EXISTS idx_apps_alias ON apps(alias);
     CREATE INDEX IF NOT EXISTS idx_apps_full_name ON apps(full_name);
+
+    CREATE TABLE IF NOT EXISTS app_env (
+      id TEXT PRIMARY KEY,
+      app_id TEXT NOT NULL REFERENCES apps(id) ON DELETE CASCADE,
+      key TEXT NOT NULL,
+      value TEXT NOT NULL,
+      is_secret INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      UNIQUE(app_id, key)
+    );
+    CREATE INDEX IF NOT EXISTS idx_app_env_app_id ON app_env(app_id);
+  `);
+
+  try { db!.exec(`ALTER TABLE apps ADD COLUMN env_vars_required TEXT`); } catch { /* already exists */ }
+
+  db!.exec(`
+    CREATE TABLE IF NOT EXISTS suggestions (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL CHECK(type IN ('repo', 'source')),
+      url TEXT NOT NULL,
+      category_id TEXT,
+      note TEXT,
+      status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'approved', 'rejected')),
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_suggestions_status ON suggestions(status);
   `);
 }
 
 function rowToApp(row: Record<string, unknown>): App {
+  const envVarsRequired = JSON.parse((row.env_vars_required as string) ?? '[]') as string[];
+  const envConfigured = envVarsRequired.length === 0 || envVarsRequired.every(k => getAppEnv(row.id as string).map(v => v.key).includes(k));
   return {
     id: row.id as string,
     owner: row.owner as string,
@@ -77,6 +106,8 @@ function rowToApp(row: Record<string, unknown>): App {
     updatedAt: row.updated_at as string | null,
     lastStartedAt: row.last_started_at as string | null,
     lastStoppedAt: row.last_stopped_at as string | null,
+    envVarsRequired,
+    envConfigured,
   };
 }
 
@@ -97,6 +128,7 @@ export function createApp(data: {
   defaultBranch: string;
   installedRef: string;
   installPath: string;
+  envVarsRequired?: string[];
 }): App {
   const id = randomUUID();
   const now = new Date().toISOString();
@@ -105,11 +137,11 @@ export function createApp(data: {
     INSERT INTO apps (
       id, owner, repo, full_name, alias, description, runtime, runtime_version,
       start_command, build_command, install_command, port, stars, language, license,
-      default_branch, installed_ref, status, install_path, installed_at
+      default_branch, installed_ref, status, install_path, installed_at, env_vars_required
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?, ?,
-      ?, ?, 'installing', ?, ?
+      ?, ?, 'installing', ?, ?, ?
     )
   `).run(
     id, data.owner, data.repo, `${data.owner}/${data.repo}`,
@@ -117,6 +149,7 @@ export function createApp(data: {
     data.startCommand, data.buildCommand, data.installCommand, data.port,
     data.stars, data.language, data.license,
     data.defaultBranch, data.installedRef, data.installPath, now,
+    JSON.stringify(data.envVarsRequired ?? []),
   );
 
   return getApp(id)!;
@@ -180,4 +213,96 @@ export function deleteApp(id: string): void {
 
 export function updateAppUpdatedAt(id: string): void {
   getDb().prepare('UPDATE apps SET updated_at = ? WHERE id = ?').run(new Date().toISOString(), id);
+}
+
+export interface AppEnvVar {
+  id: string;
+  appId: string;
+  key: string;
+  value: string;
+  isSecret: boolean;
+}
+
+export function getAppEnv(appId: string): AppEnvVar[] {
+  const rows = getDb().prepare('SELECT * FROM app_env WHERE app_id = ? ORDER BY key').all(appId) as Array<Record<string, unknown>>;
+  return rows.map(r => ({
+    id: r.id as string,
+    appId: r.app_id as string,
+    key: r.key as string,
+    value: r.value as string,
+    isSecret: !!(r.is_secret as number),
+  }));
+}
+
+export function getAppEnvAsRecord(appId: string): Record<string, string> {
+  const vars = getAppEnv(appId);
+  const record: Record<string, string> = {};
+  for (const v of vars) record[v.key] = v.value;
+  return record;
+}
+
+export function setAppEnvVar(appId: string, key: string, value: string, isSecret: boolean = false): void {
+  const id = randomUUID();
+  const now = new Date().toISOString();
+  getDb().prepare(`
+    INSERT INTO app_env (id, app_id, key, value, is_secret, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(app_id, key) DO UPDATE SET value = excluded.value, is_secret = excluded.is_secret, updated_at = excluded.updated_at
+  `).run(id, appId, key, value, isSecret ? 1 : 0, now, now);
+}
+
+export function setAppEnvBulk(appId: string, vars: Record<string, string>, isSecret: boolean = false): void {
+  for (const [key, value] of Object.entries(vars)) {
+    setAppEnvVar(appId, key, value, isSecret);
+  }
+}
+
+export function deleteAppEnvVar(appId: string, key: string): void {
+  getDb().prepare('DELETE FROM app_env WHERE app_id = ? AND key = ?').run(appId, key);
+}
+
+// --- Suggestions ---
+
+export interface Suggestion {
+  id: string;
+  type: 'repo' | 'source';
+  url: string;
+  categoryId: string | null;
+  note: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+}
+
+export function createSuggestion(type: 'repo' | 'source', url: string, categoryId?: string, note?: string): Suggestion {
+  const id = randomUUID();
+  const now = new Date().toISOString();
+  getDb().prepare(`
+    INSERT INTO suggestions (id, type, url, category_id, note, status, created_at)
+    VALUES (?, ?, ?, ?, ?, 'pending', ?)
+  `).run(id, type, url, categoryId ?? null, note ?? null, now);
+
+  return { id, type, url, categoryId: categoryId ?? null, note: note ?? null, status: 'pending', createdAt: now };
+}
+
+export function listSuggestions(status?: string): Suggestion[] {
+  let query = 'SELECT * FROM suggestions';
+  const params: unknown[] = [];
+
+  if (status) {
+    query += ' WHERE status = ?';
+    params.push(status);
+  }
+
+  query += ' ORDER BY created_at DESC';
+
+  const rows = getDb().prepare(query).all(...params) as Array<Record<string, unknown>>;
+  return rows.map(r => ({
+    id: r.id as string,
+    type: r.type as 'repo' | 'source',
+    url: r.url as string,
+    categoryId: r.category_id as string | null,
+    note: r.note as string | null,
+    status: r.status as 'pending' | 'approved' | 'rejected',
+    createdAt: r.created_at as string,
+  }));
 }

@@ -30,6 +30,14 @@ export function registerInstallTools(server: McpServer): void {
         lines.push(`- **Alias**: ${result.app.alias}`);
       }
 
+      if (result.usedDockerFallback) {
+        lines.push('', '\u{1F433} Installed using Docker (native runtime not available on this machine).');
+      }
+
+      if (result.detection.envVarsRequired.length > 0) {
+        lines.push('', `This app requires environment variables: **${result.detection.envVarsRequired.join(', ')}**`, 'Use `gitstore_configure` to set them before starting.');
+      }
+
       lines.push('', 'Use `gitstore_start` to run this app.');
 
       return {

@@ -1,0 +1,4936 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "web-frameworks",
+      "name": "Web Frameworks",
+      "icon": "🌐",
+      "description": "Full-stack and frontend frameworks",
+      "color": "blue"
+    },
+    {
+      "id": "cli-tools",
+      "name": "CLI Tools",
+      "icon": "⌨️",
+      "description": "Command-line utilities and developer tools",
+      "color": "green"
+    },
+    {
+      "id": "data-science",
+      "name": "Data Science",
+      "icon": "📊",
+      "description": "Data analysis, ML, and visualization",
+      "color": "purple"
+    },
+    {
+      "id": "dev-tools",
+      "name": "Dev Tools",
+      "icon": "🔧",
+      "description": "Build tools, linters, and productivity",
+      "color": "orange"
+    },
+    {
+      "id": "games",
+      "name": "Games & Fun",
+      "icon": "🎮",
+      "description": "Games, game engines, and entertainment",
+      "color": "red"
+    },
+    {
+      "id": "ai-llm",
+      "name": "AI & LLM Tools",
+      "icon": "🤖",
+      "description": "AI models, LLM tools, and machine learning platforms",
+      "color": "violet"
+    },
+    {
+      "id": "self-hosted",
+      "name": "Self-Hosted",
+      "icon": "🏠",
+      "description": "Self-hosted alternatives to popular services",
+      "color": "teal"
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity & Notes",
+      "icon": "📝",
+      "description": "Note-taking, project management, and productivity tools",
+      "color": "yellow"
+    },
+    {
+      "id": "media",
+      "name": "Media & Entertainment",
+      "icon": "🎬",
+      "description": "Media servers, streaming, and entertainment tools",
+      "color": "pink"
+    },
+    {
+      "id": "devops",
+      "name": "DevOps & Monitoring",
+      "icon": "📡",
+      "description": "Infrastructure, CI/CD, and observability tools",
+      "color": "cyan"
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "icon": "💬",
+      "description": "Chat, email, and collaboration platforms",
+      "color": "indigo"
+    },
+    {
+      "id": "security",
+      "name": "Security & Privacy",
+      "icon": "🔒",
+      "description": "Security tools, VPNs, and privacy software",
+      "color": "slate"
+    },
+    {
+      "id": "finance",
+      "name": "Finance & Business",
+      "icon": "💰",
+      "description": "Accounting, invoicing, and business tools",
+      "color": "emerald"
+    }
+  ],
+  "collections": [
+    {
+      "id": "popular-web-frameworks",
+      "name": "Popular Web Frameworks",
+      "categoryId": "web-frameworks",
+      "description": "The most-used frameworks for building web apps",
+      "repos": [
+        {
+          "fullName": "vercel/next.js",
+          "note": "React framework with SSR"
+        },
+        {
+          "fullName": "sveltejs/kit",
+          "note": "Svelte app framework"
+        },
+        {
+          "fullName": "nuxt/nuxt",
+          "note": "Vue.js meta-framework"
+        },
+        {
+          "fullName": "expressjs/express",
+          "note": "Minimalist Node.js web framework"
+        }
+      ]
+    },
+    {
+      "id": "python-web",
+      "name": "Python Web Frameworks",
+      "categoryId": "web-frameworks",
+      "description": "Frameworks for building web apps with Python",
+      "repos": [
+        {
+          "fullName": "pallets/flask",
+          "note": "Lightweight Python web framework"
+        },
+        {
+          "fullName": "django/django",
+          "note": "Full-featured Python web framework"
+        },
+        {
+          "fullName": "fastapi/fastapi",
+          "note": "High-performance async Python API"
+        }
+      ]
+    },
+    {
+      "id": "rust-go-web",
+      "name": "Rust & Go Web",
+      "categoryId": "web-frameworks",
+      "description": "High-performance web frameworks in Rust and Go",
+      "repos": [
+        {
+          "fullName": "actix/actix-web",
+          "note": "Powerful Rust web framework"
+        },
+        {
+          "fullName": "tokio-rs/axum",
+          "note": "Ergonomic Rust web framework"
+        },
+        {
+          "fullName": "gofiber/fiber",
+          "note": "Express-inspired Go framework"
+        },
+        {
+          "fullName": "gin-gonic/gin",
+          "note": "HTTP web framework for Go"
+        },
+        {
+          "fullName": "labstack/echo",
+          "note": "High-performance Go framework"
+        }
+      ]
+    },
+    {
+      "id": "essential-cli",
+      "name": "Essential CLI Tools",
+      "categoryId": "cli-tools",
+      "description": "Must-have command-line tools for every developer",
+      "repos": [
+        {
+          "fullName": "BurntSushi/ripgrep",
+          "note": "Ultra-fast grep replacement"
+        },
+        {
+          "fullName": "sharkdp/fd",
+          "note": "Fast find replacement"
+        },
+        {
+          "fullName": "sharkdp/bat",
+          "note": "Cat with syntax highlighting"
+        },
+        {
+          "fullName": "junegunn/fzf",
+          "note": "Fuzzy finder for the terminal"
+        }
+      ]
+    },
+    {
+      "id": "modern-cli",
+      "name": "Modern CLI Replacements",
+      "categoryId": "cli-tools",
+      "description": "Modern replacements for classic Unix commands",
+      "repos": [
+        {
+          "fullName": "eza-community/eza",
+          "note": "Modern ls replacement"
+        },
+        {
+          "fullName": "ajeetdsouza/zoxide",
+          "note": "Smarter cd command"
+        },
+        {
+          "fullName": "dandavison/delta",
+          "note": "Better git diff viewer"
+        }
+      ]
+    },
+    {
+      "id": "terminal-ui",
+      "name": "Terminal UI & Shells",
+      "categoryId": "cli-tools",
+      "description": "TUI frameworks, shell enhancements, and terminal tools",
+      "repos": [
+        {
+          "fullName": "charmbracelet/bubbletea",
+          "note": "TUI framework in Go"
+        },
+        {
+          "fullName": "textualize/textual",
+          "note": "Python TUI framework"
+        },
+        {
+          "fullName": "ohmyzsh/ohmyzsh",
+          "note": "Zsh configuration framework"
+        },
+        {
+          "fullName": "starship/starship",
+          "note": "Cross-shell prompt"
+        },
+        {
+          "fullName": "tmux/tmux",
+          "note": "Terminal multiplexer"
+        }
+      ]
+    },
+    {
+      "id": "file-management",
+      "name": "File Management",
+      "categoryId": "cli-tools",
+      "description": "Terminal file managers and disk utilities",
+      "repos": [
+        {
+          "fullName": "sxyazi/yazi",
+          "note": "Terminal file manager"
+        },
+        {
+          "fullName": "jarun/nnn",
+          "note": "Terminal file manager"
+        },
+        {
+          "fullName": "bootandy/dust",
+          "note": "Intuitive disk usage tool"
+        },
+        {
+          "fullName": "nicolargo/glances",
+          "note": "System monitoring tool"
+        }
+      ]
+    },
+    {
+      "id": "ml-frameworks",
+      "name": "Machine Learning",
+      "categoryId": "data-science",
+      "description": "Machine learning frameworks and model tools",
+      "repos": [
+        {
+          "fullName": "huggingface/transformers",
+          "note": "State-of-the-art NLP models"
+        },
+        {
+          "fullName": "streamlit/streamlit",
+          "note": "Data apps in pure Python"
+        },
+        {
+          "fullName": "gradio-app/gradio",
+          "note": "ML model demo interfaces"
+        }
+      ]
+    },
+    {
+      "id": "data-tools",
+      "name": "Data Processing",
+      "categoryId": "data-science",
+      "description": "Fast data processing and analytics engines",
+      "repos": [
+        {
+          "fullName": "pola-rs/polars",
+          "note": "Fast DataFrame library"
+        },
+        {
+          "fullName": "duckdb/duckdb",
+          "note": "In-process SQL analytics"
+        }
+      ]
+    },
+    {
+      "id": "data-visualization",
+      "name": "Data Visualization",
+      "categoryId": "data-science",
+      "description": "Business intelligence and data visualization platforms",
+      "repos": [
+        {
+          "fullName": "apache/superset",
+          "note": "Data exploration and visualization"
+        },
+        {
+          "fullName": "metabase/metabase",
+          "note": "Business intelligence dashboards"
+        },
+        {
+          "fullName": "evidence-dev/evidence",
+          "note": "Code-driven BI reports"
+        }
+      ]
+    },
+    {
+      "id": "code-quality",
+      "name": "Code Quality",
+      "categoryId": "dev-tools",
+      "description": "Linters, formatters, and code quality tools",
+      "repos": [
+        {
+          "fullName": "astral-sh/ruff",
+          "note": "Extremely fast Python linter"
+        },
+        {
+          "fullName": "biomejs/biome",
+          "note": "Fast JS/TS formatter and linter"
+        },
+        {
+          "fullName": "prettier/prettier",
+          "note": "Opinionated code formatter"
+        }
+      ]
+    },
+    {
+      "id": "build-tools",
+      "name": "Build Tools",
+      "categoryId": "dev-tools",
+      "description": "Bundlers and build systems for modern development",
+      "repos": [
+        {
+          "fullName": "evanw/esbuild",
+          "note": "Extremely fast JS bundler"
+        },
+        {
+          "fullName": "vitejs/vite",
+          "note": "Next-gen frontend build tool"
+        }
+      ]
+    },
+    {
+      "id": "api-tools",
+      "name": "API Development",
+      "categoryId": "dev-tools",
+      "description": "API clients, testing, and development tools",
+      "repos": [
+        {
+          "fullName": "hoppscotch/hoppscotch",
+          "note": "Open-source API development"
+        },
+        {
+          "fullName": "usebruno/bruno",
+          "note": "Offline-first API client"
+        },
+        {
+          "fullName": "Kong/insomnia",
+          "note": "API client and design"
+        },
+        {
+          "fullName": "httpie/cli",
+          "note": "Modern HTTP client"
+        }
+      ]
+    },
+    {
+      "id": "database-tools",
+      "name": "Database Tools",
+      "categoryId": "dev-tools",
+      "description": "Database management and backend-as-a-service platforms",
+      "repos": [
+        {
+          "fullName": "dbgate/dbgate",
+          "note": "Database manager"
+        },
+        {
+          "fullName": "directus/directus",
+          "note": "Instant REST+GraphQL API"
+        },
+        {
+          "fullName": "supabase/supabase",
+          "note": "Open-source Firebase alternative"
+        },
+        {
+          "fullName": "nocodb/nocodb",
+          "note": "Open-source Airtable alternative"
+        }
+      ]
+    },
+    {
+      "id": "terminal-games",
+      "name": "Terminal Games",
+      "categoryId": "games",
+      "description": "Games you can play in the terminal",
+      "repos": [
+        {
+          "fullName": "CleverRaven/Cataclysm-DDA",
+          "note": "Turn-based survival game"
+        },
+        {
+          "fullName": "gamesofcoding/code-games",
+          "note": "Collection of coding games"
+        }
+      ]
+    },
+    {
+      "id": "game-engines",
+      "name": "Game Engines",
+      "categoryId": "games",
+      "description": "Open-source game engines and frameworks",
+      "repos": [
+        {
+          "fullName": "godotengine/godot",
+          "note": "Multi-platform game engine"
+        },
+        {
+          "fullName": "bevyengine/bevy",
+          "note": "Rust game engine"
+        },
+        {
+          "fullName": "MonoGame/MonoGame",
+          "note": "Cross-platform game framework"
+        }
+      ]
+    },
+    {
+      "id": "open-source-games",
+      "name": "Open Source Games",
+      "categoryId": "games",
+      "description": "Fully open-source games you can play and modify",
+      "repos": [
+        {
+          "fullName": "0ad/0ad",
+          "note": "Real-time strategy game"
+        },
+        {
+          "fullName": "veloren/veloren",
+          "note": "Multiplayer voxel RPG"
+        },
+        {
+          "fullName": "minetest/minetest",
+          "note": "Voxel game engine and game"
+        }
+      ]
+    },
+    {
+      "id": "llm-frameworks",
+      "name": "LLM Development Frameworks",
+      "categoryId": "ai-llm",
+      "description": "Tools for running, serving, and building with LLMs",
+      "repos": [
+        {
+          "fullName": "ollama/ollama",
+          "note": "Run LLMs locally"
+        },
+        {
+          "fullName": "ggml-org/llama.cpp",
+          "note": "LLM inference in C++"
+        },
+        {
+          "fullName": "vllm-project/vllm",
+          "note": "High-throughput LLM serving"
+        },
+        {
+          "fullName": "langchain-ai/langchain",
+          "note": "LLM app development framework"
+        }
+      ]
+    },
+    {
+      "id": "ai-coding",
+      "name": "AI Coding Assistants",
+      "categoryId": "ai-llm",
+      "description": "AI-powered tools for writing and reviewing code",
+      "repos": [
+        {
+          "fullName": "continuedev/continue",
+          "note": "Open-source AI code assistant"
+        },
+        {
+          "fullName": "TabbyML/tabby",
+          "note": "Self-hosted AI coding assistant"
+        },
+        {
+          "fullName": "OpenDevin/OpenDevin",
+          "note": "Autonomous AI software engineer"
+        },
+        {
+          "fullName": "Codium-ai/pr-agent",
+          "note": "AI-powered PR reviewer"
+        }
+      ]
+    },
+    {
+      "id": "ai-image-gen",
+      "name": "AI Image & Media",
+      "categoryId": "ai-llm",
+      "description": "AI tools for image generation, speech, and media",
+      "repos": [
+        {
+          "fullName": "AUTOMATIC1111/stable-diffusion-webui",
+          "note": "Stable Diffusion web UI"
+        },
+        {
+          "fullName": "comfyanonymous/ComfyUI",
+          "note": "Node-based SD workflow"
+        },
+        {
+          "fullName": "openai/whisper",
+          "note": "Speech-to-text model"
+        },
+        {
+          "fullName": "coqui-ai/TTS",
+          "note": "Deep learning text-to-speech"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-cloud",
+      "name": "Cloud & Storage",
+      "categoryId": "self-hosted",
+      "description": "Self-hosted cloud platforms and file sync solutions",
+      "repos": [
+        {
+          "fullName": "nextcloud/server",
+          "note": "Self-hosted cloud platform"
+        },
+        {
+          "fullName": "immich-app/immich",
+          "note": "Photo & video backup"
+        },
+        {
+          "fullName": "minio/minio",
+          "note": "S3-compatible object storage"
+        },
+        {
+          "fullName": "syncthing/syncthing",
+          "note": "Continuous file sync"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-services",
+      "name": "Essential Services",
+      "categoryId": "self-hosted",
+      "description": "Core self-hosted services for dashboards, passwords, and monitoring",
+      "repos": [
+        {
+          "fullName": "louislam/uptime-kuma",
+          "note": "Monitoring tool"
+        },
+        {
+          "fullName": "gethomepage/homepage",
+          "note": "Application dashboard"
+        },
+        {
+          "fullName": "dani-garcia/vaultwarden",
+          "note": "Bitwarden-compatible server"
+        },
+        {
+          "fullName": "hay-kot/mealie",
+          "note": "Recipe manager"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-automation",
+      "name": "Automation",
+      "categoryId": "self-hosted",
+      "description": "Workflow automation and no-code database tools",
+      "repos": [
+        {
+          "fullName": "n8n-io/n8n",
+          "note": "Workflow automation"
+        },
+        {
+          "fullName": "huginn/huginn",
+          "note": "Build agents that act on your behalf"
+        },
+        {
+          "fullName": "NocoDB/nocodb",
+          "note": "Open-source Airtable alternative"
+        },
+        {
+          "fullName": "activepieces/activepieces",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apache/airflow",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "note-taking",
+      "name": "Note Taking Apps",
+      "categoryId": "productivity",
+      "description": "Open-source alternatives to Notion, Obsidian, and more",
+      "repos": [
+        {
+          "fullName": "toeverything/AFFiNE",
+          "note": "All-in-one knowledge base"
+        },
+        {
+          "fullName": "AppFlowy-IO/AppFlowy",
+          "note": "Open-source Notion alternative"
+        },
+        {
+          "fullName": "logseq/logseq",
+          "note": "Knowledge management"
+        },
+        {
+          "fullName": "siyuan-note/siyuan",
+          "note": "Local-first personal knowledge base"
+        }
+      ]
+    },
+    {
+      "id": "project-management",
+      "name": "Project Management",
+      "categoryId": "productivity",
+      "description": "Open-source project tracking and kanban boards",
+      "repos": [
+        {
+          "fullName": "makeplane/plane",
+          "note": "Open-source project management"
+        },
+        {
+          "fullName": "hcengineering/huly-platform",
+          "note": "All-in-one project management"
+        },
+        {
+          "fullName": "wekan/wekan",
+          "note": "Open-source kanban board"
+        }
+      ]
+    },
+    {
+      "id": "writing-tools",
+      "name": "Writing & Docs",
+      "categoryId": "productivity",
+      "description": "Markdown editors and writing tools",
+      "repos": [
+        {
+          "fullName": "marktext/marktext",
+          "note": "Simple Markdown editor"
+        },
+        {
+          "fullName": "Zettlr/Zettlr",
+          "note": "Academic Markdown editor"
+        },
+        {
+          "fullName": "silverbulletmd/silverbullet",
+          "note": "Note-taking with extensibility"
+        }
+      ]
+    },
+    {
+      "id": "media-servers",
+      "name": "Media Servers",
+      "categoryId": "media",
+      "description": "Self-hosted media servers and library managers",
+      "repos": [
+        {
+          "fullName": "jellyfin/jellyfin",
+          "note": "Free media system"
+        },
+        {
+          "fullName": "Radarr/Radarr",
+          "note": "Movie collection manager"
+        },
+        {
+          "fullName": "Sonarr/Sonarr",
+          "note": "TV series management"
+        },
+        {
+          "fullName": "Lidarr/Lidarr",
+          "note": "Music collection manager"
+        }
+      ]
+    },
+    {
+      "id": "media-tools",
+      "name": "Media Tools",
+      "categoryId": "media",
+      "description": "Video, audio, and media editing tools",
+      "repos": [
+        {
+          "fullName": "yt-dlp/yt-dlp",
+          "note": "Video downloader"
+        },
+        {
+          "fullName": "HandBrake/HandBrake",
+          "note": "Video transcoder"
+        },
+        {
+          "fullName": "audacity/audacity",
+          "note": "Audio editor"
+        },
+        {
+          "fullName": "mifi/lossless-cut",
+          "note": "Lossless video/audio trimmer"
+        }
+      ]
+    },
+    {
+      "id": "streaming",
+      "name": "Streaming & Podcasts",
+      "categoryId": "media",
+      "description": "Privacy-focused streaming and podcast clients",
+      "repos": [
+        {
+          "fullName": "AntennaPod/AntennaPod",
+          "note": "Podcast player"
+        },
+        {
+          "fullName": "FreeTubeApp/FreeTube",
+          "note": "Privacy-focused YouTube client"
+        },
+        {
+          "fullName": "TeamNewPipe/NewPipe",
+          "note": "Lightweight YouTube client"
+        }
+      ]
+    },
+    {
+      "id": "container-orchestration",
+      "name": "Container & Orchestration",
+      "categoryId": "devops",
+      "description": "Container runtimes, orchestrators, and reverse proxies",
+      "repos": [
+        {
+          "fullName": "kubernetes/kubernetes",
+          "note": "Container orchestration platform"
+        },
+        {
+          "fullName": "docker/compose",
+          "note": "Multi-container Docker apps"
+        },
+        {
+          "fullName": "portainer/portainer",
+          "note": "Container management UI"
+        },
+        {
+          "fullName": "k3s-io/k3s",
+          "note": "Lightweight Kubernetes"
+        },
+        {
+          "fullName": "traefik/traefik",
+          "note": "Modern reverse proxy"
+        }
+      ]
+    },
+    {
+      "id": "monitoring-observability",
+      "name": "Monitoring & Observability",
+      "categoryId": "devops",
+      "description": "Dashboards, alerting, and error tracking",
+      "repos": [
+        {
+          "fullName": "grafana/grafana",
+          "note": "Observability dashboards"
+        },
+        {
+          "fullName": "prometheus/prometheus",
+          "note": "Systems monitoring and alerting"
+        },
+        {
+          "fullName": "getsentry/sentry",
+          "note": "Error tracking platform"
+        },
+        {
+          "fullName": "uptrace/uptrace",
+          "note": "OpenTelemetry APM"
+        }
+      ]
+    },
+    {
+      "id": "ci-cd",
+      "name": "CI/CD & Automation",
+      "categoryId": "devops",
+      "description": "Continuous integration and deployment engines",
+      "repos": [
+        {
+          "fullName": "nektos/act",
+          "note": "Run GitHub Actions locally"
+        },
+        {
+          "fullName": "woodpecker-ci/woodpecker",
+          "note": "Simple CI engine"
+        },
+        {
+          "fullName": "dagger/dagger",
+          "note": "Programmable CI/CD engine"
+        }
+      ]
+    },
+    {
+      "id": "chat-platforms",
+      "name": "Chat Platforms",
+      "categoryId": "communication",
+      "description": "Self-hosted team chat and messaging platforms",
+      "repos": [
+        {
+          "fullName": "RocketChat/Rocket.Chat",
+          "note": "Team communication platform"
+        },
+        {
+          "fullName": "mattermost/mattermost",
+          "note": "Secure collaboration"
+        },
+        {
+          "fullName": "zulip/zulip",
+          "note": "Threaded team chat"
+        },
+        {
+          "fullName": "element-hq/element-web",
+          "note": "Matrix-based messenger"
+        }
+      ]
+    },
+    {
+      "id": "email-tools",
+      "name": "Email Tools",
+      "categoryId": "communication",
+      "description": "Self-hosted email servers and newsletter tools",
+      "repos": [
+        {
+          "fullName": "Mailtrain-org/mailtrain",
+          "note": "Self-hosted newsletter app"
+        },
+        {
+          "fullName": "mailcow/mailcow-dockerized",
+          "note": "Mail server suite"
+        },
+        {
+          "fullName": "roundcube/roundcubemail",
+          "note": "Browser-based email client"
+        }
+      ]
+    },
+    {
+      "id": "vpn-networking",
+      "name": "VPN & Networking",
+      "categoryId": "security",
+      "description": "VPNs, firewalls, and network-wide ad blocking",
+      "repos": [
+        {
+          "fullName": "tailscale/tailscale",
+          "note": "Zero-config VPN"
+        },
+        {
+          "fullName": "firezone/firezone",
+          "note": "WireGuard-based VPN portal"
+        },
+        {
+          "fullName": "AdguardTeam/AdGuardHome",
+          "note": "Network-wide ad blocking"
+        },
+        {
+          "fullName": "pi-hole/pi-hole",
+          "note": "DNS sinkhole for ads"
+        }
+      ]
+    },
+    {
+      "id": "security-tools",
+      "name": "Security Tools",
+      "categoryId": "security",
+      "description": "Vulnerability scanning and intrusion prevention",
+      "repos": [
+        {
+          "fullName": "gitleaks/gitleaks",
+          "note": "Detect secrets in git repos"
+        },
+        {
+          "fullName": "aquasecurity/trivy",
+          "note": "Vulnerability scanner"
+        },
+        {
+          "fullName": "crowdsecurity/crowdsec",
+          "note": "Collaborative security engine"
+        },
+        {
+          "fullName": "fail2ban/fail2ban",
+          "note": "Intrusion prevention"
+        }
+      ]
+    },
+    {
+      "id": "password-identity",
+      "name": "Password & Identity",
+      "categoryId": "security",
+      "description": "Password managers and identity providers",
+      "repos": [
+        {
+          "fullName": "bitwarden/clients",
+          "note": "Password manager clients"
+        },
+        {
+          "fullName": "Lissy93/web-check",
+          "note": "Website security scanner"
+        },
+        {
+          "fullName": "goauthentik/authentik",
+          "note": "Identity provider"
+        }
+      ]
+    },
+    {
+      "id": "accounting",
+      "name": "Accounting & Finance",
+      "categoryId": "finance",
+      "description": "Personal finance managers and budgeting apps",
+      "repos": [
+        {
+          "fullName": "maybe-finance/maybe",
+          "note": "Personal finance app"
+        },
+        {
+          "fullName": "actualbudget/actual",
+          "note": "Privacy-focused budgeting"
+        },
+        {
+          "fullName": "firefly-iii/firefly-iii",
+          "note": "Personal finance manager"
+        },
+        {
+          "fullName": "ledger/ledger",
+          "note": "Command-line accounting"
+        }
+      ]
+    },
+    {
+      "id": "invoicing-business",
+      "name": "Invoicing & Business",
+      "categoryId": "finance",
+      "description": "Invoicing, payments, and business management",
+      "repos": [
+        {
+          "fullName": "invoiceninja/invoiceninja",
+          "note": "Invoicing and payments"
+        },
+        {
+          "fullName": "crater-invoice/crater",
+          "note": "Open-source invoicing"
+        },
+        {
+          "fullName": "ever-co/ever-gauzy",
+          "note": "Business management platform"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-analytics",
+      "name": "Analytics",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "orangecoloured/analog",
+          "note": "A minimal analytics tool. Tracks events in a span of 10-30 days."
+        },
+        {
+          "fullName": "aptabase/aptabase",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "eldy/awstats",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Countly/countly-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "emanuelef/daily-stars-explorer",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-archiving-and-digital-preservation-dp",
+      "name": "Archiving and Digital Preservation (DP)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ArchiveBox/ArchiveBox",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "archivesspace/archivesspace",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bitmagnet-io/bitmagnet",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ckan/ckan",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "collectiveaccess/providence",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-blogging-platforms",
+      "name": "Blogging Platforms",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "antville/antville",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "xenocrat/chyrp-lite",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "lin-snow/Ech0",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "flatpressblog/flatpress",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "rikhuijzer/fx",
+          "note": "Micro-blog tool offering built-in syntax highlighting, mobile publishing and more (alternative to Twitter, Bluesky)."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-booking-and-scheduling",
+      "name": "Booking and Scheduling",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "alfio-event/alf.io",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "calcom/cal.com",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "alextselegidis/easyappointments",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "HiEventsDev/hi.events",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "LibreBooking/librebooking",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-bookmarks-and-link-sharing",
+      "name": "Bookmarks and Link Sharing",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ndom91/briefkasten",
+          "note": "Modern app for saving and managing your own bookmarks. Includes a browser extension. ([Demo](https://briefkastenhq.com/auth/signin))"
+        },
+        {
+          "fullName": "jarun/Buku",
+          "note": "Powerful bookmark manager and a personal textual mini-web."
+        },
+        {
+          "fullName": "jonschoning/espial",
+          "note": "An open-source, web-based bookmarking server."
+        },
+        {
+          "fullName": "mozilla/fxa",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "goniszewski/grimoire",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-calendar-contacts",
+      "name": "Calendar & Contacts",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "sabre-io/Baikal",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "tchapi/davis",
+          "note": "A simple, dockerizable and fully translatable admin interface for sabre/dav based on Symfony 5 and Bootstrap 4, largely inspired by Baïkal."
+        },
+        {
+          "fullName": "intri-in/manage-my-damn-life-nextjs",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Kozea/Radicale",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "sabre-io/dav",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-custom-communication-systems",
+      "name": "Communication - Custom Communication Systems",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "anycable/anycable",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "caronc/apprise",
+          "note": "Apprise allows you to send a notification to almost all of the most popular notification services available to us today such as: Telegram, Discord, Slack, Amazon SNS, Gotify, etc."
+        },
+        {
+          "fullName": "centrifugal/centrifugo",
+          "note": "Demo"
+        },
+        {
+          "fullName": "centrifugal/centrifugo",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jeremyckahn/chitchatter",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-email-complete-solutions",
+      "name": "Communication - Email - Complete Solutions",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "anonaddy/anonaddy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "debops/debops",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "docker-mailserver/docker-mailserver",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "LukeSmithxyz/emailwiz",
+          "note": "Luke Smith's bash script to completely automate the setup of a Postfix/Dovecot/SpamAssassin/OpenDKIM server on debian."
+        },
+        {
+          "fullName": "iredmail/iRedMail",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-email-mail-delivery-agents",
+      "name": "Communication - Email - Mail Delivery Agents",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cyrusimap/cyrus-imapd",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "mguessan/davmail",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "dovecot/core",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-email-mail-transfer-agents",
+      "name": "Communication - Email - Mail Transfer Agents",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "corecode/dma",
+          "note": "A small MTA for home and office use. Works on Linux and FreeBSD."
+        },
+        {
+          "fullName": "haraka/Haraka",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "HaschekSolutions/opentrashmail",
+          "note": "Complete trashmail solution that exposes an SMTP server and has a web interface to manage received emails. Works with multiple and wildcard domains and is fully file based (no database needed). Includes RSS feeds and JSON API."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-email-mailing-lists-and-newsletters",
+      "name": "Communication - Email - Mailing Lists and Newsletters",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "pentacent/keila",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "knadh/listmonk",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "mautic/mautic",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "phpList/phplist3",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "sympa-community/sympa",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-email-webmail-clients",
+      "name": "Communication - Email - Webmail Clients",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cypht-org/cypht",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "roundcube/roundcubemail",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "the-djmaze/snappymail",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-irc",
+      "name": "Communication - IRC",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ergochat/ergo",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "glowing-bear/glowing-bear",
+          "note": "A web frontend for WeeChat. ([Demo](https://www.glowing-bear.org))"
+        },
+        {
+          "fullName": "inspircd/inspircd",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "kiwiirc/kiwiirc",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ngircd/ngircd",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-sip",
+      "name": "Communication - SIP",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "asterisk/asterisk",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "BelledonneCommunications/flexisip",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "signalwire/freeswitch",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "fusionpbx/fusionpbx",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "kamailio/kamailio",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-social-networks-and-forums",
+      "name": "Communication - Social Networks and Forums",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "apache/answer",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ArtalkJS/Artalk",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "buddypress/BuddyPress",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "devrsi0n/chirpy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "coralproject/talk",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-video-conferencing",
+      "name": "Communication - Video Conferencing",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bigbluebutton/bigbluebutton",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jech/galene",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "meetecho/janus-gateway",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jitsi/jitsi-meet",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jitsi/jitsi-videobridge",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-communication-xmpp-servers",
+      "name": "Communication - XMPP - Servers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "processone/ejabberd",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "esl/MongooseIM",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "igniterealtime/Openfire",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "snikket-im/snikket-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "tigase/tigase-server",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-community-supported-agriculture-csa",
+      "name": "Community-Supported Agriculture (CSA)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "csa-admin-org/csa-admin",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "filipecarneiro/ELabel",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "foodcoopshop/foodcoopshop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "foodcoops/foodsoft",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "martinhrvn/hive-pal",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-conference-management",
+      "name": "Conference Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "indico/indico",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "CatoTH/antragsgruen",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "OpenSlides/OpenSlides",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "openSUSE/osem",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "pretalx/pretalx",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-content-management-systems-cms",
+      "name": "Content Management Systems (CMS)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Alfresco/alfresco-community-repo",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apostrophecms/apostrophe",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "marcantondahmen/automad",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "backdrop/backdrop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bigtreecms/BigTree-CMS",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-customer-relationship-management-crm",
+      "name": "Customer Relationship Management (CRM)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cortezaproject/corteza",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "DjangoCRM/django-crm",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "espocrm/espocrm",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "krayin/laravel-crm",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "monicahq/monica",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-database-management",
+      "name": "Database Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "vrana/adminer",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "azimuttapp/azimutt",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bytebase/bytebase",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "chartbrew/chartbrew",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "chartdb/chartdb",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-dns",
+      "name": "DNS",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "AdguardTeam/AdGuardHome",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "0xERR0R/blocky",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "tanrax/maza-ad-blocking",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "pi-hole/pi-hole",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "TechnitiumSoftware/DnsServer",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-document-management",
+      "name": "Document Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "eikek/docspell",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "documenso/documenso",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "docusealco/docuseal",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jonashellmann/everydocs-core",
+          "note": "Simple Document Management System for private use with basic functionality to organize your documents digitally."
+        },
+        {
+          "fullName": "gotenberg/gotenberg",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-document-management-e-books",
+      "name": "Document Management - E-books",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Atsumeru-xyz/Atsumeru",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Mozzo1000/booklogr",
+          "note": "Manage your personal book library with ease. ([Demo](https://demo.booklogr.app/))"
+        },
+        {
+          "fullName": "booklore-app/booklore",
+          "note": "Host and manage books, with support for PDFs, eBooks, reading progress, metadata, and stats."
+        },
+        {
+          "fullName": "crocodilestick/Calibre-Web-Automated",
+          "note": "All-in-one solution, combining the modern lightweight web UI from Calibre-Web with the robust, versatile feature set of Calibre (fork of Calibre Web)."
+        },
+        {
+          "fullName": "janeczku/calibre-web",
+          "note": "Browse, read and download eBooks using an existing Calibre database."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-document-management-institutional-repository-and-digital-lib",
+      "name": "Document Management - Institutional Repository and Digital Library Software",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "DSpace/DSpace",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "eprints/eprints3.4",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "fcrepo/fcrepo",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "inveniosoftware/invenio-app-rdm",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Islandora/islandora",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-document-management-integrated-library-systems-ils",
+      "name": "Document Management - Integrated Library Systems (ILS)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "evergreen-library-system/Evergreen",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Koha-Community/Koha",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "rero/rero-ils",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-e-commerce",
+      "name": "E-commerce",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "aimeos/aimeos",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bagisto/bagisto",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "coreshop/CoreShop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "evershopcommerce/evershop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "shurco/litecart",
+          "note": "Litecart"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-feed-readers",
+      "name": "Feed Readers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "georgemandis/bubo-rss",
+          "note": "Irrationally minimal RSS feed reader. ([Demo](https://bubo-rss-demo.netlify.app/))"
+        },
+        {
+          "fullName": "Athou/commafeed",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Qolors/FeedCord",
+          "note": "FeedCord"
+        },
+        {
+          "fullName": "ncarlier/feedpushr",
+          "note": "Powerful RSS aggregator, able to transform and send articles to many outputs. Single binary, extensible with plugins."
+        },
+        {
+          "fullName": "Tiendil/feeds.fun",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-file-transfer-synchronization",
+      "name": "File Transfer & Synchronization",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bewcloud/bewcloud",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "cloudreve/cloudreve",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Kinto/kinto",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "nextcloud/server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "opencloud-eu/opencloud",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-file-transfer-object-storage-file-servers",
+      "name": "File Transfer - Object Storage & File Servers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "goharbor/harbor",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "seaweedfs/seaweedfs",
+          "note": "SeaweedFS is an open source distributed file system supporting WebDAV, S3 API, FUSE mount, HDFS, etc, optimized for lots of small files, and easy to add capacity."
+        },
+        {
+          "fullName": "scality/cloudserver",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "project-zot/zot",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-file-transfer-peer-to-peer-filesharing",
+      "name": "File Transfer - Peer-to-peer Filesharing",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "webtorrent/bittorrent-tracker",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "david-bai00/PrivyDrop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "qbittorrent/qBittorrent",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "slskd/slskd",
+          "note": "slskd"
+        },
+        {
+          "fullName": "transmission/transmission",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-file-transfer-single-click-drag-n-drop-upload",
+      "name": "File Transfer - Single-click & Drag-n-drop Upload",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "keven1024/015",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "chibisafe/chibisafe",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "CorentinTh/enclosed",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "axeloz/filesharing",
+          "note": "File sharing application based on unique and temporary links."
+        },
+        {
+          "fullName": "FlintSH/Flare",
+          "note": "A nonbloated, modern, and highly configurable file/screenshot vault server with support for ShareX, Flameshot, and Spectacle. Offers OCR search and more."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-file-transfer-web-based-file-managers",
+      "name": "File Transfer - Web-based File Managers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "oupala/apaxy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "9001/copyparty",
+          "note": "Portable file server with accelerated resumable uploads, deduplication, WebDAV, FTP, zeroconf, media indexer, video thumbnails, audio transcoding, and write-only folders, in a single file with no mandatory dependencies. ([Demo](https://a.ocv.me/pub/demo/))"
+        },
+        {
+          "fullName": "DirectoryLister/DirectoryLister",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "filebrowser/filebrowser",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "filegator/filegator",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-games",
+      "name": "Games",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "doublespeakgames/adarkroom",
+          "note": "Minimalist text adventure game for your browser. ([Demo](https://adarkroom.doublespeakgames.com/))"
+        },
+        {
+          "fullName": "TeamHypersomnia/Hypersomnia",
+          "note": "Competitive top-down shooter blending Counter-Strike with Hotline Miami. Runs on Linux, Windows, MacOS and the Web. ([Demo](https://hypersomnia.io))"
+        },
+        {
+          "fullName": "lichess-org/lila",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "luanti-org/luanti",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Anuken/Mindustry",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-games-administrative-utilities-control-panels",
+      "name": "Games - Administrative Utilities & Control Panels",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "macarooni-man/auto-mcs",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Drop-OSS/drop",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Drop-OSS/drop-app",
+          "note": "Clients"
+        },
+        {
+          "fullName": "easy-wi/developer",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gameyfin/gameyfin",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-genealogy",
+      "name": "Genealogy",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "genea-app/genea-app",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "MGeurts/genealogy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "geneweb/geneweb",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gramps-project/gramps-web-api",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "fisharebest/webtrees",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-generative-artificial-intelligence-genai",
+      "name": "Generative Artificial Intelligence (GenAI)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "agenta-ai/agenta",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Mintplex-Labs/anything-llm",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "khoj-ai/khoj",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "av/harbor",
+          "note": "Containerized LLM toolkit. Run LLM backends, APIs, frontends, and additional services via a concise CLI."
+        },
+        {
+          "fullName": "LearningCircuit/local-deep-research",
+          "note": "AI-powered deep research tool with multi-source search (arXiv, PubMed, web), PDF text extraction, and encrypted local storage."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-groupware",
+      "name": "Groupware",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "colanode/colanode",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "cozy/cozy-store",
+          "note": "Clients"
+        },
+        {
+          "fullName": "EGroupware/egroupware",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Intermesh/groupoffice",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apache/openmeetings",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-health-and-fitness",
+      "name": "Health and Fitness",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "endurain-project/endurain",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "fastenhealth/fasten-onprem",
+          "note": "Fasten Health"
+        },
+        {
+          "fullName": "SamR1/FitTrackee",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "cfu288/mere-medical",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "openemr/openemr",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-human-resources-management-hrm",
+      "name": "Human Resources Management (HRM)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Admidio/admidio",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "frappe/hrms",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "minthcm/minthcm",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-internet-of-things-iot",
+      "name": "Internet of Things (IoT)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "domoticz/domoticz",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "domoticz/domoticz-android",
+          "note": "Clients"
+        },
+        {
+          "fullName": "emqx/emqx",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "evcc-io/evcc",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "FlowFuse/flowfuse",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-inventory-management",
+      "name": "Inventory Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "sysadminsmedia/homebox",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "inventree/InvenTree",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Epic-Breakfast-Productions/OpenQuarterMaster",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Part-DB/Part-DB-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Shelf-nu/shelf.nu",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-knowledge-management-tools",
+      "name": "Knowledge Management Tools",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "toeverything/AFFiNE",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ontola/atomic-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "michaelstaake/LibreKB",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "siyuan-note/siyuan",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "b310-digital/teammapper",
+          "note": "Host and create your own mindmaps. Share your mindmap sessions with your team and collaborate live on mindmaps. ([Demo](https://map.kits.blog))"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-learning-and-courses",
+      "name": "Learning and Courses",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "instructure/canvas-lms",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "chamilo/chamilo-lms",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "GibbonEdu/core",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ILIAS-eLearning/ILIAS",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "INGInious/INGInious",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-manufacturing",
+      "name": "Manufacturing",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cncjs/cncjs",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "fluidd-core/fluidd",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "mainsail-crew/mainsail",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "manyfold3d/manyfold",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "OctoPrint/OctoPrint",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-maps-and-global-positioning-system-gps",
+      "name": "Maps and Global Positioning System (GPS)",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "seanmorley15/AdventureLog",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "johanohly/AirTrail",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "knrdl/bicimon",
+          "note": "Bike Speedometer as Progressive Web App. ([Demo](https://knrdl.github.io/bicimon/))"
+        },
+        {
+          "fullName": "Freika/dawarich",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "noandrea/geo2tz",
+          "note": "Get the timezone from geo coordinates (lat, lon)."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-media-management",
+      "name": "Media Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "TheWicklowWolf/ChannelTube",
+          "note": "ChannelTube"
+        },
+        {
+          "fullName": "rfsbraz/deleterr",
+          "note": "Automated media cleanup tool that removes watched and stale content from Plex, Sonarr, and Radarr based on configurable rules."
+        },
+        {
+          "fullName": "rembo10/headphones",
+          "note": "Automated music downloader for NZB and Torrent, written in Python. It supports SABnzbd, NZBget, Transmission, µTorrent, Deluge and Blackhole."
+        },
+        {
+          "fullName": "Lidarr/Lidarr",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "TheWicklowWolf/LidaTube",
+          "note": "LidaTube"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-media-streaming-audio-streaming",
+      "name": "Media Streaming - Audio Streaming",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ampache/ampache",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "advplyr/audiobookshelf",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "advplyr/audiobookshelf-app",
+          "note": "Clients"
+        },
+        {
+          "fullName": "izderadicka/audioserve",
+          "note": "Simple personal server to serve audio files from directories (audiobooks, music, podcasts...). Focused on simplicity and supports sync of play position between clients."
+        },
+        {
+          "fullName": "AzuraCast/AzuraCast",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-media-streaming-multimedia-streaming",
+      "name": "Media Streaming - Multimedia Streaming",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "MacWarrior/clipbucket-v5",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "farfalleflickan/cmyflix",
+          "note": "Minimalist Plex/Jellyfin alternative to stream video."
+        },
+        {
+          "fullName": "gerbera/gerbera",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jellyfin/jellyfin",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "awesome-jellyfin/awesome-jellyfin",
+          "note": "Clients"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-media-streaming-video-streaming",
+      "name": "Media Streaming - Video Streaming",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "calzoneman/sync",
+          "note": "Synchronize media, chat, and more for an arbitrary number of channels. ([Demo](https://cytu.be))"
+        },
+        {
+          "fullName": "iv-org/invidious",
+          "note": "Invidious"
+        },
+        {
+          "fullName": "mediacms-io/mediacms",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "OvenMediaLabs/OvenMediaEngine",
+          "note": "Streaming Server with Sub-Second Latency. ([Demo](https://demo.ovenplayer.com))"
+        },
+        {
+          "fullName": "owncast/owncast",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-miscellaneous",
+      "name": "Miscellaneous",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Bubka/2FAuth",
+          "note": "Manage your Two-Factor Authentication (2FA) accounts and generate their security codes. ([Demo](https://demo.2fauth.app/))"
+        },
+        {
+          "fullName": "muety/anchr",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "TecharoHQ/anubis",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "asciinema/asciinema-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "babybuddy/babybuddy",
+          "note": "Helps caregivers track baby sleep, feedings, diaper changes, and tummy time. ([Demo](https://github.com/babybuddy/babybuddy#-demo))"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-money-budgeting-management",
+      "name": "Money, Budgeting & Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "actualbudget/actual",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bigcapitalhq/bigcapital",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bitcart/bitcart",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "btcpayserver/btcpayserver",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "depayfi/widgets",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-network-utilities",
+      "name": "Network Utilities",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "mariocandela/beelzebub",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "thinkst/opencanary",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jason5ng32/MyIP",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gnmyt/myspeed",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "netalertx/NetAlertX",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-note-taking-editors",
+      "name": "Note-taking & Editors",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "blinkospace/blinko",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "PhiTux/DailyTxT",
+          "note": "Encrypted diary Web application to save your personal memories of each day. Includes a search function and encrypted file upload. ([Demo](https://dailytxt.phitux.de))"
+        },
+        {
+          "fullName": "suitenumerique/docs",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jgraph/drawio",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "dullage/flatnotes",
+          "note": "Database-less note-taking web app that utilises a flat folder of markdown files for storage. ([Demo](https://demo.flatnotes.io))"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-office-suites",
+      "name": "Office Suites",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cryptpad/cryptpad",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ether/etherpad-lite",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gristlabs/grist-core",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ONLYOFFICE/DocumentServer",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-password-managers",
+      "name": "Password Managers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "aliasvault/aliasvault",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bitwarden/server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "passbolt/passbolt_api",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "nilsteampassnet/TeamPass",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "dani-garcia/vaultwarden",
+          "note": "Lightweight Bitwarden server API implementation written in Rust."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-pastebins",
+      "name": "Pastebins",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "w4/bin",
+          "note": "A paste bin that's actually minimalist."
+        },
+        {
+          "fullName": "querwurzel/BinPastes",
+          "note": "Minimal pastebin supporting client-side encryption, fulltext search, one-time messages. Intended for one to few users looking for a simple pastebin deployment."
+        },
+        {
+          "fullName": "jordan-dalby/ByteStash",
+          "note": "Pastebin and file storage service with a simple web interface. Supports syntax highlighting, optional user authentication and public sharing. ([Demo](https://github.com/jordan-dalby/ByteStash?tab=readme-ov-file#demo))"
+        },
+        {
+          "fullName": "jordan-dalby/ByteStash?tab=readme-ov-file",
+          "note": "Demo"
+        },
+        {
+          "fullName": "rhee876527/chiyogami",
+          "note": "Pastebin with API, client-side encryption, user accounts, syntax highlighting, markdown rendering, and more. ([Demo](https://chiyogami.myaddr.dev/))"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-personal-dashboards",
+      "name": "Personal Dashboards",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "lissy93/dashy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "glanceapp/glance",
+          "note": "Highly customizable dashboard that puts all your feeds in one place."
+        },
+        {
+          "fullName": "arran4/gobookmarks",
+          "note": "Landing page to display bookmarks stored in GitHub, GitLab or local Git."
+        },
+        {
+          "fullName": "linuxserver/Heimdall",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ashwin-pc/hiccup",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-photo-galleries",
+      "name": "Photo Galleries",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "chevereto/chevereto",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "HoshinoSuzumi/chronoframe",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "webreaper/damselfly",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ente-io/ente",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "xemle/home-gallery",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-polls-and-events",
+      "name": "Polls and Events",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "fsinfuhh/Bitpoll",
+          "note": "Conduct polls about dates, times or general questions. ([Demo](https://bitpoll.de/))"
+        },
+        {
+          "fullName": "evroon/bracket",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Wingysam/Christmas-Community",
+          "note": "Create a simple place for your entire family to use to find gifts that people want, and to avoid double-gifting."
+        },
+        {
+          "fullName": "ClaperCo/Claper",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "clearflask/clearflask",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-proxy",
+      "name": "Proxy",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bytedance/g3",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "imgproxy/imgproxy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "yarrick/iodine",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "OutlineFoundation/outline-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "antoniomika/sish",
+          "note": "HTTP(S)/WS(S)/TCP tunnels to localhost using only SSH (serveo/ngrok alternative)."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-recipe-management",
+      "name": "Recipe Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "karlomikus/bar-assistant",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "cooklang/CookCLI",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "mikebgrep/fork.recipes",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "TomBursch/kitchenowl",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "managemeals/manage-meals-web",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-remote-access",
+      "name": "Remote Access",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "engity-com/bifroest",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "firezone/firezone",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apache/guacamole-server",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "Ylianst/MeshCentral",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "shellhub-io/shellhub",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-resource-planning",
+      "name": "Resource Planning",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Dolibarr/dolibarr",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "frappe/erpnext",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "farmOS/farmOS",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "grocy/grocy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ledgersmb/LedgerSMB",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-search-engines",
+      "name": "Search Engines",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "alephdata/aleph",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apache/solr",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "codelibs/fess",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "jina-ai/serve",
+          "note": "Cloud-native neural search framework for any kind of data."
+        },
+        {
+          "fullName": "manticoresoftware/manticoresearch",
+          "note": "Full-text search and data analytics, with fast response time for small, medium and big data (alternative to Elasticsearch)."
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-self-hosting-solutions",
+      "name": "Self-hosting Solutions",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "DaveStephens/ansible-nas",
+          "note": "Build a full-featured home server with this playbook and an Ubuntu box."
+        },
+        {
+          "fullName": "IceWhaleTech/CasaOS",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "MichaIng/DietPi",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "GhostWriters/DockSTARTer",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "teleclimber/Dropserver",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-api-management",
+      "name": "Software Development - API Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "dreamfactorysoftware/dreamfactory",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "apioo/fusio",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "exogee-technology/graphweaver",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "hasura/graphql-engine",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "hoppscotch/hoppscotch",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-feature-toggle",
+      "name": "Software Development - Feature Toggle",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "featbit/featbit",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "flagsmith/flagsmith",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "flipt-io/flipt",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "thomaspoignant/go-feature-flag",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-ide-tools",
+      "name": "Software Development - IDE & Tools",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Atheos/Atheos",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "coder/code-server",
+          "note": "VS Code in the browser, hosted on a remote server."
+        },
+        {
+          "fullName": "coder/coder",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "eclipse-che/che",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "judge0/judge0",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-localization",
+      "name": "Software Development - Localization",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "mirego/accent",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "tolgee/tolgee-platform",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ever-co/ever-traduora",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "WeblateOrg/weblate",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-low-code",
+      "name": "Software Development - Low Code",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "appsmithorg/appsmith",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "appwrite/appwrite",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "autokitteh/autokitteh",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "halo-dev/halo",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "halo-sigs/awesome-halo",
+          "note": "Clients"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-software-development-project-management",
+      "name": "Software Development - Project Management",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "GerritCodeReview/gerrit",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gitbucket/gitbucket",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "go-gitea/gitea",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "gogs/gogs",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "hcengineering/platform",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-task-management-to-do-lists",
+      "name": "Task Management & To-do Lists",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "RARgames/4gaBoards",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "AppFlowy-IO/appflowy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "donetick/donetick",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "mattermost-community/focalboard",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "kanboard/kanboard",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-ticketing",
+      "name": "Ticketing",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bugzilla/bugzilla",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "frappe/helpdesk",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "freescout-help-desk/freescout",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "itflow-org/itflow",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "abhinavxd/libredesk",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-time-tracking",
+      "name": "Time Tracking",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ActivityWatch/activitywatch",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "daya0576/beaverhabits",
+          "note": "Habit tracking app to save your precious moments in your fleeting life. ([Demo](https://beaverhabits.com/demo))"
+        },
+        {
+          "fullName": "ever-co/ever-gauzy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "kimai/kimai",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "solidtime-io/solidtime",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-url-shorteners",
+      "name": "URL Shorteners",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "sjdonado/bit",
+          "note": "Fast, lightweight, resource-efficient, compiled URL shortener."
+        },
+        {
+          "fullName": "SinTan1729/chhoto-url",
+          "note": "Simple, lightning-fast URL shortener with no bloat (fork of simply-shorten). ([Demo](https://github.com/SinTan1729/chhoto-url?tab=readme-ov-file#demo), [Clients](https://github.com/SinTan1729/chhoto-url/blob/main/TOOLS.md))"
+        },
+        {
+          "fullName": "SinTan1729/chhoto-url?tab=readme-ov-file",
+          "note": "Demo"
+        },
+        {
+          "fullName": "SinTan1729/chhoto-url",
+          "note": "Clients"
+        },
+        {
+          "fullName": "thedevs-network/kutt",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-video-surveillance",
+      "name": "Video Surveillance",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bluecherrydvr/bluecherry-apps",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "blakeblackshear/frigate",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "motioneye-project/motioneye",
+          "note": "Online interface for the software Motion, a video surveillance program with motion detection."
+        },
+        {
+          "fullName": "roflcoopter/viseron",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "ZoneMinder/ZoneMinder",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-web-servers",
+      "name": "Web Servers",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "xyproto/algernon",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "bunkerity/bunkerweb",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "caddyserver/caddy",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "yusing/godoxy",
+          "note": "Lightweight, simple, and  performant reverse proxy with WebUI, Docker integration, automatic shutdown/startup for container based on traffic."
+        },
+        {
+          "fullName": "yusing/godoxy",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "self-hosted-wikis",
+      "name": "Wikis",
+      "categoryId": "self-hosted",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "melmothx/amusewiki",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "BookStackApp/BookStack",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "django-wiki/django-wiki",
+          "note": "Wiki system with complex functionality for simple integration and a superb interface. Store your knowledge with style: Use django models. ([Demo](https://demo.django-wiki.org/))"
+        },
+        {
+          "fullName": "docmost/docmost",
+          "note": "Source Code"
+        },
+        {
+          "fullName": "documize/community",
+          "note": "Source Code"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-databases-implemented-in-go",
+      "name": "Databases Implemented in Go",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "dgraph-io/badger",
+          "note": "Fast key-value store in Go."
+        },
+        {
+          "fullName": "etcd-io/bbolt",
+          "note": "An embedded key/value database for Go."
+        },
+        {
+          "fullName": "tidwall/buntdb",
+          "note": "Fast, embeddable, in-memory key/value database for Go with custom indexing and spatial support."
+        },
+        {
+          "fullName": "ostafen/clover",
+          "note": "A lightweight document-oriented NoSQL database written in pure Golang."
+        },
+        {
+          "fullName": "cockroachdb/cockroach",
+          "note": "Scalable, Geo-Replicated, Transactional Datastore."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-database-schema-migration",
+      "name": "Database Schema Migration",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ariga/atlas",
+          "note": "A Database Toolkit. A CLI designed to help companies better work with their data."
+        },
+        {
+          "fullName": "khezen/avro",
+          "note": "Discover SQL schemas and convert them to AVRO schemas. Query SQL records into AVRO bytes."
+        },
+        {
+          "fullName": "bytebase/bytebase",
+          "note": "Safe database schema change and version control for DevOps teams."
+        },
+        {
+          "fullName": "GuiaBolso/darwin",
+          "note": "Database schema evolution library for Go."
+        },
+        {
+          "fullName": "amacneil/dbmate",
+          "note": "A lightweight, framework-agnostic database migration tool."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-database-tools",
+      "name": "Database Tools",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Vertamedia/chproxy",
+          "note": "HTTP proxy for ClickHouse database."
+        },
+        {
+          "fullName": "nikepan/clickhouse-bulk",
+          "note": "Collects small inserts and sends big requests to ClickHouse servers."
+        },
+        {
+          "fullName": "kazhuravlev/database-gateway",
+          "note": "Running SQL in production with ACLs, logs, and shared links."
+        },
+        {
+          "fullName": "sj14/dbbench",
+          "note": "Database benchmarking tool with support for several databases and scripts."
+        },
+        {
+          "fullName": "codingconcepts/dg",
+          "note": "A fast data generator that produces CSV files from generated relational data."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-relational-database-drivers",
+      "name": "Relational Database Drivers",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "apache/calcite-avatica-go",
+          "note": "Apache Avatica/Phoenix SQL driver for database/sql."
+        },
+        {
+          "fullName": "viant/bgc",
+          "note": "Datastore Connectivity for BigQuery for go."
+        },
+        {
+          "fullName": "nakagami/firebirdsql",
+          "note": "Firebird RDBMS SQL driver for Go."
+        },
+        {
+          "fullName": "mattn/go-adodb",
+          "note": "Microsoft ActiveX Object DataBase driver for go that uses database/sql."
+        },
+        {
+          "fullName": "denisenkom/go-mssqldb",
+          "note": "Microsoft MSSQL driver for Go."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-nosql-database-drivers",
+      "name": "NoSQL Database Drivers",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "aerospike/aerospike-client-go",
+          "note": "Aerospike client in Go language."
+        },
+        {
+          "fullName": "solher/arangolite",
+          "note": "Lightweight golang driver for ArangoDB."
+        },
+        {
+          "fullName": "viant/asc",
+          "note": "Datastore Connectivity for Aerospike for go."
+        },
+        {
+          "fullName": "couchbase/goforestdb",
+          "note": "Go bindings for ForestDB."
+        },
+        {
+          "fullName": "couchbase/go-couchbase",
+          "note": "Couchbase client in Go."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-search-and-analytic-databases",
+      "name": "Search and Analytic Databases",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ClickHouse/clickhouse-go",
+          "note": "ClickHouse SQL client for Go with a  compatibility."
+        },
+        {
+          "fullName": "sdqri/effdsl",
+          "note": "Elasticsearch query builder for Go."
+        },
+        {
+          "fullName": "olivere/elastic",
+          "note": "Elasticsearch client for Go."
+        },
+        {
+          "fullName": "cch123/elasticsql",
+          "note": "Convert sql to elasticsearch dsl in Go."
+        },
+        {
+          "fullName": "mattbaird/elastigo",
+          "note": "Elasticsearch client library."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-logging",
+      "name": "Logging",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "caarlos0/log",
+          "note": "Colorful CLI logger."
+        },
+        {
+          "fullName": "amoghe/distillog",
+          "note": "distilled levelled logging (think of it as stdlib + log levels)."
+        },
+        {
+          "fullName": "kpango/glg",
+          "note": "glg is simple and fast leveled logging library for Go."
+        },
+        {
+          "fullName": "lajosbencz/glo",
+          "note": "PHP Monolog inspired logging facility with identical severity levels."
+        },
+        {
+          "fullName": "golang/glog",
+          "note": "Leveled execution logs for Go."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-testing-frameworks",
+      "name": "Testing Frameworks",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "arch-go/arch-go",
+          "note": "Architecture testing tool for Go projects."
+        },
+        {
+          "fullName": "go-playground/assert",
+          "note": "Basic Assertion Library used along side native go testing, with building blocks for custom assertions."
+        },
+        {
+          "fullName": "h2non/baloo",
+          "note": "Expressive and versatile end-to-end HTTP API testing made easy."
+        },
+        {
+          "fullName": "carlmjohnson/be",
+          "note": "The minimalist generic test assertion library."
+        },
+        {
+          "fullName": "fulldump/biff",
+          "note": "Bifurcation testing framework, BDD compatible."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-web-frameworks",
+      "name": "Web Frameworks",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "savsgio/atreugo",
+          "note": "High performance and extensible micro web framework with zero memory allocations in hot paths."
+        },
+        {
+          "fullName": "opensaucerer/barf",
+          "note": "Basically, A Remarkable Framework for building JSON-based web APIs. It is entirely unobtrusive and re-invents no wheel. It is crafted such that getting started is easy and quick while being flexible enough for more complex use cases."
+        },
+        {
+          "fullName": "beego/beego",
+          "note": "beego is an open-source, high-performance web framework for the Go programming language."
+        },
+        {
+          "fullName": "abemedia/go-don",
+          "note": "A highly performant and simple to use API framework."
+        },
+        {
+          "fullName": "labstack/echo",
+          "note": "High performance, minimalist Go web framework."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-database",
+      "name": "Database",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "apecloud/ape-dts",
+          "note": "Data Transfer Suite. Provides data replication between MySQL, PostgreSQL, Redis, MongoDB, Kafka, ClickHouse, and more."
+        },
+        {
+          "fullName": "ontola/atomic-server",
+          "note": "Atomic-Server"
+        },
+        {
+          "fullName": "ontola/atomic-server",
+          "note": "![Release"
+        },
+        {
+          "fullName": "ayarotsky/redis-shield",
+          "note": "A Redis module that implements the token-bucket algorithm as a native command for high-performance rate limiting"
+        },
+        {
+          "fullName": "cozodb/cozo",
+          "note": "A transactional, relational database that uses Datalog and focuses on graph data and algorithms. Time-travel-capable, and fast! [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cozodb/cozo/build.yml?branch=main)](https://github.com/cozodb/cozo/actions/workflows/build.yml)"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-web",
+      "name": "Web",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "agrinman/tunnelto",
+          "note": "agrinman/tunnelto"
+        },
+        {
+          "fullName": "cfal/tobaru",
+          "note": "Port forwarder with allowlists, IP and TLS SNI/ALPN rule-based routing, iptables support, round-robin forwarding (load balancing), and hot reloading."
+        },
+        {
+          "fullName": "importantimport/hatsu",
+          "note": "🩵 Self-hosted and fully-automated ActivityPub bridge for static sites. [![release](https://github.com/importantimport/hatsu/actions/workflows/release.yml/badge.svg)](https://github.com/importantimport/hatsu/actions/workflows/release.yml)"
+        },
+        {
+          "fullName": "importantimport/hatsu",
+          "note": "![release"
+        },
+        {
+          "fullName": "janreges/siteone-crawler",
+          "note": "janreges/siteone-crawler"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-web-servers",
+      "name": "Web Servers",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "cloudflare/pingora",
+          "note": "A library for building fast, reliable and evolvable network services."
+        },
+        {
+          "fullName": "emanuele-em/proxelar",
+          "note": "A MITM Proxy 🦀! Toolkit for HTTP/1, HTTP/2, and WebSockets with SSL/TLS Capabilities [![Rust](https://github.com/emanuele-em/proxelar/actions/workflows/autofix.yml/badge.svg)](https://github.com/emanuele-em/proxelar/actions)"
+        },
+        {
+          "fullName": "emanuele-em/proxelar",
+          "note": "![Rust"
+        },
+        {
+          "fullName": "bytedance/g3",
+          "note": "Forward proxy server, support Proxy Chaining, Protocol Inspection, MITM Interception, ICAP Adaptation, Transparent Proxy [![CodeCoverage](https://github.com/bytedance/g3/actions/workflows/codecov.yml/badge.svg)](https://github.com/bytedance/g3/actions)"
+        },
+        {
+          "fullName": "bytedance/g3",
+          "note": "![CodeCoverage"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-development-tools",
+      "name": "Development tools",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "armgabrielyan/deadbranch",
+          "note": "armgabrielyan/deadbranch"
+        },
+        {
+          "fullName": "armgabrielyan/deadbranch",
+          "note": "![CI"
+        },
+        {
+          "fullName": "Julien-cpsn/ATAC",
+          "note": "A feature-full TUI API client made in Rust. ATAC is free, open-source, offline and account-less."
+        },
+        {
+          "fullName": "Canop/bacon",
+          "note": "background rust code checker, similar to cargo-watch"
+        },
+        {
+          "fullName": "biomejs/biome",
+          "note": "A toolchain for web projects, aimed to provide functionalities to maintain them. Biome offers formatter and linter, usable via CLI and LSP"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-command-line",
+      "name": "Command-line",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "clap-rs/clap",
+          "note": "clap-rs"
+        },
+        {
+          "fullName": "sagiegurari/cliparser",
+          "note": "![build badge"
+        },
+        {
+          "fullName": "docopt/docopt.rs",
+          "note": "docopt/docopt.rs"
+        },
+        {
+          "fullName": "google/argh",
+          "note": "google/argh"
+        },
+        {
+          "fullName": "google/argh",
+          "note": "![build badge"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-web-programming",
+      "name": "Web programming",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "actix/actix-web",
+          "note": "A lightweight async web framework with websocket support"
+        },
+        {
+          "fullName": "saru-tora/anansi",
+          "note": "A simple full-stack web framework"
+        },
+        {
+          "fullName": "rwf2/Rocket",
+          "note": "Rocket is a web framework with a focus on ease-of-use, expressability, and speed"
+        },
+        {
+          "fullName": "summer-rs/summer-rs",
+          "note": "summer-rs is a application framework written in rust inspired by java's spring-boot."
+        },
+        {
+          "fullName": "rust-dd/tako",
+          "note": "Tako is an asynchronous web framework for Rust on Hyper & Tokio. [GitHub Workflow Status](https://github.com/rust-dd/tako/actions/workflows/ci.yml/badge.svg)"
+        }
+      ]
+    },
+    {
+      "id": "data-science-machine-learning",
+      "name": "Machine Learning",
+      "categoryId": "data-science",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "catboost/catboost",
+          "note": "A fast, scalable, high performance gradient boosting on decision trees library."
+        },
+        {
+          "fullName": "feature-engine/feature_engine",
+          "note": "sklearn compatible API with the widest toolset for feature engineering and selection."
+        },
+        {
+          "fullName": "h2oai/h2o-3",
+          "note": "Open Source Fast Scalable Machine Learning Platform."
+        },
+        {
+          "fullName": "lightgbm-org/LightGBM",
+          "note": "A fast, distributed, high performance gradient boosting framework."
+        },
+        {
+          "fullName": "mindsdb/mindsdb",
+          "note": "MindsDB is an open source AI layer for existing databases that allows you to effortlessly develop, train and deploy state-of-the-art machine learning models using standard queries."
+        }
+      ]
+    },
+    {
+      "id": "data-science-data-analysis",
+      "name": "Data Analysis",
+      "categoryId": "data-science",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "aws/aws-sdk-pandas",
+          "note": "Pandas on AWS."
+        },
+        {
+          "fullName": "simonw/datasette",
+          "note": "An open source multi-tool for exploring and publishing data."
+        },
+        {
+          "fullName": "desbordante/desbordante-core",
+          "note": "An open source data profiler for complex pattern discovery."
+        },
+        {
+          "fullName": "ibis-project/ibis",
+          "note": "A portable Python dataframe library with a single API for 20+ backends."
+        },
+        {
+          "fullName": "modin-project/modin",
+          "note": "A drop-in pandas replacement that scales workflows by changing a single line of code."
+        }
+      ]
+    },
+    {
+      "id": "data-science-data-visualization",
+      "name": "Data Visualization",
+      "categoryId": "data-science",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "vega/altair",
+          "note": "Declarative statistical visualization library for Python."
+        },
+        {
+          "fullName": "bokeh/bokeh",
+          "note": "Interactive Web Plotting for Python."
+        },
+        {
+          "fullName": "bqplot/bqplot",
+          "note": "Interactive Plotting Library for the Jupyter Notebook."
+        },
+        {
+          "fullName": "matplotlib/matplotlib",
+          "note": "A Python 2D plotting library."
+        },
+        {
+          "fullName": "plotly/plotly.py",
+          "note": "Interactive graphing library for Python."
+        }
+      ]
+    },
+    {
+      "id": "data-science-science",
+      "name": "Science",
+      "categoryId": "data-science",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "numba/numba",
+          "note": "Python JIT compiler to LLVM aimed at scientific Python."
+        },
+        {
+          "fullName": "numpy/numpy",
+          "note": "A fundamental package for scientific computing with Python."
+        },
+        {
+          "fullName": "scipy/scipy",
+          "note": "A Python-based ecosystem of open-source software for mathematics, science, and engineering."
+        },
+        {
+          "fullName": "statsmodels/statsmodels",
+          "note": "Statistical modeling and econometrics in Python."
+        },
+        {
+          "fullName": "sympy/sympy",
+          "note": "A Python library for symbolic mathematics."
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-dashboards",
+      "name": "Dashboards",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "lissy93/AdGuardian-Term",
+          "note": "AdGuardian-Term"
+        },
+        {
+          "fullName": "tessus/apachetop",
+          "note": "apachetop"
+        },
+        {
+          "fullName": "Atoptool/atop",
+          "note": "atop"
+        },
+        {
+          "fullName": "MrLesk/Backlog.md",
+          "note": "Backlog.md"
+        },
+        {
+          "fullName": "imsnif/bandwhich",
+          "note": "bandwhich"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-development",
+      "name": "Development",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "dhth/act3",
+          "note": "act3"
+        },
+        {
+          "fullName": "pehlicd/amtui",
+          "note": "amtui"
+        },
+        {
+          "fullName": "andyrewlee/amux",
+          "note": "amux"
+        },
+        {
+          "fullName": "Julien-cpsn/ATAC",
+          "note": "ATAC"
+        },
+        {
+          "fullName": "P403n1x87/austin-tui",
+          "note": "austin-tui"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-docker-lxc-k8s",
+      "name": "Docker/LXC/K8s",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "darksworm/argonaut",
+          "note": "Argonaut"
+        },
+        {
+          "fullName": "bcicen/ctop",
+          "note": "ctop"
+        },
+        {
+          "fullName": "jr-k/d4s",
+          "note": "d4s"
+        },
+        {
+          "fullName": "amir20/dtop",
+          "note": "dtop"
+        },
+        {
+          "fullName": "wagoodman/dive",
+          "note": "dive"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-editors",
+      "name": "Editors",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "jmacdonald/amp",
+          "note": "amp"
+        },
+        {
+          "fullName": "velorek1/c-edit",
+          "note": "C-Edit"
+        },
+        {
+          "fullName": "cmang/durdraw",
+          "note": "Durdraw"
+        },
+        {
+          "fullName": "microsoft/edit",
+          "note": "Edit"
+        },
+        {
+          "fullName": "sinelaw/fresh",
+          "note": "Fresh"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-file-managers",
+      "name": "File Managers",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "darkhz/adbtuifm",
+          "note": "adbtuifm"
+        },
+        {
+          "fullName": "Canop/broot",
+          "note": "broot"
+        },
+        {
+          "fullName": "pashkov256/deletor",
+          "note": "deletor"
+        },
+        {
+          "fullName": "elfmz/far2l",
+          "note": "far2l"
+        },
+        {
+          "fullName": "wick3dr0se/fml",
+          "note": "file_folder: A stupid simple, fast file manager written in BASH v4.2+."
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-games",
+      "name": "Games",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ps06756/tui-2048",
+          "note": "tui-2048"
+        },
+        {
+          "fullName": "TheMozg/awk-raycaster",
+          "note": "awkaster"
+        },
+        {
+          "fullName": "Passeriform/BalatroTUI",
+          "note": "balatrotui"
+        },
+        {
+          "fullName": "fph/bastet",
+          "note": "bastet"
+        },
+        {
+          "fullName": "jifunks/botany",
+          "note": "botany"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-python",
+      "name": "Python",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "koloideal/Argenta",
+          "note": "Argenta"
+        },
+        {
+          "fullName": "jquast/blessed",
+          "note": "blessed"
+        },
+        {
+          "fullName": "erikrose/blessings",
+          "note": "blessings"
+        },
+        {
+          "fullName": "dankamongmen/notcurses",
+          "note": "notcurses"
+        },
+        {
+          "fullName": "jwlodek/py_cui",
+          "note": "py_cui"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-go",
+      "name": "GO",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "charmbracelet/bubbletea",
+          "note": "bubbletea"
+        },
+        {
+          "fullName": "jroimartin/gocui",
+          "note": "gocui"
+        },
+        {
+          "fullName": "pterm/pterm",
+          "note": "pterm"
+        },
+        {
+          "fullName": "76creates/stickers",
+          "note": "stickers"
+        },
+        {
+          "fullName": "marcusolsson/tui-go",
+          "note": "tui-go"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-c",
+      "name": "C",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "oerg866/anbui",
+          "note": "AnbUI"
+        },
+        {
+          "fullName": "libuv/libuv",
+          "note": "libuv"
+        },
+        {
+          "fullName": "Cubified/tuibox",
+          "note": "tuibox"
+        },
+        {
+          "fullName": "tjunruh/ASCII_Board_Game_Engine",
+          "note": "ASCII_Board_Game_Engine"
+        },
+        {
+          "fullName": "ural89/ConsoleCraftEngine",
+          "note": "ConsoleCraftEngine"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-java",
+      "name": "Java",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "crramirez/casciian",
+          "note": "casciian"
+        },
+        {
+          "fullName": "mabe02/lanterna",
+          "note": "Lanterna"
+        },
+        {
+          "fullName": "WilliamAGH/tui4j",
+          "note": "TUI4J"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-net",
+      "name": ".NET",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "jinek/Consolonia",
+          "note": "Consolonia"
+        },
+        {
+          "fullName": "mitchdenny/hex1b",
+          "note": "Hex1b"
+        },
+        {
+          "fullName": "nickprotop/ConsoleEx",
+          "note": "SharpConsoleUI"
+        },
+        {
+          "fullName": "spectreconsole/spectre.console",
+          "note": "Spectre.Console"
+        },
+        {
+          "fullName": "gui-cs/Terminal.Gui",
+          "note": "Terminal.Gui"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-rust",
+      "name": "Rust",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ccbrown/iocraft",
+          "note": "iocraft"
+        },
+        {
+          "fullName": "tui-rs-revival/ratatui",
+          "note": "Ratatui"
+        },
+        {
+          "fullName": "sayanarijit/tui-input",
+          "note": "tui-input"
+        },
+        {
+          "fullName": "fdehau/tui-rs",
+          "note": "tui-rs"
+        },
+        {
+          "fullName": "raphamorim/zaz",
+          "note": "Zaz"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-other",
+      "name": "Other",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "colinta/Ashen",
+          "note": "Ashen"
+        },
+        {
+          "fullName": "chjj/blessed",
+          "note": "blessed"
+        },
+        {
+          "fullName": "charmbracelet/gum",
+          "note": "gum"
+        },
+        {
+          "fullName": "vadimdemedes/ink",
+          "note": "ink"
+        },
+        {
+          "fullName": "cjroth/ink-web",
+          "note": "ink-web"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-messaging",
+      "name": "Messaging",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "erikjuhani/basalt",
+          "note": "basalt"
+        },
+        {
+          "fullName": "Lommix/blitzdenk",
+          "note": "blitzdenk"
+        },
+        {
+          "fullName": "quackduck/devzat",
+          "note": "Devzat"
+        },
+        {
+          "fullName": "ayntgl/discordo",
+          "note": "discordo"
+        },
+        {
+          "fullName": "mzivic7/endcord",
+          "note": "endcord"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-miscellaneous",
+      "name": "Miscellaneous",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "reportaman/arttime",
+          "note": "arttime"
+        },
+        {
+          "fullName": "dewberryants/asciiMol",
+          "note": "asciiMol"
+        },
+        {
+          "fullName": "darkhz/bluetuith",
+          "note": "bluetuith"
+        },
+        {
+          "fullName": "pythops/bluetui",
+          "note": "bluetui"
+        },
+        {
+          "fullName": "ifd3f/caligula",
+          "note": "Caligula"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-multimedia",
+      "name": "Multimedia",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "komposer-aml/ani-l",
+          "note": "ani-l"
+        },
+        {
+          "fullName": "chaosprint/asak",
+          "note": "asak"
+        },
+        {
+          "fullName": "bugzmanov/bookokrat",
+          "note": "bookokrat"
+        },
+        {
+          "fullName": "knosmos/cmdpxl",
+          "note": "cmdpxl"
+        },
+        {
+          "fullName": "An7ar35/ctune",
+          "note": "ctune"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-productivity",
+      "name": "Productivity",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "asheshgoplani/agent-deck",
+          "note": "agent-deck"
+        },
+        {
+          "fullName": "junminhong/awsui",
+          "note": "awsui"
+        },
+        {
+          "fullName": "EnhancedJax/Bagels",
+          "note": "Bagels"
+        },
+        {
+          "fullName": "WilliamAGH/brief",
+          "note": "Brief"
+        },
+        {
+          "fullName": "anufrievroman/calcure",
+          "note": "calcure"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-screensavers",
+      "name": "Screensavers",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "da-luce/astroterm",
+          "note": "astroterm"
+        },
+        {
+          "fullName": "unhappychoice/gitlogue",
+          "note": "gitlogue"
+        },
+        {
+          "fullName": "st3w/neo",
+          "note": "neo"
+        },
+        {
+          "fullName": "inunix3/rxpipes",
+          "note": "rxpipes"
+        },
+        {
+          "fullName": "veirt/weathr",
+          "note": "weathr"
+        }
+      ]
+    },
+    {
+      "id": "cli-tools-web",
+      "name": "Web",
+      "categoryId": "cli-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "browsh-org/browsh",
+          "note": "browsh"
+        },
+        {
+          "fullName": "CrociDB/bulletty",
+          "note": "bulletty"
+        },
+        {
+          "fullName": "mrusme/canard",
+          "note": "Canard"
+        },
+        {
+          "fullName": "mrusme/journalist",
+          "note": "Journalist"
+        },
+        {
+          "fullName": "fathyb/carbonyl",
+          "note": "carbonyl"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-networking",
+      "name": "Networking",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "mdlayher/arp",
+          "note": "Package arp implements the ARP protocol, as described in RFC 826."
+        },
+        {
+          "fullName": "gaissmai/bart",
+          "note": "Package bart provides a Balanced-Routing-Table (BART) for very fast IP to CIDR lookups and more."
+        },
+        {
+          "fullName": "stabbycutyou/buffstreams",
+          "note": "Streaming protocolbuffer data over TCP made easy."
+        },
+        {
+          "fullName": "zubairhamed/canopus",
+          "note": "CoAP Client/Server implementation (RFC 7252)."
+        },
+        {
+          "fullName": "junevm/cdns",
+          "note": "Change DNS servers effortlessly via terminal."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-security",
+      "name": "Security",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "hlandau/acme",
+          "note": "ACME (Let's Encrypt) client tool with automatic renewal."
+        },
+        {
+          "fullName": "cossacklabs/acra",
+          "note": "Network encryption proxy to protect database-based applications from data leaks: strong selective encryption, SQL injections prevention, intrusion detection system."
+        },
+        {
+          "fullName": "FiloSottile/age",
+          "note": "A simple, modern and secure encryption tool (and Go library) with small explicit keys, no config options, and UNIX-style composability."
+        },
+        {
+          "fullName": "andskur/argon2-hashing",
+          "note": "light wrapper around Go's argon2 package that closely mirrors with Go's standard library Bcrypt and simple-scrypt package."
+        },
+        {
+          "fullName": "jaredfolkins/badactor",
+          "note": "In-memory, application-driven jailer built in the spirit of fail2ban."
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-social-networks",
+      "name": "Social networks",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "rustodon/rustodon",
+          "note": "A Mastodon-compatible, ActivityPub-speaking server."
+        },
+        {
+          "fullName": "FedericoBruzzone/tgt",
+          "note": "A crossplatform TUI for Telegram [![ci-linux](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-linux.yml/badge.svg)](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-linux.yml) [![ci-macos](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-macos.yml/badge.svg)](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-macos.yml) [![ci-windows](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-windows.yml/badge.svg)](https://github.com/FedericoBruzzone/tgt/actions/workflows/ci-windows.yml)"
+        },
+        {
+          "fullName": "FedericoBruzzone/tgt",
+          "note": "![ci-linux"
+        },
+        {
+          "fullName": "FedericoBruzzone/tgt",
+          "note": "![ci-macos"
+        },
+        {
+          "fullName": "FedericoBruzzone/tgt",
+          "note": "![ci-windows"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-system-tools",
+      "name": "System tools",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "ajeetdsouza/zoxide",
+          "note": "A fast alternative to  that learns your habits [![release](https://github.com/ajeetdsouza/zoxide/actions/workflows/release.yml/badge.svg)](https://github.com/ajeetdsouza/zoxide/actions)"
+        },
+        {
+          "fullName": "ajeetdsouza/zoxide",
+          "note": "![release"
+        },
+        {
+          "fullName": "nohajc/anylinuxfs",
+          "note": "CLI tool for mounting any linux-supported filesystem on a Mac - using NFS with a microVM"
+        },
+        {
+          "fullName": "fenio/anylinuxfs-gui",
+          "note": "GUI application for anylinuxfs"
+        },
+        {
+          "fullName": "atuinsh/atuin",
+          "note": "atuin"
+        }
+      ]
+    },
+    {
+      "id": "dev-tools-network-programming",
+      "name": "Network programming",
+      "categoryId": "dev-tools",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bluez/bluer",
+          "note": "bluez/bluer"
+        },
+        {
+          "fullName": "bluez/bluer",
+          "note": "![build badge"
+        },
+        {
+          "fullName": "Covertness/coap-rs",
+          "note": "A [Constrained Application Protocol(CoAP)](https://datatracker.ietf.org/doc/html/rfc7252) library."
+        },
+        {
+          "fullName": "fussybeaver/bollard",
+          "note": "Docker daemon API"
+        },
+        {
+          "fullName": "mattnenterprise/rust-ftp",
+          "note": "an [FTP](https://en.wikipedia.org/wiki/File_Transfer_Protocol) client"
+        }
+      ]
+    },
+    {
+      "id": "data-science-natural-language-processing",
+      "name": "Natural Language Processing",
+      "categoryId": "data-science",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "piskvorky/gensim",
+          "note": "Topic Modeling for Humans."
+        },
+        {
+          "fullName": "nltk/nltk",
+          "note": "A leading platform for building Python programs to work with human language data."
+        },
+        {
+          "fullName": "explosion/spaCy",
+          "note": "A library for industrial-strength natural language processing in Python and Cython."
+        },
+        {
+          "fullName": "stanfordnlp/stanza",
+          "note": "The Stanford NLP Group's official Python library, supporting 60+ languages."
+        },
+        {
+          "fullName": "fighting41love/funNLP",
+          "note": "A collection of tools and datasets for Chinese NLP."
+        }
+      ]
+    },
+    {
+      "id": "ai-llm-general-purpose-machine-learning",
+      "name": "General-Purpose Machine Learning",
+      "categoryId": "ai-llm",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "yconst/YCML",
+          "note": "A Machine Learning framework for Objective-C and Swift (OS X / iOS)."
+        },
+        {
+          "fullName": "nikolaypavlov/MLPNeuralNet",
+          "note": "Fast multilayer perceptron neural network library for iOS and Mac OS X. MLPNeuralNet predicts new examples by trained neural networks. It is built on top of the Apple's Accelerate Framework, using vectorized operations and hardware acceleration if available. **[Deprecated]**"
+        },
+        {
+          "fullName": "gianlucabertani/MAChineLearning",
+          "note": "An Objective-C multilayer perceptron library, with full support for training through backpropagation. Implemented using vDSP and vecLib, it's 20 times faster than its Java equivalent. Includes sample code for use from Swift."
+        },
+        {
+          "fullName": "Kalvar/ios-BPN-NeuralNetwork",
+          "note": "It implemented 3 layers of neural networks ( Input Layer, Hidden Layer and Output Layer ) and it was named Back Propagation Neural Networks (BPN). This network can be used in products recommendation, user behavior analysis, data mining and data analysis. **[Deprecated]**"
+        },
+        {
+          "fullName": "Kalvar/ios-Multi-Perceptron-NeuralNetwork",
+          "note": "It implemented multi-perceptrons neural network (ニューラルネットワーク) based on Back Propagation Neural Networks (BPN) and designed unlimited-hidden-layers."
+        }
+      ]
+    },
+    {
+      "id": "security-threat-intelligence",
+      "name": "Threat Intelligence",
+      "categoryId": "security",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "fireeye/iocs",
+          "note": "FireEye Publicly Shared Indicators of Compromise (IOCs)"
+        },
+        {
+          "fullName": "certtools/intelmq",
+          "note": "IntelMQ is a solution for CERTs for collecting and processing security feeds, pastebins, tweets using a message queue protocol. It's a community driven initiative called IHAP (Incident Handling Automation Project) which was conceptually designed by European CERTs during several InfoSec events. Its main goal is to give to incident responders an easy way to collect & process threat intelligence thus improving the incident handling processes of CERTs. [ENSIA Homepage](https://www.enisa.europa.eu/activities/cert/support/incident-handling-automation)."
+        },
+        {
+          "fullName": "csirtgadgets/massive-octo-spice",
+          "note": "CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route)."
+        },
+        {
+          "fullName": "karimhabush/cyberowl",
+          "note": "A daily updated summary of the most frequent types of security incidents currently being reported from different sources."
+        }
+      ]
+    },
+    {
+      "id": "security-web-application-firewall",
+      "name": "Web Application Firewall",
+      "categoryId": "security",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "bunkerity/bunkerweb",
+          "note": "BunkerWeb is a full-featured open-source web server with ModeSecurity WAF, HTTPS with transparent Let's Encrypt renewal, automatic ban of strange behaviors based on HTTP codes, bot and bad IPs block, connection limits, state-of-the-art security presets, Web UI and much more."
+        },
+        {
+          "fullName": "nbs-system/naxsi",
+          "note": "NAXSI is an open-source, high performance, low rules maintenance WAF for NGINX, NAXSI means Nginx Anti Xss & Sql Injection."
+        },
+        {
+          "fullName": "uptimejp/sql_firewall",
+          "note": "sql_firewall"
+        },
+        {
+          "fullName": "ironbee/ironbee",
+          "note": "IronBee is an open source project to build a universal web application security sensor. IronBee as a framework for developing a system for securing web applications - a framework for building a web application firewall (WAF)."
+        },
+        {
+          "fullName": "curiefense/curiefense",
+          "note": "Curiefense adds a broad set of automated web security tools, including a WAF to Envoy Proxy."
+        }
+      ]
+    },
+    {
+      "id": "devops-observability-monitoring",
+      "name": "Observability & Monitoring",
+      "categoryId": "devops",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "alerta/alerta",
+          "note": "Scalable, minimal configuration and visualization monitoring system."
+        },
+        {
+          "fullName": "arachnys/cabot",
+          "note": "Self-hosted, easily-deployable monitoring and alerts service."
+        },
+        {
+          "fullName": "amonapp/amon",
+          "note": "Modern server monitoring platform."
+        },
+        {
+          "fullName": "shinken-solutions/shinken",
+          "note": "Monitoring framework."
+        },
+        {
+          "fullName": "nicolargo/glances",
+          "note": "Monitoring information through a curses or Web based interface."
+        }
+      ]
+    },
+    {
+      "id": "games-boardgame",
+      "name": "Boardgame",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "juliangarnier/3D-Hartwig-chess-set",
+          "note": "3D chess game done in HTML/CSS/JS. [Play it now!](http://codepen.io/juliangarnier/full/BsIih)"
+        },
+        {
+          "fullName": "kenrick95/c4",
+          "note": "Connect Four game, with AI, in HTML/CSS/JS. [Play it now!](https://kenrick95.github.io/c4/demo/)"
+        },
+        {
+          "fullName": "David20321/FTJ",
+          "note": "Free online board game that was designed to be played just like a board game in real-life: no rules are enforced by the computer. [Play it now!](http://www.wolfire.com/desperate-gods)"
+        },
+        {
+          "fullName": "danbeck/green-mahjong",
+          "note": "Solitaire mahjong game done in HTML/CSS/JS."
+        },
+        {
+          "fullName": "binarymax/kriegspiel",
+          "note": "The game of imperfect information, the Kriegspiel chess variant."
+        }
+      ]
+    },
+    {
+      "id": "games-arcade",
+      "name": "Arcade",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Dave-and-Mike/game-off-2012",
+          "note": "HTML5, JavaScript, GameJs arcade game where you control an Algae. [Play it now!](http://dave-and-mike.github.io/game-off-2012/)"
+        },
+        {
+          "fullName": "cykod/AlienInvasion",
+          "note": "Demo Game for Mobile HTML5 Game Development. [Play it now!](http://cykod.github.io/AlienInvasion/)"
+        },
+        {
+          "fullName": "stephank/arashi-js",
+          "note": "Arashi is a clone of the Arcade game Tempest. [Play it now!](http://stephank.github.io/arashi-js/)"
+        },
+        {
+          "fullName": "dmcinnes/HTML5-Asteroids",
+          "note": "Pure JavaScript asteroids. [Play it now!](http://dougmcinnes.com/html-5-asteroids/)"
+        },
+        {
+          "fullName": "Zolmeister/avabranch",
+          "note": "GitHub Game Off 2012 entry. [Play it now!](http://avabranch.zolmeister.com/)"
+        }
+      ]
+    },
+    {
+      "id": "games-rpg",
+      "name": "RPG",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "mitallast/diablo-js",
+          "note": "Isometric minimal-code style game at html5 canvas and javascript.  [Play it now!](http://mitallast.github.io/diablo-js/)"
+        },
+        {
+          "fullName": "CamHenlin/Roguish",
+          "note": "RPG/Rogue-like game created in JavaScript."
+        },
+        {
+          "fullName": "antionio/game-off-2013",
+          "note": "Randomly generated action RPG."
+        },
+        {
+          "fullName": "angband/angband",
+          "note": "Single-player dungeon exploration game in the universe of JRR Tolkien."
+        },
+        {
+          "fullName": "arx/ArxLibertatis",
+          "note": "Cross-platform port of Arx Fatalis, a first-person role-playing game."
+        }
+      ]
+    },
+    {
+      "id": "games-mmorpg",
+      "name": "MMORPG",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "mozilla/BrowserQuest",
+          "note": "HTML5/JavaScript multiplayer game experiment. [Play it now!](http://browserquest.mozilla.org/)"
+        },
+        {
+          "fullName": "Tach-Yon/Tap-Tap-Adventure",
+          "note": "Expansion of BrowserQuest. [Play it now!](http://taptapadventure.com/play)"
+        },
+        {
+          "fullName": "OpenMeridian/Meridian59",
+          "note": "The first 3D MMORPG, released in 1996 and open sourced in 2012. Forked in 2013, Actively developed. [Play it now!](http://openmeridian.org)"
+        },
+        {
+          "fullName": "Meridian59/Meridian59",
+          "note": "The first 3D MMORPG, released in 1996 and open sourced in 2012. The original codebase for Meridian 59, less frequently updated. [Play it now!](http://www.meridian59.com)"
+        },
+        {
+          "fullName": "arianne/stendhal",
+          "note": "a fun friendly and free 2D multiplayer online adventure game with an old school feel. [Play it now!](https://stendhalgame.org)"
+        }
+      ]
+    },
+    {
+      "id": "games-strategy",
+      "name": "Strategy",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "FreezingMoon/AncientBeast",
+          "note": "Materialize and control beasts in order to defeat your opponents! [Play it now!](http://ancientbeast.com/play)"
+        },
+        {
+          "fullName": "adityaravishankar/command-and-conquer",
+          "note": "Clone of the popular RTS. [Play it now!](http://www.adityaravishankar.com/projects/games/command-and-conquer/)"
+        },
+        {
+          "fullName": "freeciv/freeciv-web",
+          "note": "An turn-based strategy game implemented in HTML5."
+        },
+        {
+          "fullName": "itajaja/hb",
+          "note": "A turn based dungeon crawler written with Typescript, using React and SVG. [Play it now!](http://giacomotag.io/hb/)"
+        },
+        {
+          "fullName": "Casmo/tower-defense",
+          "note": "3D Tower Defense build with Three.js in HTML5."
+        }
+      ]
+    },
+    {
+      "id": "games-racing",
+      "name": "Racing",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "BKcore/HexGL",
+          "note": "Futuristic HTML5 racing game by Thibaut Despoulain using HTML5, Javascript and WebGL. [Play it now!](http://hexgl.bkcore.com/)"
+        },
+        {
+          "fullName": "CodeArtemis/TriggerRally",
+          "note": "Fast arcade rally racing."
+        },
+        {
+          "fullName": "stuntrally/stuntrally",
+          "note": "Rally game with Track Editor, based on VDrift and OGRE."
+        },
+        {
+          "fullName": "supertuxkart/stk-code",
+          "note": "Free 3D kart racing game featuring open source mascots."
+        }
+      ]
+    },
+    {
+      "id": "games-sandbox",
+      "name": "Sandbox",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "lo-th/3d.city",
+          "note": "3d city builder game. [Play it now!](http://lo-th.github.io/3d.city/index.html)"
+        },
+        {
+          "fullName": "morozd/blk-game",
+          "note": "Multiplayer Javascript/WebGL voxel world game demo. [Play it now!](http://benvanik.github.io/blk-game/)"
+        },
+        {
+          "fullName": "Nurgak/Cube-engine",
+          "note": "3D engine completely written in HTML5 without OpenGL. [Play it now!](http://nurgak.github.io/Cube-engine/)"
+        },
+        {
+          "fullName": "B-Train04/Project-Cube",
+          "note": "Voxel game based on Minecraft made with HTML5. [Play it now!](https://b-train04.github.io/Project-Cube/projectCube/index.html)"
+        },
+        {
+          "fullName": "Blackvoxel/Blackvoxel",
+          "note": "Sandbox game based on a molecular voxel interaction engine."
+        }
+      ]
+    },
+    {
+      "id": "games-puzzle",
+      "name": "Puzzle",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Q42/0hn0",
+          "note": "Companion game to 0hh1 by Q42. [Play it now!](http://0hh0.com)"
+        },
+        {
+          "fullName": "Q42/0hh1",
+          "note": "Lovely little logic game by Q42. [Play it now!](http://0hh1.com)"
+        },
+        {
+          "fullName": "gabrielecirulli/2048",
+          "note": "Sliding addition game [Play it now!](http://gabrielecirulli.github.io/2048/)"
+        },
+        {
+          "fullName": "doublespeakgames/adarkroom",
+          "note": "Minimalist Text Adventure game written in JavaScript. [Play it now!](http://adarkroom.doublespeakgames.com/)"
+        },
+        {
+          "fullName": "binarymax/anagramica",
+          "note": "A word game and API for anagrams. [Play it now!](http://www.anagramica.com/)"
+        }
+      ]
+    },
+    {
+      "id": "games-others",
+      "name": "Others",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "dominikwilkowski/beast.js",
+          "note": "An homage to the 1984 ASCII game \"BEAST\" from Dan Baker, Alan Brown, Mark Hamilton and Derrick Shadel written in node. You have to squash little ASCII beasts between pushable blocks but watch you to not be eaten by them."
+        },
+        {
+          "fullName": "lpinca/binb",
+          "note": "Competitive, multiplayer, realtime, guess the song game. [Play it now!](https://binb.co)"
+        },
+        {
+          "fullName": "cshepp/candyjam",
+          "note": "HTML5 shooter/tower defense game for the #CandyJam. [Play it now!](http://cas002.itch.io/dental-defenders-saga-of-the-candy-horde)"
+        },
+        {
+          "fullName": "TomWHall/Descensus2",
+          "note": "A TypeScript 2D physics game."
+        },
+        {
+          "fullName": "munificent/hauberk",
+          "note": "Hauberk is a roguelike, an ASCII-art based procedurally-generated dungeon crawl game. It's written in Dart and runs in your browser."
+        }
+      ]
+    },
+    {
+      "id": "games-fps",
+      "name": "FPS",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "assaultcube/AC",
+          "note": "Total conversion of Wouter van Oortmerssen's FPS called Cube."
+        },
+        {
+          "fullName": "freedoom/freedoom",
+          "note": "Free software FPS based on the classic Doom engine."
+        },
+        {
+          "fullName": "GlPortal/glPortal",
+          "note": "A modern 3D game and engine with portals written in C++."
+        },
+        {
+          "fullName": "ioquake/ioq3",
+          "note": "The free software FPS engine that can be used to play Quake 3, or make your own game."
+        },
+        {
+          "fullName": "flibitijibibo/LWJake2",
+          "note": "LWJGL port of Quake 2."
+        }
+      ]
+    },
+    {
+      "id": "games-platform",
+      "name": "Platform",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "hirnbix/captain-holetooth",
+          "note": "A fun, explorative and story-driven platformer with minigames. Made with the Godot Engine."
+        },
+        {
+          "fullName": "gerstrong/Commander-Genius",
+          "note": "Commander Keen compatible clone."
+        },
+        {
+          "fullName": "voithos/elemental-one",
+          "note": "Built with the Phaser HTML5 game framework. [Play it now!](http://skepsi.me/elemental-one/)"
+        },
+        {
+          "fullName": "gl00my/catesc",
+          "note": "Hardcore oldschool platformer on [INSTEAD](http://github.com/instead-hub/instead)."
+        },
+        {
+          "fullName": "instead-hub/instead",
+          "note": "INSTEAD"
+        }
+      ]
+    },
+    {
+      "id": "games-puzzle-card-board",
+      "name": "Puzzle/card/board",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "Tiehuis/2048-cli",
+          "note": "CLI version of the game 2048 for your Linux terminal."
+        },
+        {
+          "fullName": "alewmoose/2048-in-terminal",
+          "note": "CLI version of the game 2048 made right."
+        },
+        {
+          "fullName": "segrax/DrCreep",
+          "note": "The Castles of Dr. Creep"
+        },
+        {
+          "fullName": "paulbatum/Dominion",
+          "note": "C# implementation of Dominion, a board/card game."
+        },
+        {
+          "fullName": "karussell/ebbeflut",
+          "note": "Really nice board game implemented in a bad way a VERY long time ago."
+        }
+      ]
+    },
+    {
+      "id": "games-android",
+      "name": "Android",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "tvbarthel/ChaseWhisplyProject",
+          "note": "Chase Whisply is a FPS. You have to seek, find and kill the ghosts living around you."
+        },
+        {
+          "fullName": "prakhar1989/colorphun",
+          "note": "ColorPhun is a simple color based Android Game."
+        },
+        {
+          "fullName": "zsoltk/GameOfLife",
+          "note": "Conway's Game of Life with editable rules"
+        },
+        {
+          "fullName": "chuvidi2003/GidiGames",
+          "note": "Lexis, TicTacToe, Puzzlemania - a collection of 3 board games done with Cocos2d for Android."
+        },
+        {
+          "fullName": "danbeck/green-mahjong",
+          "note": "Solitaire mahjong game done in HTML/CSS/JS."
+        }
+      ]
+    },
+    {
+      "id": "games-ios",
+      "name": "IOS",
+      "categoryId": "games",
+      "description": "Curated from awesome-lists",
+      "repos": [
+        {
+          "fullName": "xyclos/BatLovesBugs",
+          "note": "Arcade game about a bug-craving bat."
+        },
+        {
+          "fullName": "zgrossbart/bridges",
+          "note": "Puzzle game with bridges, houses, tolls, and subways for iOS."
+        },
+        {
+          "fullName": "ericjohnson/canabalt-ios",
+          "note": "Release of Canabalt for iOS."
+        },
+        {
+          "fullName": "ISosnovik/chooseFigure",
+          "note": "Simple logic game. Choose the right figure. Train your attention."
+        },
+        {
+          "fullName": "id-Software/DOOM-iOS",
+          "note": "Doom Classic for iOS."
+        }
+      ]
+    }
+  ],
+  "featured": [
+    {
+      "fullName": "vercel/next.js",
+      "tagline": "The React framework for production"
+    },
+    {
+      "fullName": "astral-sh/ruff",
+      "tagline": "An extremely fast Python linter"
+    },
+    {
+      "fullName": "fastapi/fastapi",
+      "tagline": "High-performance Python API framework"
+    },
+    {
+      "fullName": "BurntSushi/ripgrep",
+      "tagline": "Recursively search with speed"
+    },
+    {
+      "fullName": "streamlit/streamlit",
+      "tagline": "Build data apps in Python"
+    },
+    {
+      "fullName": "biomejs/biome",
+      "tagline": "One toolchain for your web project"
+    },
+    {
+      "fullName": "ollama/ollama",
+      "tagline": "Run large language models locally"
+    },
+    {
+      "fullName": "immich-app/immich",
+      "tagline": "Self-hosted photo and video backup"
+    },
+    {
+      "fullName": "jellyfin/jellyfin",
+      "tagline": "The free software media system"
+    },
+    {
+      "fullName": "grafana/grafana",
+      "tagline": "Open observability platform"
+    },
+    {
+      "fullName": "tailscale/tailscale",
+      "tagline": "Zero-config mesh VPN built on WireGuard"
+    },
+    {
+      "fullName": "godotengine/godot",
+      "tagline": "Multi-platform 2D and 3D game engine"
+    },
+    {
+      "fullName": "supabase/supabase",
+      "tagline": "The open-source Firebase alternative"
+    },
+    {
+      "fullName": "hoppscotch/hoppscotch",
+      "tagline": "Open-source API development ecosystem"
+    },
+    {
+      "fullName": "actualbudget/actual",
+      "tagline": "Privacy-focused personal budgeting"
+    }
+  ]
+}

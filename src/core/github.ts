@@ -1,81 +1,82 @@
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
 import type { RepoInfo, SearchResult, RepoFile } from '../types/github.js';
+import { getGithubToken } from './config.js';
 import { logger } from '../utils/logger.js';
 
-const execFileAsync = promisify(execFile);
+// ── GitHub REST API client ─────────────────────────────────
 
-async function gh(args: string[]): Promise<string> {
-  try {
-    const { stdout } = await execFileAsync('gh', args, {
-      timeout: 30_000,
-      maxBuffer: 10 * 1024 * 1024,
-    });
-    return stdout;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    throw new Error(`gh CLI failed: ${msg}`);
+async function githubFetch<T = unknown>(endpoint: string): Promise<T> {
+  const token = getGithubToken();
+  const headers: Record<string, string> = {
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'User-Agent': 'GitStore/0.1.0',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
+
+  const res = await fetch(`https://api.github.com${endpoint}`, { headers });
+
+  if (!res.ok) {
+    // Rate limit detection
+    const remaining = res.headers.get('x-ratelimit-remaining');
+    if (res.status === 403 && remaining === '0') {
+      const reset = res.headers.get('x-ratelimit-reset');
+      const resetAt = reset ? new Date(parseInt(reset) * 1000).toLocaleTimeString() : 'soon';
+      throw new Error(
+        `GitHub API rate limit exceeded. Resets at ${resetAt}. ` +
+        `Add a personal access token in Settings for 5,000 requests/hour.`
+      );
+    }
+    const body = await res.json().catch(() => ({})) as Record<string, unknown>;
+    throw new Error(`GitHub API ${res.status}: ${body.message ?? res.statusText}`);
+  }
+
+  return res.json() as Promise<T>;
 }
 
-/**
- * Parse search results from `gh search repos`.
- * Field names: name, owner, fullName, description, stargazersCount,
- * forksCount, language, license, updatedAt, createdAt, isArchived,
- * defaultBranch, homepage
- */
-function parseSearchResult(raw: Record<string, unknown>): RepoInfo {
-  const owner = raw.owner as Record<string, unknown>;
+// ── Parsers ────────────────────────────────────────────────
+
+interface GitHubSearchItem {
+  name: string;
+  full_name: string;
+  owner: { login: string };
+  description: string | null;
+  stargazers_count: number;
+  forks_count: number;
+  language: string | null;
+  license: { spdx_id: string; name: string } | null;
+  topics: string[];
+  default_branch: string;
+  updated_at: string;
+  created_at: string;
+  homepage: string | null;
+  archived: boolean;
+  open_issues_count: number;
+}
+
+function parseRepo(raw: GitHubSearchItem): RepoInfo {
+  const [owner, name] = raw.full_name.split('/');
   return {
-    owner: owner?.login as string ?? '',
-    name: raw.name as string,
-    fullName: raw.fullName as string ?? `${owner?.login}/${raw.name}`,
-    description: (raw.description as string) ?? null,
-    stars: (raw.stargazersCount ?? 0) as number,
-    forks: (raw.forksCount ?? 0) as number,
-    language: (raw.language as string) ?? null,
-    license: (raw.license as Record<string, unknown>)?.key as string ?? (raw.license as string) ?? null,
-    topics: [],  // not available in search results
-    defaultBranch: (raw.defaultBranch as string) ?? 'main',
-    updatedAt: (raw.updatedAt as string) ?? '',
-    createdAt: (raw.createdAt as string) ?? '',
-    homepage: (raw.homepage as string) ?? null,
-    isArchived: (raw.isArchived ?? false) as boolean,
-    openIssues: 0,
+    owner,
+    name,
+    fullName: raw.full_name,
+    description: raw.description,
+    stars: raw.stargazers_count ?? 0,
+    forks: raw.forks_count ?? 0,
+    language: raw.language,
+    license: raw.license?.spdx_id ?? raw.license?.name ?? null,
+    topics: raw.topics ?? [],
+    defaultBranch: raw.default_branch ?? 'main',
+    updatedAt: raw.updated_at ?? '',
+    createdAt: raw.created_at ?? '',
+    homepage: raw.homepage,
+    isArchived: raw.archived ?? false,
+    openIssues: raw.open_issues_count ?? 0,
   };
 }
 
-/**
- * Parse repo view from `gh repo view`.
- * Field names: name, owner, description, stargazerCount, forkCount,
- * primaryLanguage, licenseInfo, updatedAt, createdAt, isArchived,
- * defaultBranchRef, repositoryTopics, homepageUrl, issues
- */
-function parseRepoView(raw: Record<string, unknown>): RepoInfo {
-  const owner = raw.owner as Record<string, unknown>;
-  const primaryLang = raw.primaryLanguage as Record<string, unknown> | null;
-  const licenseInfo = raw.licenseInfo as Record<string, unknown> | null;
-  const defaultBranch = raw.defaultBranchRef as Record<string, unknown> | null;
-  const topicNodes = (raw.repositoryTopics as Record<string, unknown>)?.nodes as Array<Record<string, unknown>> | undefined;
-
-  return {
-    owner: owner?.login as string ?? '',
-    name: raw.name as string,
-    fullName: (raw.nameWithOwner as string) ?? `${owner?.login}/${raw.name}`,
-    description: (raw.description as string) ?? null,
-    stars: (raw.stargazerCount ?? 0) as number,
-    forks: (raw.forkCount ?? 0) as number,
-    language: primaryLang?.name as string ?? null,
-    license: licenseInfo?.name as string ?? null,
-    topics: topicNodes?.map(n => (n.topic as Record<string, unknown>)?.name as string).filter(Boolean) ?? [],
-    defaultBranch: defaultBranch?.name as string ?? 'main',
-    updatedAt: (raw.updatedAt as string) ?? '',
-    createdAt: (raw.createdAt as string) ?? '',
-    homepage: (raw.homepageUrl as string) ?? null,
-    isArchived: (raw.isArchived ?? false) as boolean,
-    openIssues: (raw.issues as Record<string, unknown>)?.totalCount as number ?? 0,
-  };
-}
+// ── Public API ─────────────────────────────────────────────
 
 export async function searchRepos(
   query: string,
@@ -83,68 +84,90 @@ export async function searchRepos(
 ): Promise<SearchResult> {
   const limit = options.limit ?? 10;
 
-  let searchQuery = query;
-  if (options.language) searchQuery += ` language:${options.language}`;
-  if (options.minStars) searchQuery += ` stars:>=${options.minStars}`;
-  if (options.topic) searchQuery += ` topic:${options.topic}`;
+  let q = query;
+  if (options.language) q += ` language:${options.language}`;
+  if (options.minStars) q += ` stars:>=${options.minStars}`;
+  if (options.topic) q += ` topic:${options.topic}`;
 
-  const output = await gh([
-    'search', 'repos', searchQuery,
-    '--limit', String(limit),
-    '--json', 'name,owner,description,stargazersCount,forksCount,language,license,updatedAt,createdAt,isArchived,defaultBranch,fullName,homepage',
-  ]);
+  const params = new URLSearchParams({
+    q,
+    sort: 'stars',
+    order: 'desc',
+    per_page: String(limit),
+  });
 
-  const raw = JSON.parse(output) as Array<Record<string, unknown>>;
-  const repos = raw.map(parseSearchResult);
+  const data = await githubFetch<{ total_count: number; items: GitHubSearchItem[] }>(
+    `/search/repositories?${params}`
+  );
 
-  return { repos, totalCount: repos.length };
+  return {
+    repos: data.items.map(parseRepo),
+    totalCount: data.total_count,
+  };
 }
 
 export async function getRepoInfo(owner: string, repo: string): Promise<RepoInfo> {
-  const output = await gh([
-    'repo', 'view', `${owner}/${repo}`,
-    '--json', 'name,owner,description,stargazerCount,forkCount,primaryLanguage,licenseInfo,updatedAt,createdAt,isArchived,defaultBranchRef,repositoryTopics,homepageUrl,nameWithOwner,issues',
-  ]);
-
-  const raw = JSON.parse(output) as Record<string, unknown>;
-  return parseRepoView(raw);
+  const raw = await githubFetch<GitHubSearchItem>(`/repos/${owner}/${repo}`);
+  return parseRepo(raw);
 }
 
 export async function getRepoFiles(owner: string, repo: string, path: string = ''): Promise<RepoFile[]> {
-  const output = await gh([
-    'api', `repos/${owner}/${repo}/contents/${path}`,
-    '--jq', '.[] | {name: .name, path: .path, type: .type}',
-  ]);
+  const items = await githubFetch<Array<{ name: string; path: string; type: string }>>(
+    `/repos/${owner}/${repo}/contents/${path}`
+  );
 
-  const files: RepoFile[] = [];
-  for (const line of output.trim().split('\n')) {
-    if (!line) continue;
-    try {
-      const parsed = JSON.parse(line) as RepoFile;
-      files.push(parsed);
-    } catch {
-      logger.debug('Failed to parse file listing line:', line);
-    }
-  }
-  return files;
+  return items.map(item => ({
+    name: item.name,
+    path: item.path,
+    type: item.type as 'file' | 'dir',
+  }));
 }
 
 export async function getFileContent(owner: string, repo: string, filePath: string): Promise<string> {
-  const output = await gh([
-    'api', `repos/${owner}/${repo}/contents/${filePath}`,
-    '--jq', '.content',
-  ]);
+  const data = await githubFetch<{ content: string; encoding: string }>(
+    `/repos/${owner}/${repo}/contents/${filePath}`
+  );
 
-  return Buffer.from(output.trim(), 'base64').toString('utf-8');
+  return Buffer.from(data.content, 'base64').toString('utf-8');
 }
 
 export async function getReadme(owner: string, repo: string): Promise<string> {
   try {
-    const output = await gh(['repo', 'view', `${owner}/${repo}`]);
-    return output;
+    const data = await githubFetch<{ content: string; encoding: string }>(
+      `/repos/${owner}/${repo}/readme`
+    );
+    return Buffer.from(data.content, 'base64').toString('utf-8');
   } catch {
     return '';
   }
+}
+
+/** Render markdown to HTML using GitHub's rendering API */
+export async function renderMarkdown(text: string, context: string): Promise<string> {
+  const token = getGithubToken();
+  const headers: Record<string, string> = {
+    'Accept': 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    'User-Agent': 'GitStore/0.1.0',
+  };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const res = await fetch('https://api.github.com/markdown', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ text, mode: 'gfm', context }),
+  });
+
+  if (!res.ok) return '';
+  return res.text();
+}
+
+/** Get GitHub API rate limit status */
+export async function getRateLimit(): Promise<{ remaining: number; limit: number; reset: number }> {
+  const data = await githubFetch<{ rate: { remaining: number; limit: number; reset: number } }>(
+    '/rate_limit'
+  );
+  return data.rate;
 }
 
 export function parseRepoString(input: string): { owner: string; repo: string } {

@@ -5,7 +5,7 @@ export function useSearch() {
   const [results, setResults] = useState<RepoInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const search = useCallback((query: string, opts?: { language?: string; minStars?: number }) => {
     if (timerRef.current) clearTimeout(timerRef.current);

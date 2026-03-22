@@ -6,15 +6,17 @@ export function InstalledApps() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="space-y-3">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="h-24 rounded-2xl animate-shimmer" />
+        ))}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-900/20 border border-red-800 rounded-lg p-4 text-red-400">
+      <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-400 text-sm">
         {error}
       </div>
     );
@@ -22,21 +24,28 @@ export function InstalledApps() {
 
   if (apps.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-400 text-lg">No apps installed yet</p>
-        <p className="text-gray-500 text-sm mt-2">Search the store to find and install apps</p>
+      <div className="text-center py-20">
+        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-3xl mx-auto mb-4">
+          📦
+        </div>
+        <p className="text-gray-300 text-lg font-medium">No apps installed yet</p>
+        <p className="text-gray-600 text-sm mt-1.5">Search the store to find and install apps</p>
       </div>
     );
   }
 
   const running = apps.filter(a => a.status === 'running');
-  const stopped = apps.filter(a => a.status !== 'running');
+  const other = apps.filter(a => a.status !== 'running');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {running.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-3">Running ({running.length})</h2>
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-glow" />
+            Running
+            <span className="text-gray-600 font-normal text-sm ml-1">({running.length})</span>
+          </h2>
           <div className="grid gap-3">
             {running.map(app => (
               <AppControls key={app.id} app={app} onUpdate={refresh} />
@@ -44,13 +53,14 @@ export function InstalledApps() {
           </div>
         </div>
       )}
-      {stopped.length > 0 && (
+      {other.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            {running.length > 0 ? 'Other' : 'Installed'} ({stopped.length})
+          <h2 className="text-lg font-semibold text-white mb-4">
+            {running.length > 0 ? 'Stopped' : 'Installed'}
+            <span className="text-gray-600 font-normal text-sm ml-2">({other.length})</span>
           </h2>
           <div className="grid gap-3">
-            {stopped.map(app => (
+            {other.map(app => (
               <AppControls key={app.id} app={app} onUpdate={refresh} />
             ))}
           </div>

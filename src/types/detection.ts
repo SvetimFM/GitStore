@@ -25,4 +25,5 @@ export interface PrerequisiteCheck {
   met: boolean;
   missing: string[];
   available: string[];
+  fallbackDetection?: DetectionResult;
 }

@@ -24,6 +24,7 @@ export interface InstallResult {
   app: App;
   detection: DetectionResult;
   message: string;
+  usedDockerFallback: boolean;
 }
 
 /** Inspect a repo: fetch metadata, detect type, check prerequisites. */
@@ -61,7 +62,7 @@ export async function installApp(
   const repoInfo = await getRepoInfo(owner, repo);
 
   // Detect project type
-  const detection = await detectRemote(owner, repo);
+  let detection = await detectRemote(owner, repo);
   if (!detection) {
     throw new Error(`Could not detect how to build/run ${fullName}. No recognized project manifest found.`);
   }
@@ -69,8 +70,15 @@ export async function installApp(
   // Check prerequisites
   const prereqs = await checkPrerequisites(detection);
   if (!prereqs.met) {
-    throw new Error(`Missing prerequisites: ${prereqs.missing.join(', ')}. Please install them first.`);
+    if (prereqs.fallbackDetection) {
+      logger.info(`Primary runtime ${detection.primaryRuntime} not available, falling back to Docker`);
+      detection = prereqs.fallbackDetection;
+    } else {
+      throw new Error(`Missing prerequisites: ${prereqs.missing.join(', ')}. Please install them first.`);
+    }
   }
+
+  const usedDockerFallback = !prereqs.met && !!prereqs.fallbackDetection;
 
   // Get runtime handler
   const handler = getRuntimeHandler(detection);
@@ -99,6 +107,7 @@ export async function installApp(
     defaultBranch: repoInfo.defaultBranch,
     installedRef: ref,
     installPath,
+    envVarsRequired: detection.envVarsRequired,
   });
 
   try {
@@ -112,7 +121,7 @@ export async function installApp(
     ], { timeout: 120_000 });
 
     // Re-detect locally (may find additional details)
-    const localDetection = await detectLocal(installPath);
+    const localDetection = usedDockerFallback ? null : await detectLocal(installPath);
     const finalDetection = localDetection ?? detection;
 
     // Install dependencies
@@ -133,6 +142,7 @@ export async function installApp(
       app: installedApp,
       detection: finalDetection,
       message: `Successfully installed ${fullName}. Use gitstore_start to run it.`,
+      usedDockerFallback,
     };
   } catch (err) {
     // Cleanup on failure
