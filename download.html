@@ -105,40 +105,83 @@
     }
   </style>
   <script>
-    // Auto-detect platform and set the primary download button
+    // Fetch latest release assets from GitHub API, then set download links
     document.addEventListener('DOMContentLoaded', function() {
       var p = navigator.platform || '';
       var u = navigator.userAgent || '';
       var btn = document.getElementById('auto-dl');
       var label = document.getElementById('auto-label');
       var note = document.getElementById('auto-note');
-      var base = 'https://github.com/SvetimFM/GitStore/releases/latest/download/';
+      var cards = document.querySelectorAll('.platform-card');
+      var fallback = 'https://github.com/SvetimFM/GitStore/releases/latest';
 
-      // Default to macOS Apple Silicon (most common for our audience)
-      btn.href = base + 'GitStore_0.2.0_aarch64.dmg';
-      btn.textContent = '↓  Download for macOS (Apple Silicon)';
-      label.textContent = 'macOS · Apple Silicon';
-      note.innerHTML = '';
+      // Patterns to match asset filenames
+      var patterns = {
+        'mac-arm':    /GitStore[_-].*aarch64\.dmg$/i,
+        'mac-intel':  /GitStore[_-].*x64\.dmg$/i,
+        'linux-appimage': /\.AppImage$/i,
+        'linux-deb':  /\.deb$/i,
+        'win-exe':    /setup\.exe$/i,
+        'win-msi':    /\.msi$/i
+      };
 
-      if (p.includes('Mac') || u.includes('Mac')) {
-        if (u.includes('Intel') || (u.includes('Mac') && !u.includes('ARM') && navigator.hardwareConcurrency <= 4)) {
-          btn.href = base + 'GitStore_0.2.0_x64.dmg';
-          btn.textContent = '↓  Download for macOS (Intel)';
-          label.textContent = 'Detected: macOS · Intel';
-        } else {
-          label.textContent = 'Detected: macOS · Apple Silicon';
-        }
-      } else if (p.includes('Linux') || u.includes('Linux')) {
-        btn.href = base + 'git-store_0.2.0_amd64.AppImage';
-        btn.textContent = '↓  Download for Linux';
-        label.textContent = 'Detected: Linux · x64';
-        note.textContent = '.AppImage — also available as .deb and .rpm below';
-      } else if (p.includes('Win') || u.includes('Windows')) {
-        btn.href = base + 'GitStore_0.2.0_x64-setup.exe';
-        btn.textContent = '↓  Download for Windows';
-        label.textContent = 'Detected: Windows · x64';
-        note.textContent = '.exe installer — also available as .msi below';
-      }
+      fetch('https://api.github.com/repos/SvetimFM/GitStore/releases/latest')
+        .then(function(r) { return r.json(); })
+        .then(function(release) {
+          var assets = release.assets || [];
+          var urls = {};
+
+          // Match each pattern to an asset URL
+          Object.keys(patterns).forEach(function(key) {
+            var match = assets.find(function(a) { return patterns[key].test(a.name); });
+            if (match) urls[key] = match.browser_download_url;
+          });
+
+          // Update platform cards
+          var cardMap = ['mac-arm', 'mac-intel', 'linux-appimage', 'linux-deb', 'win-exe', 'win-msi'];
+          cards.forEach(function(card, i) {
+            if (urls[cardMap[i]]) card.href = urls[cardMap[i]];
+          });
+
+          // Set primary button based on detected platform
+          if (p.includes('Mac') || u.includes('Mac')) {
+            if (u.includes('Intel') || (u.includes('Mac') && !u.includes('ARM') && navigator.hardwareConcurrency <= 4)) {
+              btn.href = urls['mac-intel'] || fallback;
+              btn.textContent = '↓  Download for macOS (Intel)';
+              label.textContent = 'Detected: macOS · Intel';
+            } else {
+              btn.href = urls['mac-arm'] || fallback;
+              btn.textContent = '↓  Download for macOS (Apple Silicon)';
+              label.textContent = 'Detected: macOS · Apple Silicon';
+            }
+          } else if (p.includes('Linux') || u.includes('Linux')) {
+            btn.href = urls['linux-appimage'] || fallback;
+            btn.textContent = '↓  Download for Linux';
+            label.textContent = 'Detected: Linux · x64';
+            note.textContent = '.AppImage — also available as .deb and .rpm below';
+          } else if (p.includes('Win') || u.includes('Windows')) {
+            btn.href = urls['win-exe'] || fallback;
+            btn.textContent = '↓  Download for Windows';
+            label.textContent = 'Detected: Windows · x64';
+            note.textContent = '.exe installer — also available as .msi below';
+          } else {
+            // Default: macOS Apple Silicon
+            btn.href = urls['mac-arm'] || fallback;
+            btn.textContent = '↓  Download for macOS (Apple Silicon)';
+            label.textContent = 'macOS · Apple Silicon';
+          }
+
+          // Show version
+          if (release.tag_name) {
+            label.textContent += ' · ' + release.tag_name;
+          }
+        })
+        .catch(function() {
+          // Fallback if API fails — link to releases page
+          btn.href = fallback;
+          btn.textContent = '↓  Download GitStore';
+          label.textContent = 'macOS · Apple Silicon';
+        });
     });
   </script>
 </head>
