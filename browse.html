@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Apps — GitStore</title>
+  <meta name="description" content="Browse 3,500+ curated open-source apps across 13 categories. CLI tools, self-hosted, AI, security, DevOps, and more.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #05050a; --surface: #0b0b12; --surface-2: #10101a;
+      --border: rgba(255,255,255,0.06); --border-h: rgba(255,255,255,0.1);
+      --text: #dddde4; --text-2: #8b8ba0; --text-3: #55556a;
+      --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.12);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5,5,10,0.75); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
+    .nav-in { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-b { display: flex; align-items: center; gap: 9px; }
+    .nav-mark { width: 26px; height: 26px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white; }
+    .nav-t { font-weight: 700; font-size: 14px; letter-spacing: -0.02em; }
+    .nav-r { display: flex; gap: 24px; align-items: center; }
+    .nav-r a { font-size: 13px; color: var(--text-2); transition: color 0.15s; }
+    .nav-r a:hover { color: var(--text); }
+    .nav-r .active { color: var(--text); }
+    .nav-dl { font-size: 12px; font-weight: 600; color: white !important; background: var(--accent); padding: 6px 16px; border-radius: 6px; }
+
+    /* Page */
+    .page { max-width: 1200px; margin: 0 auto; padding: 80px 24px 60px; }
+
+    /* Header */
+    .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+    .header h1 { font-family: var(--serif); font-size: 36px; font-weight: 400; }
+    .header-stats { font-size: 13px; color: var(--text-3); }
+
+    /* Search */
+    .search-wrap { position: relative; margin-bottom: 28px; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-3); }
+    .search {
+      width: 100%; padding: 11px 14px 11px 40px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); font-size: 14px; font-family: var(--sans);
+      outline: none; transition: border-color 0.15s;
+    }
+    .search:focus { border-color: var(--accent); }
+    .search::placeholder { color: var(--text-3); }
+
+    /* Category tabs */
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 28px; }
+    .tab {
+      padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text-2); cursor: pointer; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab:hover { border-color: var(--border-h); color: var(--text); }
+    .tab.active { background: var(--accent-soft); border-color: rgba(59,130,246,0.2); color: var(--accent); }
+    .tab-count { font-weight: 400; color: var(--text-3); margin-left: 4px; }
+
+    /* Collection group */
+    .collection { margin-bottom: 32px; }
+    .collection-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; cursor: pointer; }
+    .collection-name { font-size: 15px; font-weight: 600; }
+    .collection-count { font-size: 11px; color: var(--text-3); }
+    .collection-toggle { font-size: 11px; color: var(--text-3); margin-left: auto; }
+
+    /* Repo grid */
+    .repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+    .repo {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px; transition: border-color 0.15s, transform 0.15s;
+    }
+    .repo:hover { border-color: var(--border-h); transform: translateY(-1px); }
+    .repo-avatar { width: 32px; height: 32px; border-radius: 7px; flex-shrink: 0; }
+    .repo-info { flex: 1; min-width: 0; }
+    .repo-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .repo-note { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+    .repo-link {
+      font-size: 10px; font-weight: 600; color: var(--accent);
+      background: var(--accent-soft); padding: 3px 10px; border-radius: 99px;
+      flex-shrink: 0; white-space: nowrap;
+    }
+
+    /* Empty / loading */
+    .empty { text-align: center; padding: 60px 0; color: var(--text-3); font-size: 14px; }
+    .loading { text-align: center; padding: 80px 0; }
+    .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 28px 0; }
+    .foot { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .foot-l { font-size: 11px; color: var(--text-3); }
+    .foot-r { display: flex; gap: 18px; }
+    .foot-r a { font-size: 11px; color: var(--text-3); transition: color 0.15s; }
+    .foot-r a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .nav-r a:not(.nav-dl):not(.active) { display: none; }
+      .header h1 { font-size: 28px; }
+      .repos { grid-template-columns: 1fr; }
+      .foot { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-in">
+      <a href="./" class="nav-b"><div class="nav-mark">G</div><span class="nav-t">GitStore</span></a>
+      <div class="nav-r">
+        <a href="./">Home</a>
+        <a href="browse.html" class="active">Browse</a>
+        <a href="changelog.html">What's New</a>
+        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
+        <a href="download.html" class="nav-dl">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div style="color:var(--text-3);font-size:13px;">Loading catalog...</div>
+    </div>
+
+    <div id="app" style="display:none;">
+      <div class="header">
+        <h1>Browse Apps</h1>
+        <div class="header-stats" id="stats"></div>
+      </div>
+
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="search" id="search" placeholder="Search repos by name, description, or category...">
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot">
+      <div class="foot-l">GitStore &middot; PolyForm Noncommercial 1.0.0</div>
+      <div class="foot-r">
+        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
+        <a href="https://github.com/SvetimFM/GitStore/releases">Releases</a>
+        <a href="download.html">Download</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var data = null;
+    var activeCategory = 'all';
+    var searchQuery = '';
+
+    fetch('collections.json')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        data = d;
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        var totalRepos = d.collections.reduce(function(a, c) { return a + c.repos.length; }, 0);
+        document.getElementById('stats').textContent = totalRepos.toLocaleString() + ' repos \u00b7 ' + d.collections.length + ' collections \u00b7 ' + d.categories.length + ' categories';
+        renderTabs();
+        render();
+        document.getElementById('search').addEventListener('input', function(e) {
+          searchQuery = e.target.value.toLowerCase().trim();
+          render();
+        });
+      });
+
+    function renderTabs() {
+      var html = '<div class="tab' + (activeCategory === 'all' ? ' active' : '') + '" onclick="setCategory(\'all\')">All<span class="tab-count">' + data.collections.reduce(function(a,c){return a+c.repos.length},0) + '</span></div>';
+      data.categories.forEach(function(cat) {
+        var count = data.collections.filter(function(c){return c.categoryId===cat.id}).reduce(function(a,c){return a+c.repos.length},0);
+        html += '<div class="tab' + (activeCategory === cat.id ? ' active' : '') + '" onclick="setCategory(\'' + cat.id + '\')">' + cat.icon + ' ' + cat.name + '<span class="tab-count">' + count + '</span></div>';
+      });
+      document.getElementById('tabs').innerHTML = html;
+    }
+
+    function setCategory(id) {
+      activeCategory = id;
+      renderTabs();
+      render();
+    }
+
+    function render() {
+      var collections = data.collections;
+      if (activeCategory !== 'all') {
+        collections = collections.filter(function(c) { return c.categoryId === activeCategory; });
+      }
+
+      if (searchQuery) {
+        collections = collections.map(function(col) {
+          var matchedRepos = col.repos.filter(function(r) {
+            return r.fullName.toLowerCase().includes(searchQuery) ||
+                   (r.note && r.note.toLowerCase().includes(searchQuery));
+          });
+          if (matchedRepos.length > 0) return { id: col.id, name: col.name, description: col.description, categoryId: col.categoryId, repos: matchedRepos };
+          if (col.name.toLowerCase().includes(searchQuery)) return col;
+          return null;
+        }).filter(Boolean);
+      }
+
+      if (collections.length === 0) {
+        document.getElementById('results').innerHTML = '<div class="empty">No repos found matching your search.</div>';
+        return;
+      }
+
+      var html = '';
+      collections.forEach(function(col) {
+        html += '<div class="collection">';
+        html += '<div class="collection-head" onclick="toggleCollection(\'' + col.id + '\')">';
+        html += '<span class="collection-name">' + escapeHtml(col.name) + '</span>';
+        html += '<span class="collection-count">' + col.repos.length + ' repos</span>';
+        if (col.description) html += '<span class="collection-count">&middot; ' + escapeHtml(col.description) + '</span>';
+        html += '</div>';
+        html += '<div class="repos" id="col-' + col.id + '">';
+        col.repos.forEach(function(repo) {
+          var parts = repo.fullName.split('/');
+          var owner = parts[0];
+          var name = parts[1];
+          html += '<a class="repo" href="https://github.com/' + repo.fullName + '" target="_blank" rel="noopener">';
+          html += '<img class="repo-avatar" src="https://github.com/' + owner + '.png?size=64" alt="" loading="lazy">';
+          html += '<div class="repo-info">';
+          html += '<div class="repo-name">' + escapeHtml(name) + '</div>';
+          if (repo.note) html += '<div class="repo-note">' + escapeHtml(repo.note) + '</div>';
+          html += '</div>';
+          html += '<span class="repo-link">View</span>';
+          html += '</a>';
+        });
+        html += '</div></div>';
+      });
+
+      document.getElementById('results').innerHTML = html;
+    }
+
+    function toggleCollection(id) {
+      var el = document.getElementById('col-' + id);
+      if (el) el.style.display = el.style.display === 'none' ? 'grid' : 'none';
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
