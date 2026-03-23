@@ -1,0 +1,90 @@
+name: Publish to npm & Homebrew
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish to npm
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  update-homebrew:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Download tarball and compute SHA256
+        id: sha
+        run: |
+          URL="https://registry.npmjs.org/@svetfm/gitstore/-/gitstore-${{ steps.version.outputs.version }}.tgz"
+          # Wait for npm propagation
+          for i in 1 2 3 4 5; do
+            if curl -sf -o gitstore.tgz "$URL"; then break; fi
+            echo "Waiting for npm to propagate... (attempt $i)"
+            sleep 15
+          done
+          SHA=$(shasum -a 256 gitstore.tgz | cut -d' ' -f1)
+          echo "sha256=$SHA" >> $GITHUB_OUTPUT
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Update Homebrew formula
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SvetimFM/homebrew-tap.git tap
+          cd tap
+
+          cat > Formula/gitstore.rb << 'FORMULA'
+          class Gitstore < Formula
+            desc "App store for GitHub — install and run repos as applications"
+            homepage "https://svetimfm.github.io/GitStore/"
+            url "${{ steps.sha.outputs.url }}"
+            sha256 "${{ steps.sha.outputs.sha256 }}"
+            license "PolyForm-Noncommercial-1.0.0"
+
+            depends_on "node@18"
+
+            def install
+              system "npm", "install", *std_npm_args
+              bin.install_symlink Dir["#{libexec}/bin/*"]
+            end
+
+            test do
+              assert_match "${{ steps.version.outputs.version }}", shell_output("#{bin}/gitstore --version")
+            end
+          end
+          FORMULA
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/gitstore.rb
+          git commit -m "Update gitstore to v${{ steps.version.outputs.version }}"
+          git push
