@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitStore — The app store GitHub never built</title>
+  <title>GitStore — Install GitHub repos in seconds</title>
   <meta name="description" content="Discover, install, and run open-source software from GitHub with a single click. 3,547 curated repos across 13 categories.">
   <meta name="theme-color" content="#05050a">
   <meta name="author" content="GitStore Contributors">
@@ -50,7 +50,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,7 +67,6 @@
       --accent: #3b82f6;
       --accent-soft: rgba(59,130,246,0.12);
       --green: #22c55e;
-      --serif: 'Instrument Serif', Georgia, serif;
       --sans: 'DM Sans', system-ui, sans-serif;
     }
 
@@ -109,15 +108,15 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: min(1200px, 100%);
+      width: 100%;
       height: 100%;
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(5,5,10,0.82) 8%,
-        rgba(5,5,10,0.92) 20%,
-        rgba(5,5,10,0.92) 80%,
-        rgba(5,5,10,0.82) 92%,
+        rgba(5,5,10,0.75) 10%,
+        rgba(5,5,10,0.92) 22%,
+        rgba(5,5,10,0.92) 78%,
+        rgba(5,5,10,0.75) 90%,
         transparent 100%
       );
       z-index: -1;
@@ -168,12 +167,11 @@
       position: relative;
     }
     .hero h1 {
-      font-family: var(--serif); font-weight: 400;
+      font-family: var(--sans); font-weight: 700;
       font-size: clamp(44px, 7vw, 76px); line-height: 1.05;
       letter-spacing: -0.03em; margin-bottom: 24px;
       max-width: 800px; margin-left: auto; margin-right: auto;
     }
-    .hero h1 em { font-style: italic; color: var(--accent); }
     .hero-sub {
       font-size: clamp(15px, 1.6vw, 17px); color: var(--text-2);
       max-width: 560px; margin: 0 auto 40px;
@@ -286,8 +284,8 @@
     .how { padding: 80px 0 100px; }
     .how-head { margin-bottom: 40px; text-align: center; }
     .how-head h2 {
-      font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
-      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px;
+      font-family: var(--sans); font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px;
     }
     .how-head p { font-size: 14px; color: var(--text-2); }
     .how-term {
@@ -324,8 +322,8 @@
       color: var(--accent); margin-bottom: 14px;
     }
     .ai h2 {
-      font-family: var(--serif); font-size: clamp(28px, 3.5vw, 40px);
-      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+      font-family: var(--sans); font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
     }
     .ai-p { font-size: 14px; color: var(--text-2); line-height: 1.75; max-width: 420px; margin-bottom: 28px; }
     .ai-p strong { color: var(--text); font-weight: 600; }
@@ -362,8 +360,8 @@
     /* ── Catalog ── */
     .catalog { padding: 80px 0; text-align: center; }
     .catalog h2 {
-      font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
-      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 8px;
+      font-family: var(--sans); font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 8px;
     }
     .catalog-sub { font-size: 14px; color: var(--text-2); margin-bottom: 48px; }
     .cat-grid {
@@ -406,11 +404,10 @@
       pointer-events: none;
     }
     .cta h2 {
-      font-family: var(--serif); font-size: clamp(32px, 5vw, 56px);
-      font-weight: 400; line-height: 1.08; letter-spacing: -0.02em;
+      font-family: var(--sans); font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700; line-height: 1.08; letter-spacing: -0.02em;
       margin-bottom: 16px; position: relative;
     }
-    .cta h2 em { font-style: italic; color: var(--accent); }
     .cta-sub { font-size: 14px; color: var(--text-3); margin-bottom: 40px; position: relative; }
     .cta .btn-primary { font-size: 15px; padding: 15px 36px; position: relative; }
 
@@ -493,7 +490,7 @@
 
     <!-- Hero -->
     <section class="hero w reveal">
-      <h1>Install GitHub repos<br>in <em>seconds</em>, not hours</h1>
+      <h1>Install GitHub repos<br>in <span style="color:var(--accent)">seconds</span>, not hours</h1>
       <p class="hero-sub">
         GitStore checks GitHub Releases for pre-built binaries first.
         No cloning, no compiling. When binaries aren't available,
@@ -716,7 +713,7 @@
     <!-- CTA -->
     <section class="cta reveal">
       <div class="w">
-        <h2>Stop reading READMEs.<br>Start <em>running</em> apps.</h2>
+        <h2>Get started in seconds.</h2>
         <p class="cta-sub">3,547 repos &middot; 13 categories &middot; 3.7 MB &middot; Free forever</p>
         <a href="download.html" class="btn btn-primary hero-cta">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -792,15 +789,15 @@
     var SENSOR_DIST = 14.0;
     var TURN_SPEED = 0.35;
     var MOVE_SPEED = 1.2;
-    var DEPOSIT_AMOUNT = 0.7;
-    var DECAY_RATE = 0.015;
+    var DEPOSIT_AMOUNT = 0.4;
+    var DECAY_RATE = 0.03;
     var DIFFUSE_RADIUS = 1;
     var EXPLORER_RATIO = 0.3;
     var EXPLORER_SENSOR_ANGLE = 0.9;
     var EXPLORER_SENSOR_DIST = 20.0;
     var EXPLORER_TURN_SPEED = 0.5;
     var EXPLORER_MOVE_SPEED = 0.8;
-    var EXPLORER_DEPOSIT = 0.3;
+    var EXPLORER_DEPOSIT = 0.15;
     var FOOD_STRENGTH = 3.0;
     var FOOD_RADIUS = 60.0;
     var MOUSE_STRENGTH = 4.0;
