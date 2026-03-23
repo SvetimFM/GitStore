@@ -1222,7 +1222,7 @@
       gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_foodCount'), Math.min(foodSources.length, MAX_FOOD_SOURCES));
 
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      gl.uniform2f(gl.getUniformLocation(agentProgram, 'u_mouse'), mouseX * dpr, mouseY * dpr);
+      gl.uniform2f(gl.getUniformLocation(agentProgram, 'u_mouse'), mouseX * dpr, (canvas.height / dpr - mouseY) * dpr);
       gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseStrength'), mouseX > 0 ? MOUSE_STRENGTH : 0.0);
       gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseRadius'), MOUSE_RADIUS * dpr);
 
@@ -1278,7 +1278,7 @@
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, finalTrailTex);
       gl.uniform1i(gl.getUniformLocation(displayProgram, 'u_trail'), 0);
-      gl.uniform2f(gl.getUniformLocation(displayProgram, 'u_mouse'), mouseX * dpr, mouseY * dpr);
+      gl.uniform2f(gl.getUniformLocation(displayProgram, 'u_mouse'), mouseX * dpr, (canvas.height / dpr - mouseY) * dpr);
       gl.uniform2f(gl.getUniformLocation(displayProgram, 'u_resolution'), canvas.width, canvas.height);
       gl.uniform1f(gl.getUniformLocation(displayProgram, 'u_mouseRadius'), MOUSE_RADIUS * dpr);
 
