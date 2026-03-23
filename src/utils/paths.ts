@@ -2,7 +2,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { mkdirSync } from 'node:fs';
 
-const GITSTORE_HOME = join(homedir(), '.gitstore');
+const GITSTORE_HOME = process.env.GITSTORE_HOME ?? join(homedir(), '.gitstore');
 
 export const paths = {
   home: GITSTORE_HOME,
