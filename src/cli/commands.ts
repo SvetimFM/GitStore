@@ -1,7 +1,7 @@
 import { createExpressApp } from '../server/index.js';
 import { searchRepos } from '../core/github.js';
-import { installApp, inspectRepo } from '../core/installer.js';
-import { startApp, stopApp, syncStatuses } from '../core/lifecycle.js';
+import { installApp, inspectRepo, uninstallApp, updateApp } from '../core/installer.js';
+import { startApp, stopApp, restartApp, getAppLogs, syncStatuses } from '../core/lifecycle.js';
 import { listApps } from '../core/registry.js';
 import { curateFromSource, curateAll, fetchAwesomeList, PREDEFINED_SOURCES, type CurateSource } from '../core/curate.js';
 import { ensureDirs } from '../utils/paths.js';
@@ -121,6 +121,46 @@ export async function cmdStop(appId: string): Promise<void> {
   console.log(dim(`Stopping ${appId}...`));
   const app = await stopApp(appId);
   console.log(green(`Stopped ${bold(app.fullName)}`));
+}
+
+/** Uninstall an app. */
+export async function cmdUninstall(appId: string, keepData: boolean): Promise<void> {
+  console.log(dim(`Uninstalling ${appId}...`));
+  await uninstallApp(appId, keepData);
+  console.log(green(`Uninstalled ${bold(appId)}`));
+  if (keepData) {
+    console.log(dim('  App files were preserved.'));
+  }
+}
+
+/** Update an installed app to latest version. */
+export async function cmdUpdate(appId: string): Promise<void> {
+  console.log(dim(`Updating ${appId}...`));
+  const app = await updateApp(appId);
+  console.log(green(`Updated ${bold(app.fullName)}`));
+  if (app.installedRef) {
+    console.log(`  Version: ${app.installedRef}`);
+  }
+}
+
+/** Restart a running app. */
+export async function cmdRestart(appId: string): Promise<void> {
+  console.log(dim(`Restarting ${appId}...`));
+  const app = await restartApp(appId);
+  console.log(green(`Restarted ${bold(app.fullName)}`) + ` (PID: ${app.pid})`);
+  if (app.port) {
+    console.log(`  ${dim('Running at')} http://localhost:${app.port}`);
+  }
+}
+
+/** View app logs. */
+export async function cmdLogs(appId: string, lines: number): Promise<void> {
+  const output = getAppLogs(appId, lines);
+  if (!output) {
+    console.log(dim('No logs available.'));
+    return;
+  }
+  console.log(output);
 }
 
 /** Curate collections from awesome-lists. */
