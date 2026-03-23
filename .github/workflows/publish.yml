@@ -59,6 +59,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "Error: HOMEBREW_TAP_TOKEN secret is not set"
+            exit 1
+          fi
           git clone https://x-access-token:${GH_TOKEN}@github.com/SvetimFM/homebrew-tap.git tap
           cd tap
 

@@ -47,6 +47,7 @@
   var mouseX = -1000, mouseY = -1000;
   var foodSources = [];
   var animId = null;
+  var foodData = new Float32Array(MAX_FOOD_SOURCES * 4);
 
   // ─── WebGL Helpers ───
   function compileShader(type, source) {
@@ -216,24 +217,6 @@
     'in vec4 v_newState;',
     'out vec4 fragColor;',
     'void main(){fragColor=v_newState;}'
-  ].join('\n');
-
-  var DEPOSIT_FS = [
-    '#version 300 es',
-    'precision highp float;',
-    'uniform sampler2D u_trail;',
-    'uniform sampler2D u_agents;',
-    'uniform vec2 u_trailRes;',
-    'uniform vec2 u_simRes;',
-    'uniform int u_agentCount;',
-    'uniform float u_depositPrimary;',
-    'uniform float u_depositExplorer;',
-    'in vec2 v_uv;',
-    'out vec4 fragColor;',
-    'void main(){',
-    '  vec4 current=texture(u_trail,v_uv);',
-    '  fragColor=current;',
-    '}'
   ].join('\n');
 
   var DEPOSIT_POINT_VS = [
@@ -448,7 +431,7 @@
     gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_dt'), dt);
     gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_agentCount'), AGENT_COUNT);
 
-    var foodData = new Float32Array(MAX_FOOD_SOURCES * 4);
+    foodData.fill(0);
     for (var i = 0; i < foodSources.length && i < MAX_FOOD_SOURCES; i++) {
       foodData[i * 4] = foodSources[i].x;
       foodData[i * 4 + 1] = foodSources[i].y;
@@ -460,7 +443,7 @@
 
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     gl.uniform2f(gl.getUniformLocation(agentProgram, 'u_mouse'), mouseX * dpr, (canvas.height / dpr - mouseY) * dpr);
-    gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseStrength'), mouseX > 0 ? MOUSE_STRENGTH : 0.0);
+    gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseStrength'), mouseX >= 0 ? MOUSE_STRENGTH : 0.0);
     gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseRadius'), MOUSE_RADIUS * dpr);
 
     gl.bindVertexArray(agentVAO);
@@ -538,6 +521,7 @@
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function() {
       if (animId) cancelAnimationFrame(animId);
+      // Clean up all GPU resources before reinitializing
       gl.deleteTexture(agentTexA);
       gl.deleteTexture(agentTexB);
       gl.deleteTexture(trailTexA);
@@ -546,6 +530,13 @@
       gl.deleteFramebuffer(agentFboB);
       gl.deleteFramebuffer(trailFboA);
       gl.deleteFramebuffer(trailFboB);
+      gl.deleteProgram(agentProgram);
+      gl.deleteProgram(depositPointProgram);
+      gl.deleteProgram(diffuseProgram);
+      gl.deleteProgram(displayProgram);
+      gl.deleteBuffer(quadVBO);
+      gl.deleteVertexArray(quadVAO);
+      gl.deleteVertexArray(agentVAO);
       if (init()) {
         scanFoodSources();
         frameTime = performance.now();
