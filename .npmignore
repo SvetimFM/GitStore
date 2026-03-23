@@ -1,0 +1,15 @@
+src/
+web/src/
+web/node_modules/
+web/package.json
+web/tsconfig*.json
+web/vite.config.ts
+web/eslint.config.js
+web/index.html
+docs/
+.github/
+.claude/
+tsconfig.json
+*.ts
+!dist/**/*.js
+!dist/**/*.d.ts
