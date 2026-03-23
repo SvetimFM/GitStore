@@ -6,6 +6,7 @@ import { dockerRuntime } from '../runtimes/docker.js';
 import { rustRuntime } from '../runtimes/rust.js';
 import { goRuntime } from '../runtimes/go.js';
 import { staticRuntime } from '../runtimes/static.js';
+import { binaryRuntime } from '../runtimes/binary.js';
 import { getRepoFiles, getFileContent } from './github.js';
 import { logger } from '../utils/logger.js';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -21,6 +22,7 @@ const runtimes: RuntimeHandler[] = [
   goRuntime,
   staticRuntime,
   dockerRuntime,
+  binaryRuntime, // detect() always returns null — only used via getRuntimeHandler lookup
 ];
 
 /** Detect project type from a remote GitHub repo (no clone needed). */

@@ -3,7 +3,7 @@
 import { cmdServe, cmdSearch, cmdInstall, cmdList, cmdStart, cmdStop, cmdInspect, cmdCurate } from './cli/commands.js';
 import { bold, dim, cyan } from './cli/format.js';
 
-const VERSION = '0.1.0';
+const VERSION = '0.3.0';
 
 const args = process.argv.slice(2);
 
@@ -33,6 +33,7 @@ ${bold('Examples:')}
   gitstore                          Start the web UI
   gitstore search "express api"     Search for repos
   gitstore install tj/commander     Install a repo
+  gitstore install sharkdp/bat@v0.24.0  Install a specific version
   gitstore list                     Show installed apps
   gitstore start tj/commander       Start an app
   gitstore curate all               Import from all sources

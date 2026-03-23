@@ -45,7 +45,14 @@ export async function startApp(
     env.PORT = String(app.port);
   }
 
-  const managed = spawnApp(command, args, app.installPath, logFile, env);
+  const appId = app.id;
+  const managed = spawnApp(command, args, app.installPath, logFile, env, (code, signal) => {
+    const current = findApp(appId);
+    if (current && current.status === 'running') {
+      updateAppStatus(appId, 'stopped');
+      logger.info(`App ${current.fullName} exited (code=${code}, signal=${signal}), marked as stopped`);
+    }
+  });
   updateAppStatus(app.id, 'running', managed.pid);
 
   logger.info(`Started ${app.fullName} (PID: ${managed.pid})`);

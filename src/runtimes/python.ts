@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { RuntimeHandler } from './base.js';
 import type { DetectionResult } from '../types/detection.js';
-import { parseEnvVars } from './utils.js';
+import { parseEnvVars, venvBin, pythonCmd } from './utils.js';
 import { logger } from '../utils/logger.js';
 
 const execFileAsync = promisify(execFile);
@@ -105,17 +105,17 @@ export const pythonRuntime: RuntimeHandler = {
     const venvPath = join(appDir, '.venv');
     if (!existsSync(venvPath)) {
       logger.info(`Creating Python venv in ${appDir}...`);
-      await execFileAsync('python3', ['-m', 'venv', '.venv'], { cwd: appDir, timeout: 60_000 });
+      await execFileAsync(pythonCmd(), ['-m', 'venv', '.venv'], { cwd: appDir, timeout: 60_000 });
     }
 
-    const pip = join(venvPath, 'bin', 'pip');
+    const pip = venvBin(appDir, 'pip');
 
     // Install deps
     const cmd = detection.installCommand;
     logger.info(`Installing: ${cmd} in ${appDir}`);
 
     if (cmd.startsWith('pip install')) {
-      const args = cmd.replace('pip', '').trim().split(' ');
+      const args = cmd.split(' ').slice(1);
       await execFileAsync(pip, args, { cwd: appDir, timeout: 300_000, maxBuffer: 50 * 1024 * 1024 });
     } else if (cmd.startsWith('poetry')) {
       await execFileAsync('poetry', ['install'], { cwd: appDir, timeout: 300_000 });
@@ -129,7 +129,7 @@ export const pythonRuntime: RuntimeHandler = {
   },
 
   getStartCommand(appDir: string, detection: DetectionResult) {
-    const venvPython = join(appDir, '.venv', 'bin', 'python');
+    const venvPython = venvBin(appDir, 'python');
     const parts = detection.startCommand.split(' ');
 
     // Replace 'python' with venv python
@@ -138,9 +138,9 @@ export const pythonRuntime: RuntimeHandler = {
     }
 
     // For tools like uvicorn, flask, streamlit — use venv bin
-    const venvBin = join(appDir, '.venv', 'bin', parts[0]);
-    if (existsSync(venvBin)) {
-      return { command: venvBin, args: parts.slice(1) };
+    const toolBin = venvBin(appDir, parts[0]);
+    if (existsSync(toolBin)) {
+      return { command: toolBin, args: parts.slice(1) };
     }
 
     return { command: parts[0], args: parts.slice(1) };
@@ -148,7 +148,7 @@ export const pythonRuntime: RuntimeHandler = {
 
   async isAvailable(): Promise<boolean> {
     try {
-      await execFileAsync('python3', ['--version']);
+      await execFileAsync(pythonCmd(), ['--version']);
       return true;
     } catch {
       return false;

@@ -62,7 +62,12 @@ export async function cmdInstall(repoStr: string): Promise<void> {
 
   console.log(green(`Installed ${bold(result.app.fullName)}`));
   console.log(`  Runtime:  ${result.detection.primaryRuntime}`);
-  console.log(`  Path:     ${dim(result.app.installPath)}`);
+  if (result.app.installType === 'binary') {
+    console.log(`  Version:  ${result.app.installedRef}`);
+    console.log(`  Binary:   ${dim(result.app.startCommand)}`);
+  } else {
+    console.log(`  Path:     ${dim(result.app.installPath)}`);
+  }
   if (result.app.port) {
     console.log(`  Port:     ${result.app.port}`);
   }
@@ -177,14 +182,21 @@ export async function cmdInspect(repoStr: string): Promise<void> {
 
   if (result.detection) {
     console.log(`\n${bold('Detection')}`);
-    console.log(`  Runtime:   ${result.detection.primaryRuntime} (${result.detection.confidence} confidence)`);
-    console.log(`  Manifest:  ${result.detection.manifest}`);
-    console.log(`  Start:     ${result.detection.startCommand}`);
-    if (result.detection.buildCommand) {
-      console.log(`  Build:     ${result.detection.buildCommand}`);
-    }
-    if (result.detection.detectedPort) {
-      console.log(`  Port:      ${result.detection.detectedPort}`);
+    if (result.detection.installType === 'binary' && result.detection.binaryAsset) {
+      console.log(`  Install:   ${green('Pre-built binary available')}`);
+      console.log(`  Asset:     ${result.detection.binaryAsset.name}`);
+      console.log(`  Version:   ${result.detection.binaryAsset.tagName}`);
+      console.log(`  Size:      ${(result.detection.binaryAsset.size / 1024 / 1024).toFixed(1)} MB`);
+    } else {
+      console.log(`  Runtime:   ${result.detection.primaryRuntime} (${result.detection.confidence} confidence)`);
+      console.log(`  Manifest:  ${result.detection.manifest}`);
+      console.log(`  Start:     ${result.detection.startCommand}`);
+      if (result.detection.buildCommand) {
+        console.log(`  Build:     ${result.detection.buildCommand}`);
+      }
+      if (result.detection.detectedPort) {
+        console.log(`  Port:      ${result.detection.detectedPort}`);
+      }
     }
   } else {
     console.log(yellow('\n  Could not detect how to run this repository.'));

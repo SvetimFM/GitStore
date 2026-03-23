@@ -1,6 +1,6 @@
 {
   "name": "gitstore",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "App store for GitHub — install and run repos as applications",
   "type": "module",
   "bin": {

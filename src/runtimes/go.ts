@@ -11,7 +11,9 @@ const execFileAsync = promisify(execFile);
 function parseModuleName(goModContent: string): string {
   const match = goModContent.match(/^module\s+(.+)$/m);
   if (!match) return 'app';
-  const modulePath = match[1].trim();
+  let modulePath = match[1].trim();
+  // Strip v2+ major version suffixes (e.g. github.com/x/y/v2 → github.com/x/y)
+  modulePath = modulePath.replace(/\/v\d+$/, '');
   // Use the last segment of the module path as the binary name
   const parts = modulePath.split('/');
   return parts[parts.length - 1];
@@ -43,12 +45,20 @@ export const goRuntime: RuntimeHandler = {
     else if (goModContent.includes('gofiber/fiber')) detectedPort = 3000;
     else if (goModContent.includes('labstack/echo')) detectedPort = 1323;
 
+    // Detect cmd/ layout — common Go pattern for multi-binary repos
+    let buildTarget = '.';
+    if (files.includes('cmd')) {
+      // Remote detection only sees top-level entries; cmd appears as a directory
+      // Try cmd/<binaryName> first, otherwise use cmd/... to build all
+      buildTarget = `./cmd/${binaryName}`;
+    }
+
     return {
       primaryRuntime: 'go',
       alternativeRuntimes: files.includes('Dockerfile') ? ['docker'] : [],
       confidence: 'high',
       manifest: 'go.mod',
-      installCommand: `go build -o ./${binaryName} .`,
+      installCommand: `go build -o ./${binaryName} ${buildTarget}`,
       buildCommand: null,
       startCommand: `./${binaryName}`,
       detectedPort,
@@ -59,8 +69,11 @@ export const goRuntime: RuntimeHandler = {
 
   async install(appDir: string, detection: DetectionResult): Promise<void> {
     const binaryName = detection.startCommand.replace('./', '');
-    logger.info(`Building Go project in ${appDir}`);
-    await execFileAsync('go', ['build', '-o', `./${binaryName}`, '.'], {
+    // Extract build target from installCommand (last arg)
+    const installParts = detection.installCommand.split(' ');
+    const buildTarget = installParts[installParts.length - 1];
+    logger.info(`Building Go project in ${appDir} (target: ${buildTarget})`);
+    await execFileAsync('go', ['build', '-o', `./${binaryName}`, buildTarget], {
       cwd: appDir,
       timeout: 600_000,
       maxBuffer: 50 * 1024 * 1024,

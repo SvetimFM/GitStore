@@ -66,7 +66,7 @@ export const rustRuntime: RuntimeHandler = {
     logger.info(`Building Rust project in ${appDir}`);
     await execFileAsync('cargo', ['build', '--release'], {
       cwd: appDir,
-      timeout: 600_000,
+      timeout: 2_700_000,
       maxBuffer: 50 * 1024 * 1024,
     });
   },
@@ -88,6 +88,10 @@ export const rustRuntime: RuntimeHandler = {
           .map(e => e.name);
         if (executables.length === 1) {
           binaryName = executables[0];
+        } else if (executables.length > 1) {
+          if (!executables.includes(binaryName)) {
+            logger.warn(`Multiple executables found in target/release: ${executables.join(', ')}. Using default: ${binaryName}`);
+          }
         }
       } catch { /* use default */ }
     }

@@ -1,4 +1,6 @@
-export type ProjectType = 'node' | 'python' | 'docker' | 'rust' | 'go' | 'static' | 'unknown';
+export type ProjectType = 'node' | 'python' | 'docker' | 'rust' | 'go' | 'static' | 'binary' | 'unknown';
+
+export type InstallType = 'binary' | 'source' | 'container';
 
 export type AppStatus = 'installing' | 'installed' | 'running' | 'stopped' | 'error';
 
@@ -27,6 +29,7 @@ export interface App {
   updatedAt: string | null;
   lastStartedAt: string | null;
   lastStoppedAt: string | null;
+  installType: InstallType;
   envVarsRequired: string[];
   envConfigured: boolean;
 }

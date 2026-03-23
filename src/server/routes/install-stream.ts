@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { parseRepoString, getRepoInfo } from '../../core/github.js';
 import { detectRemote, detectLocal, checkPrerequisites, getRuntimeHandler } from '../../core/detector.js';
 import { createApp, getAppByName, updateAppStatus, deleteApp, findApp } from '../../core/registry.js';
+import { resolveBinaryInstall, downloadAndExtractBinary } from '../../core/binary-resolver.js';
 import { paths } from '../../utils/paths.js';
 import { logger } from '../../utils/logger.js';
 import { spawn } from 'node:child_process';
@@ -62,7 +63,7 @@ installStreamRouter.get('/install-stream', async (req, res) => {
 
   try {
     // Step 1: Parse repo string
-    const { owner, repo } = parseRepoString(repoStr);
+    const { owner, repo, tag } = parseRepoString(repoStr);
     const fullName = `${owner}/${repo}`;
 
     // Check if already installed
@@ -77,7 +78,50 @@ installStreamRouter.get('/install-stream', async (req, res) => {
     send(res, 'status', { step: 'inspecting', message: 'Fetching repo info...' });
     const repoInfo = await getRepoInfo(owner, repo);
 
-    // Step 3: Detect runtime
+    // Step 2.5: Try binary install first
+    send(res, 'status', { step: 'checking-binary', message: 'Checking for pre-built binary...' });
+    const binaryResolution = await resolveBinaryInstall(owner, repo, tag);
+    if (binaryResolution) {
+      send(res, 'status', { step: 'downloading-binary', message: `Downloading ${binaryResolution.asset.name}...`, detection: { primaryRuntime: 'binary', installType: 'binary' } });
+
+      installPath = paths.appDir(owner, repo);
+      const binaryPath = await downloadAndExtractBinary(
+        binaryResolution.asset.downloadUrl,
+        binaryResolution.asset.name,
+        installPath,
+        repo,
+      );
+
+      const app = createApp({
+        owner,
+        repo,
+        description: repoInfo.description,
+        runtime: 'binary',
+        runtimeVersion: binaryResolution.tagName,
+        startCommand: binaryPath,
+        buildCommand: null,
+        installCommand: 'download',
+        port: null,
+        stars: repoInfo.stars,
+        language: repoInfo.language,
+        license: repoInfo.license,
+        defaultBranch: repoInfo.defaultBranch,
+        installedRef: binaryResolution.tagName,
+        installPath,
+        installType: 'binary',
+        envVarsRequired: [],
+      });
+      appId = app.id;
+
+      updateAppStatus(app.id, 'installed');
+      const installedApp = findApp(app.id)!;
+      send(res, 'status', { step: 'done', message: `Installed binary ${binaryResolution.tagName}`, appId: app.id });
+      send(res, 'complete', { app: installedApp });
+      res.end();
+      return;
+    }
+
+    // Step 3: Detect runtime (source install)
     send(res, 'status', { step: 'detecting', message: 'Detecting runtime...' });
     let detection = await detectRemote(owner, repo);
     if (!detection) {
@@ -113,7 +157,7 @@ installStreamRouter.get('/install-stream', async (req, res) => {
 
     // Step 6: Create app record
     installPath = paths.appDir(owner, repo);
-    const ref = repoInfo.defaultBranch;
+    const ref = tag ?? repoInfo.defaultBranch;
 
     const app = createApp({
       owner,
@@ -131,6 +175,7 @@ installStreamRouter.get('/install-stream', async (req, res) => {
       defaultBranch: repoInfo.defaultBranch,
       installedRef: ref,
       installPath,
+      installType: 'source',
       envVarsRequired: detection.envVarsRequired,
     });
     appId = app.id;
@@ -138,7 +183,7 @@ installStreamRouter.get('/install-stream', async (req, res) => {
     // Step 7: Clone (streamed)
     send(res, 'status', { step: 'cloning', message: 'Cloning repository...' });
     await spawnStreamed(res, 'git', [
-      'clone', '--depth', '1',
+      'clone', '--depth', '1', '--recursive',
       '--branch', ref,
       `https://github.com/${fullName}.git`,
       installPath,
@@ -148,22 +193,14 @@ installStreamRouter.get('/install-stream', async (req, res) => {
     const localDetection = usedDockerFallback ? null : await detectLocal(installPath);
     const finalDetection = localDetection ?? detection;
 
-    // Step 9: Install dependencies (streamed)
+    // Step 9: Install dependencies via runtime handler
     send(res, 'status', { step: 'installing', message: 'Installing dependencies...' });
-    const installParts = finalDetection.installCommand.split(' ');
-    await spawnStreamed(res, installParts[0], installParts.slice(1), {
-      cwd: installPath,
-      timeout: 600_000,
-    });
+    await handler.install(installPath, finalDetection);
 
-    // Step 10: Build (streamed, if needed)
+    // Step 10: Build via runtime handler (if needed)
     if (finalDetection.buildCommand) {
       send(res, 'status', { step: 'building', message: 'Building...' });
-      const buildParts = finalDetection.buildCommand.split(' ');
-      await spawnStreamed(res, buildParts[0], buildParts.slice(1), {
-        cwd: installPath,
-        timeout: 600_000,
-      });
+      await handler.build(installPath, finalDetection);
     }
 
     // Step 11: Done
@@ -179,10 +216,12 @@ installStreamRouter.get('/install-stream', async (req, res) => {
     // Cleanup on failure
     if (appId) {
       updateAppStatus(appId, 'error');
-      if (installPath && existsSync(installPath)) {
-        rmSync(installPath, { recursive: true, force: true });
-      }
       deleteApp(appId);
+    }
+    // Clean up install directory even if app record wasn't created yet
+    // (e.g., binary download failed before createApp)
+    if (installPath && existsSync(installPath)) {
+      rmSync(installPath, { recursive: true, force: true });
     }
 
     send(res, 'error', { message });

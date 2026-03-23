@@ -20,7 +20,7 @@ export const staticRuntime: RuntimeHandler = {
       manifest: 'index.html',
       installCommand: 'echo "No dependencies"',
       buildCommand: null,
-      startCommand: 'npx serve -s . -l PORT',
+      startCommand: 'npx serve -s . -l 3000',
       detectedPort: 3000,
       runtimeVersion: null,
       envVarsRequired: [],

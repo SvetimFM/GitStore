@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CURRENT_VERSION = '0.2.0';
+const CURRENT_VERSION = '0.3.0';
 const DISMISSED_KEY = 'gitstore-update-dismissed';
 
 export interface UpdateInfo {

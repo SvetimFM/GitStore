@@ -14,7 +14,7 @@ async function githubFetchRaw<T = unknown>(endpoint: string): Promise<GitHubFetc
   const headers: Record<string, string> = {
     'Accept': 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'GitStore/0.1.0',
+    'User-Agent': 'GitStore/0.3.0',
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -159,7 +159,7 @@ export async function renderMarkdown(text: string, context: string): Promise<str
   const headers: Record<string, string> = {
     'Accept': 'application/vnd.github+json',
     'Content-Type': 'application/json',
-    'User-Agent': 'GitStore/0.1.0',
+    'User-Agent': 'GitStore/0.3.0',
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
@@ -238,33 +238,38 @@ export interface GitHubRelease {
   }>;
 }
 
+interface RawGitHubRelease {
+  tag_name: string;
+  name: string;
+  published_at: string;
+  body: string;
+  assets: Array<{
+    name: string;
+    size: number;
+    browser_download_url: string;
+    download_count: number;
+  }>;
+}
+
+function parseRelease(data: RawGitHubRelease): GitHubRelease {
+  return {
+    tagName: data.tag_name,
+    name: data.name || data.tag_name,
+    publishedAt: data.published_at,
+    body: data.body || '',
+    assets: data.assets.map(a => ({
+      name: a.name,
+      size: a.size,
+      downloadUrl: a.browser_download_url,
+      downloadCount: a.download_count,
+    })),
+  };
+}
+
 export async function getLatestRelease(owner: string, repo: string): Promise<GitHubRelease | null> {
   try {
-    const data = await githubFetch<{
-      tag_name: string;
-      name: string;
-      published_at: string;
-      body: string;
-      assets: Array<{
-        name: string;
-        size: number;
-        browser_download_url: string;
-        download_count: number;
-      }>;
-    }>(`/repos/${owner}/${repo}/releases/latest`);
-
-    return {
-      tagName: data.tag_name,
-      name: data.name || data.tag_name,
-      publishedAt: data.published_at,
-      body: data.body || '',
-      assets: data.assets.map(a => ({
-        name: a.name,
-        size: a.size,
-        downloadUrl: a.browser_download_url,
-        downloadCount: a.download_count,
-      })),
-    };
+    const data = await githubFetch<RawGitHubRelease>(`/repos/${owner}/${repo}/releases/latest`);
+    return parseRelease(data);
   } catch {
     return null; // No releases
   }
@@ -272,9 +277,10 @@ export async function getLatestRelease(owner: string, repo: string): Promise<Git
 
 const SAFE_NAME_RE = /^[a-zA-Z0-9_.-]+$/;
 
-export function parseRepoString(input: string): { owner: string; repo: string } {
+export function parseRepoString(input: string): { owner: string; repo: string; tag?: string } {
   let owner: string;
   let repo: string;
+  let tag: string | undefined;
 
   const urlMatch = input.match(/github\.com\/([^/]+)\/([^/\s#?]+)/);
   if (urlMatch) {
@@ -286,8 +292,16 @@ export function parseRepoString(input: string): { owner: string; repo: string } 
       owner = parts[0];
       repo = parts[1];
     } else {
-      throw new Error(`Invalid repo format: "${input}". Use owner/repo or a GitHub URL.`);
+      throw new Error(`Invalid repo format: "${input}". Use owner/repo or owner/repo@tag.`);
     }
+  }
+
+  // Extract @tag from repo segment (e.g., "repo@v2.1.0")
+  const atIdx = repo.indexOf('@');
+  if (atIdx !== -1) {
+    tag = repo.slice(atIdx + 1);
+    repo = repo.slice(0, atIdx);
+    if (!tag) throw new Error(`Empty tag in "${input}". Use owner/repo@tag.`);
   }
 
   // Prevent path traversal — owner and repo must be safe filesystem names
@@ -298,5 +312,27 @@ export function parseRepoString(input: string): { owner: string; repo: string } 
     throw new Error(`Repo name cannot start with a dot: "${owner}/${repo}"`);
   }
 
-  return { owner, repo };
+  return { owner, repo, tag };
+}
+
+export async function getReleaseByTag(owner: string, repo: string, tag: string): Promise<GitHubRelease | null> {
+  try {
+    const data = await githubFetch<RawGitHubRelease>(`/repos/${owner}/${repo}/releases/tags/${tag}`);
+    return parseRelease(data);
+  } catch {
+    return null;
+  }
+}
+
+/** Build auth headers for GitHub asset downloads. */
+export function getGithubDownloadHeaders(): Record<string, string> {
+  const token = getGithubToken();
+  const headers: Record<string, string> = {
+    'Accept': 'application/octet-stream',
+    'User-Agent': 'GitStore/0.3.0',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
 }

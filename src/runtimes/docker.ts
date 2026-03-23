@@ -1,13 +1,18 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { existsSync } from 'node:fs';
-import { basename } from 'node:path';
+import { basename, dirname } from 'node:path';
 import type { RuntimeHandler } from './base.js';
 import type { DetectionResult } from '../types/detection.js';
 import { parseEnvVars } from './utils.js';
 import { logger } from '../utils/logger.js';
 
 const execFileAsync = promisify(execFile);
+
+function dockerImageName(appDir: string): string {
+  const raw = `gitstore-${basename(dirname(appDir))}-${basename(appDir)}`;
+  return raw.toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+}
 
 export const dockerRuntime: RuntimeHandler = {
   type: 'docker',
@@ -68,7 +73,7 @@ export const dockerRuntime: RuntimeHandler = {
   },
 
   async install(appDir: string, detection: DetectionResult): Promise<void> {
-    const imageName = `gitstore-${basename(appDir)}`;
+    const imageName = dockerImageName(appDir);
     const isCompose = detection.manifest.includes('compose');
 
     if (isCompose) {
@@ -98,9 +103,9 @@ export const dockerRuntime: RuntimeHandler = {
       return { command: 'docker', args: ['compose', 'up', '-d'] };
     }
 
-    const imageName = `gitstore-${basename(appDir)}`;
+    const imageName = dockerImageName(appDir);
     const containerName = imageName;
-    const args = ['run', '-d', '--name', containerName];
+    const args = ['run', '-d', '--rm', '--name', containerName];
 
     if (detection.detectedPort) {
       args.push('-p', `${detection.detectedPort}:${detection.detectedPort}`);

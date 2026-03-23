@@ -18,9 +18,14 @@ export function registerInstallTools(server: McpServer): void {
         `✅ **${result.app.fullName}** installed successfully!`,
         '',
         `- **Runtime**: ${result.app.runtime}`,
+        `- **Install type**: ${result.app.installType}`,
         `- **Location**: ${result.app.installPath}`,
         `- **Start command**: \`${result.app.startCommand}\``,
       ];
+
+      if (result.app.installType === 'binary') {
+        lines.push(`- **Version**: ${result.app.installedRef}`);
+      }
 
       if (result.app.port) {
         lines.push(`- **Port**: ${result.app.port}`);

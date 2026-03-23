@@ -98,13 +98,64 @@
     <h1>What's New</h1>
     <p class="sub">Every release, from newest to oldest.</p>
 
-    <!-- v0.2 -->
+    <!-- v0.3 -->
     <div class="release">
       <div class="release-dot"></div>
       <div class="release-head">
-        <span class="release-ver">v0.2.0</span>
+        <span class="release-ver">v0.3.0</span>
         <span class="release-date">March 22, 2026</span>
         <span class="release-tag latest">Latest</span>
+      </div>
+
+      <div class="release-section">
+        <h3>Binary-First Installs</h3>
+        <ul>
+          <li>Pre-built binaries from GitHub Releases are now tried before cloning and building from source</li>
+          <li>Platform and architecture auto-detected &mdash; matches assets like <code>*-darwin-arm64.tar.gz</code></li>
+          <li>Installs Go/Rust CLI tools in seconds instead of minutes</li>
+          <li>Auth-aware downloads &mdash; works with private repos when a token is configured</li>
+          <li>Streamed to disk to handle large assets without memory issues</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Version Pinning</h3>
+        <ul>
+          <li><code>gitstore install owner/repo@v2.1.0</code> &mdash; install a specific release tag</li>
+          <li>Works for both binary downloads and source-from-tag clones</li>
+          <li><code>gitstore inspect owner/repo@tag</code> previews what would be installed</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>12 Bug Fixes</h3>
+        <ul>
+          <li>Python: venv paths fixed on Windows, pip arg parsing, <code>python3</code> &rarr; <code>python</code> on Windows</li>
+          <li>Go: <code>cmd/</code> directory layout detected, <code>v2+</code> module paths handled correctly</li>
+          <li>Docker: image name collisions fixed (now <code>gitstore-owner-repo</code>), <code>--rm</code> for container cleanup</li>
+          <li>Rust: build timeout increased to 45 min, workspace binary selection improved</li>
+          <li>Static: <code>PORT</code> literal replaced with actual port number</li>
+          <li>Install stream now routes through runtime handlers instead of raw shell commands</li>
+          <li>Crashed apps detected and marked as stopped automatically</li>
+        </ul>
+      </div>
+
+      <div class="release-section">
+        <h3>Other Improvements</h3>
+        <ul>
+          <li>Git submodule support &mdash; <code>--recursive</code> added to clone</li>
+          <li>Docker image names sanitized for valid Docker naming rules</li>
+          <li>Binary updates: <code>gitstore update</code> re-downloads latest release for binary apps</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v0.2 -->
+    <div class="release">
+      <div class="release-dot" style="background: var(--text-3);"></div>
+      <div class="release-head">
+        <span class="release-ver">v0.2.0</span>
+        <span class="release-date">March 22, 2026</span>
       </div>
 
       <div class="release-section">

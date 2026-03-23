@@ -12,7 +12,8 @@ export function spawnApp(
   args: string[],
   cwd: string,
   logFile: string,
-  env?: Record<string, string>
+  env?: Record<string, string>,
+  onExit?: (code: number | null, signal: string | null) => void,
 ): ManagedProcess {
   const logStream = createWriteStream(logFile, { flags: 'a' });
 
@@ -25,6 +26,10 @@ export function spawnApp(
 
   proc.stdout?.pipe(logStream);
   proc.stderr?.pipe(logStream);
+
+  if (onExit) {
+    proc.on('exit', onExit);
+  }
 
   proc.unref();
 

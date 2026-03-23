@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { randomUUID } from 'node:crypto';
 import { paths, ensureDirs } from '../utils/paths.js';
-import type { App, AppStatus } from '../types/app.js';
+import type { App, AppStatus, InstallType } from '../types/app.js';
 
 let db: Database.Database | null = null;
 
@@ -63,6 +63,7 @@ function initSchema(): void {
   `);
 
   try { db!.exec(`ALTER TABLE apps ADD COLUMN env_vars_required TEXT`); } catch { /* already exists */ }
+  try { db!.exec(`ALTER TABLE apps ADD COLUMN install_type TEXT DEFAULT 'source'`); } catch { /* already exists */ }
 
   db!.exec(`
     CREATE TABLE IF NOT EXISTS suggestions (
@@ -122,6 +123,7 @@ function rowToApp(row: Record<string, unknown>): App {
     status: row.status as AppStatus,
     pid: row.pid as number | null,
     installPath: row.install_path as string,
+    installType: (row.install_type as InstallType) ?? 'source',
     installedAt: row.installed_at as string,
     updatedAt: row.updated_at as string | null,
     lastStartedAt: row.last_started_at as string | null,
@@ -148,6 +150,7 @@ export function createApp(data: {
   defaultBranch: string;
   installedRef: string;
   installPath: string;
+  installType?: InstallType;
   envVarsRequired?: string[];
 }): App {
   const id = randomUUID();
@@ -157,11 +160,11 @@ export function createApp(data: {
     INSERT INTO apps (
       id, owner, repo, full_name, alias, description, runtime, runtime_version,
       start_command, build_command, install_command, port, stars, language, license,
-      default_branch, installed_ref, status, install_path, installed_at, env_vars_required
+      default_branch, installed_ref, status, install_path, installed_at, env_vars_required, install_type
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?, ?,
-      ?, ?, 'installing', ?, ?, ?
+      ?, ?, 'installing', ?, ?, ?, ?
     )
   `).run(
     id, data.owner, data.repo, `${data.owner}/${data.repo}`,
@@ -170,6 +173,7 @@ export function createApp(data: {
     data.stars, data.language, data.license,
     data.defaultBranch, data.installedRef, data.installPath, now,
     JSON.stringify(data.envVarsRequired ?? []),
+    data.installType ?? 'source',
   );
 
   return getApp(id)!;
@@ -233,6 +237,14 @@ export function deleteApp(id: string): void {
 
 export function updateAppUpdatedAt(id: string): void {
   getDb().prepare('UPDATE apps SET updated_at = ? WHERE id = ?').run(new Date().toISOString(), id);
+}
+
+export function updateAppStartCommand(id: string, startCommand: string): void {
+  getDb().prepare('UPDATE apps SET start_command = ? WHERE id = ?').run(startCommand, id);
+}
+
+export function updateAppInstalledRef(id: string, ref: string): void {
+  getDb().prepare('UPDATE apps SET installed_ref = ?, runtime_version = ? WHERE id = ?').run(ref, ref, id);
 }
 
 export interface AppEnvVar {
