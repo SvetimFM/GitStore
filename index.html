@@ -197,6 +197,18 @@
       border: 1px solid var(--border);
     }
     .btn-ghost:hover { border-color: var(--border-h); color: var(--text); }
+    .hero-install {
+      display: flex; align-items: center; gap: 12px; justify-content: center;
+      margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .hero-cmd {
+      font-family: ui-monospace, 'SF Mono', monospace; font-size: 15px;
+      background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+      color: var(--accent); padding: 10px 20px; border-radius: 8px;
+      letter-spacing: -0.01em; user-select: all; cursor: text;
+    }
+    .hero-cmd.dim { color: var(--text-2); background: rgba(255,255,255,0.03); border-color: var(--border); }
+    .hero-or { font-size: 12px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; }
     .hero-meta {
       display: flex; gap: 24px; margin-top: 36px;
       font-size: 12px; color: var(--text-3); letter-spacing: 0.02em;
@@ -487,16 +499,20 @@
         No cloning, no compiling. When binaries aren't available,
         it <strong>auto-detects the runtime</strong> and builds from source.
       </p>
+      <div class="hero-install">
+        <code class="hero-cmd">npm install -g gitstore</code>
+        <span class="hero-or">or</span>
+        <code class="hero-cmd dim">npx gitstore</code>
+      </div>
       <div class="hero-actions">
         <a href="download.html" class="btn btn-primary hero-cta">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for macOS
+          Download Desktop App
         </a>
         <a href="https://github.com/SvetimFM/GitStore" class="btn btn-ghost" target="_blank" rel="noopener">View Source</a>
       </div>
       <div class="hero-meta">
         <span><span class="dot"></span> 3,547 curated repos</span>
-        <span>3.7 MB</span>
         <span>Free &amp; open source</span>
       </div>
     </section>

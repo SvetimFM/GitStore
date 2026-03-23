@@ -80,6 +80,28 @@
     .reqs li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
 
     /* Source */
+    .pkg-managers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+    .pkg-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; text-align: left;
+    }
+    .pkg-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .pkg-icon {
+      width: 40px; height: 40px; border-radius: 8px; background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.03em; flex-shrink: 0;
+    }
+    .pkg-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .pkg-desc { font-size: 12px; color: var(--text-3); }
+    .pkg-cmd {
+      font-family: ui-monospace, monospace; font-size: 12px; line-height: 1.7;
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; margin: 0; white-space: pre; overflow-x: auto; color: var(--text-2);
+    }
+    .pkg-cmd .cmd { color: var(--accent); }
+    .pkg-cmd .comment { color: var(--text-3); }
+
     .source { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
     .source h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
     .source pre {
@@ -267,29 +289,58 @@
       </a>
     </div>
 
+    <div class="divider">Package managers</div>
+
+    <div class="pkg-managers">
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <div class="pkg-icon">npm</div>
+          <div class="pkg-info">
+            <div class="pkg-name">npm / npx</div>
+            <div class="pkg-desc">Node.js 18+ required</div>
+          </div>
+        </div>
+        <pre class="pkg-cmd"><span class="comment"># Install globally</span>
+<span class="cmd">npm</span> install -g gitstore
+
+<span class="comment"># Or run without installing</span>
+<span class="cmd">npx</span> gitstore</pre>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <div class="pkg-icon">brew</div>
+          <div class="pkg-info">
+            <div class="pkg-name">Homebrew</div>
+            <div class="pkg-desc">macOS &amp; Linux</div>
+          </div>
+        </div>
+        <pre class="pkg-cmd"><span class="cmd">brew</span> tap SvetimFM/tap
+<span class="cmd">brew</span> install gitstore</pre>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <div class="pkg-icon">src</div>
+          <div class="pkg-info">
+            <div class="pkg-name">From source</div>
+            <div class="pkg-desc">Build it yourself</div>
+          </div>
+        </div>
+        <pre class="pkg-cmd"><span class="cmd">git clone</span> https://github.com/SvetimFM/GitStore.git
+<span class="cmd">cd</span> GitStore && <span class="cmd">npm install</span> && <span class="cmd">npm run</span> build
+<span class="cmd">npm link</span></pre>
+      </div>
+    </div>
+
     <!-- Requirements -->
     <div class="reqs">
       <h3>Requirements</h3>
       <ul>
-        <li>Node.js 18+ (for running installed apps)</li>
+        <li>Node.js 18+ (for CLI and running installed apps)</li>
         <li>Git (for cloning repositories)</li>
         <li>macOS 12+ / Ubuntu 22+ / Windows 10+</li>
       </ul>
-    </div>
-
-    <!-- Build from source -->
-    <div class="source">
-      <h3>Or build from source</h3>
-      <pre><span class="comment"># Clone and build</span>
-<span class="cmd">git clone</span> https://github.com/SvetimFM/GitStore.git
-<span class="cmd">cd</span> GitStore && <span class="cmd">npm install</span>
-<span class="cmd">npm run</span> build
-
-<span class="comment"># Run the web server</span>
-<span class="cmd">npm run</span> start:server
-
-<span class="comment"># Or build the desktop app</span>
-<span class="cmd">cd</span> web && <span class="cmd">npm run</span> tauri:build</pre>
     </div>
   </div>
 
