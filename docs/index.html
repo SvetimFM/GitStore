@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitStore — App Store for GitHub</title>
-  <meta name="description" content="GitHub has 400 million repos. You've installed maybe 10. GitStore changes that. Discover, install, and run open-source apps with one click.">
-  <meta name="theme-color" content="#06060b">
+  <title>GitStore — The app store GitHub never built</title>
+  <meta name="description" content="Discover, install, and run open-source software from GitHub with a single click. 3,547 curated repos across 13 categories.">
+  <meta name="theme-color" content="#05050a">
   <meta name="author" content="GitStore Contributors">
   <meta name="keywords" content="github, app store, desktop app, open source, developer tools, tauri, self-hosted, package manager, mcp, ai, trending">
 
@@ -51,6 +51,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -85,273 +86,225 @@
 
     .w { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-    /* ─────────── Nav ─────────── */
+    /* ── Physarum Canvas ── */
+    #physarum-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── All content above canvas ── */
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Glass Panel ── */
+    .glass {
+      backdrop-filter: blur(20px) brightness(1.1) saturate(1.4);
+      background: rgba(11, 11, 18, 0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+      border-radius: 16px;
+    }
+
+    /* ── Nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(5,5,10,0.75);
+      background: rgba(5,5,10,0.7);
       backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid var(--border);
     }
     .nav-in {
       max-width: 1100px; margin: 0 auto; padding: 0 24px;
-      height: 52px; display: flex; align-items: center; justify-content: space-between;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
     }
     .nav-b { display: flex; align-items: center; gap: 9px; }
     .nav-mark {
-      width: 26px; height: 26px; border-radius: 6px;
+      width: 28px; height: 28px; border-radius: 7px;
       background: var(--accent); display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 13px; color: white;
+      font-weight: 700; font-size: 14px; color: white;
     }
-    .nav-t { font-weight: 700; font-size: 14px; letter-spacing: -0.02em; }
+    .nav-t { font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
     .nav-r { display: flex; gap: 24px; align-items: center; }
     .nav-r a { font-size: 13px; color: var(--text-2); transition: color 0.15s; }
     .nav-r a:hover { color: var(--text); }
     .nav-dl {
       font-size: 12px; font-weight: 600; color: white !important;
-      background: var(--accent); padding: 6px 16px; border-radius: 6px;
+      background: var(--accent); padding: 7px 18px; border-radius: 7px;
+      transition: all 0.2s;
     }
+    .nav-dl:hover { box-shadow: 0 2px 12px rgba(59,130,246,0.3); transform: translateY(-1px); }
 
-    /* ─────────── Hero ─────────── */
-    .hero { padding: 140px 0 40px; position: relative; }
-    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-    .hero-text { position: relative; z-index: 1; }
+    /* ── Hero ── */
+    .hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+    }
     .hero h1 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(42px, 6vw, 64px); line-height: 1.08;
-      letter-spacing: -0.02em; margin-bottom: 20px;
+      font-size: clamp(44px, 7vw, 76px); line-height: 1.05;
+      letter-spacing: -0.03em; margin-bottom: 24px;
+      max-width: 800px; margin-left: auto; margin-right: auto;
     }
     .hero h1 em { font-style: italic; color: var(--accent); }
-    .hero-p {
-      font-size: 15px; color: var(--text-2); max-width: 400px;
-      line-height: 1.7; margin-bottom: 32px;
+    .hero-sub {
+      font-size: clamp(15px, 1.6vw, 17px); color: var(--text-2);
+      max-width: 560px; margin: 0 auto 40px;
+      line-height: 1.7;
     }
-    .hero-p strong { color: var(--text); font-weight: 600; }
-    .hero-actions { display: flex; gap: 12px; }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 24px; border-radius: 8px;
+      padding: 13px 28px; border-radius: 9px;
       font-size: 14px; font-weight: 600; border: none; cursor: pointer;
       transition: all 0.2s; font-family: var(--sans);
     }
     .btn-primary {
       background: var(--accent); color: white;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(59,130,246,0.2);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(59,130,246,0.25);
     }
-    .btn-primary:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(59,130,246,0.3); transform: translateY(-1px); }
-    .btn-dim {
-      background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border);
+    .btn-primary:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 32px rgba(59,130,246,0.35); transform: translateY(-1px); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04); color: var(--text-2);
+      border: 1px solid var(--border);
     }
-    .btn-dim:hover { border-color: var(--border-h); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--border-h); color: var(--text); }
     .hero-meta {
-      display: flex; gap: 20px; margin-top: 28px;
+      display: flex; gap: 24px; margin-top: 36px;
       font-size: 12px; color: var(--text-3); letter-spacing: 0.02em;
+      justify-content: center;
     }
     .hero-meta span { display: flex; align-items: center; gap: 5px; }
-    .hero-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+    .hero-meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
 
-    /* ─ Mock App ─ */
-    .mock-app {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden; position: relative;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+    /* ── Speed Demo ── */
+    .speed {
+      padding: 40px 0 100px;
     }
-    .mock-bar {
+    .speed-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+    .speed-col { overflow: hidden; }
+    .speed-label {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 12px; padding-left: 4px;
+    }
+    .speed-label.slow { color: var(--text-3); }
+    .speed-label.fast { color: var(--green); }
+    .speed-term {
+      padding: 20px;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 12.5px; line-height: 1.9;
+    }
+    .speed-term .prompt { color: var(--text-3); }
+    .speed-term .cmd { color: var(--accent); }
+    .speed-term .arg { color: var(--text); }
+    .speed-term .out { color: var(--text-2); padding-left: 2px; }
+    .speed-term .ok { color: var(--green); }
+    .speed-term .dim { color: var(--text-3); }
+    .speed-term .warn { color: #f59e0b; }
+    .speed-term .val { color: var(--text); }
+    .speed-time {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px; padding: 4px 12px; border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+    }
+    .speed-time.slow { background: rgba(245,158,11,0.08); color: #f59e0b; }
+    .speed-time.fast { background: rgba(34,197,94,0.08); color: var(--green); }
+    .speed-bar {
+      height: 3px; border-radius: 2px; margin-top: 12px;
+      overflow: hidden; background: rgba(255,255,255,0.03);
+    }
+    .speed-bar-fill { height: 100%; border-radius: 2px; }
+    .speed-bar-fill.slow { width: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .speed-bar-fill.fast { width: 4%; background: linear-gradient(90deg, var(--green), #22d3ee); }
+
+    /* ── Features ── */
+    .features { padding: 80px 0; }
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .feat-card {
+      padding: 32px 28px;
+      transition: border-color 0.2s;
+    }
+    .feat-card:hover { border-color: var(--border-h); }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .feat-icon svg { color: var(--accent); }
+    .feat-card h3 {
+      font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .feat-card p {
+      font-size: 13.5px; color: var(--text-2); line-height: 1.7;
+    }
+
+    /* ── How It Works ── */
+    .how { padding: 80px 0 100px; }
+    .how-head { margin-bottom: 40px; text-align: center; }
+    .how-head h2 {
+      font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .how-head p { font-size: 14px; color: var(--text-2); }
+    .how-term {
+      max-width: 700px; margin: 0 auto; overflow: hidden;
+    }
+    .term-bar {
       display: flex; align-items: center; gap: 7px;
-      padding: 10px 14px; background: rgba(255,255,255,0.02);
+      padding: 12px 16px; background: rgba(255,255,255,0.02);
       border-bottom: 1px solid var(--border);
     }
-    .mock-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .mock-dot.r { background: #ff5f57; } .mock-dot.y { background: #febc2e; } .mock-dot.g { background: #28c840; }
-    .mock-bar-t { flex: 1; text-align: center; font-size: 11px; color: var(--text-3); margin-right: 30px; }
-    .mock-body { padding: 16px; }
-    .mock-search {
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--text-3);
-      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    .term-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .term-dot.r { background: #ff5f57; }
+    .term-dot.y { background: #febc2e; }
+    .term-dot.g { background: #28c840; }
+    .term-bar-title { flex: 1; text-align: center; font-size: 11px; color: var(--text-3); margin-right: 30px; }
+    .term-body {
+      padding: 22px 26px; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 13px; line-height: 2;
     }
-    .mock-search svg { opacity: 0.4; }
-    .mock-label { font-size: 11px; font-weight: 600; color: var(--text-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
-    .mock-cards { display: flex; gap: 8px; overflow: hidden; margin-bottom: 14px; }
-    .mock-card {
-      flex: 0 0 160px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px; display: flex; align-items: center; gap: 8px;
-    }
-    .mock-card img { width: 28px; height: 28px; border-radius: 6px; }
-    .mock-card-info { flex: 1; min-width: 0; }
-    .mock-card-name { font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mock-card-sub { font-size: 9px; color: var(--text-3); margin-top: 1px; }
-    .mock-card-btn {
-      font-size: 9px; font-weight: 700; color: var(--accent);
-      background: var(--accent-soft); padding: 2px 8px; border-radius: 99px;
-      flex-shrink: 0;
-    }
-    .mock-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .mock-cat {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 6px; padding: 7px 8px; font-size: 10px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .mock-cat-emoji { font-size: 13px; }
-    .mock-cat-t { color: var(--text-2); font-weight: 500; }
+    .t-prompt { color: var(--text-3); }
+    .t-cmd { color: var(--accent); }
+    .t-arg { color: var(--text); }
+    .t-out { color: var(--text-2); padding-left: 16px; }
+    .t-ok { color: var(--green); }
+    .t-val { color: var(--text); }
+    .t-blank { height: 8px; }
 
-    /* ─────────── Problem ─────────── */
-    .problem {
-      padding: 120px 0; text-align: center;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .problem::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, rgba(59,130,246,0.04) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .problem blockquote {
-      font-family: var(--serif); font-style: italic;
-      font-size: clamp(28px, 4.5vw, 44px); line-height: 1.25;
-      letter-spacing: -0.02em; max-width: 720px; margin: 0 auto 28px;
-      color: var(--text); position: relative; z-index: 1;
-    }
-    .problem blockquote .highlight { color: var(--accent); font-style: normal; }
-    .problem .answer {
-      font-size: 15px; color: var(--text-2); max-width: 440px; margin: 0 auto;
-      line-height: 1.8; position: relative; z-index: 1;
-    }
-
-    /* ─────────── Features — asymmetric ─────────── */
-    .feat { padding: 100px 0; }
-    .feat-row { display: grid; grid-template-columns: 5fr 4fr; gap: 56px; align-items: center; margin-bottom: 80px; }
-    .feat-row.flip { grid-template-columns: 4fr 5fr; }
-    .feat-row.flip .feat-visual { order: -1; }
-    .feat-tag {
+    /* ── AI / MCP ── */
+    .ai { padding: 80px 0 100px; }
+    .ai-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .ai-tag {
       display: inline-block; font-size: 11px; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.1em;
       color: var(--accent); margin-bottom: 14px;
     }
-    .feat-h {
-      font-family: var(--serif); font-size: clamp(26px, 3vw, 36px);
-      font-weight: 400; line-height: 1.15; letter-spacing: -0.01em;
-      margin-bottom: 14px;
-    }
-    .feat-p { font-size: 14px; color: var(--text-2); line-height: 1.75; max-width: 400px; }
-    .feat-visual {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-    }
-
-    /* Detection mock */
-    .det-mock { padding: 20px; }
-    .det-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .det-head img { width: 36px; height: 36px; border-radius: 8px; }
-    .det-head-t { font-size: 14px; font-weight: 600; }
-    .det-head-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
-    .det-rows { font-size: 12px; }
-    .det-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 0; border-bottom: 1px solid var(--border);
-    }
-    .det-row:last-child { border: none; }
-    .det-k { color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px; font-weight: 600; }
-    .det-v { color: var(--text); font-weight: 500; }
-    .det-v.mono { font-family: ui-monospace, monospace; font-size: 11px; color: var(--accent); }
-    .det-pill {
-      font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px;
-    }
-    .det-pill.green { background: rgba(34,197,94,0.1); color: #4ade80; }
-    .det-pill.blue { background: var(--accent-soft); color: var(--accent); }
-
-    /* Trending mock */
-    .trend-mock { padding: 16px; }
-    .trend-tabs {
-      display: flex; gap: 4px; margin-bottom: 14px;
-      background: rgba(255,255,255,0.03); border-radius: 6px; padding: 3px;
-    }
-    .trend-tab {
-      font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 4px;
-      color: var(--text-3); cursor: default;
-    }
-    .trend-tab.active { background: var(--accent-soft); color: var(--accent); }
-    .trend-items { display: flex; flex-direction: column; gap: 6px; }
-    .trend-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.02);
-    }
-    .trend-item img { width: 28px; height: 28px; border-radius: 6px; }
-    .trend-item-info { flex: 1; min-width: 0; }
-    .trend-item-name { font-size: 12px; font-weight: 600; color: var(--text); }
-    .trend-item-desc { font-size: 10px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .trend-item-stars { font-size: 10px; color: #fbbf24; font-weight: 600; flex-shrink: 0; }
-
-    /* ─ small features ─ */
-    .feat-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-      background: var(--border); border-radius: 12px; overflow: hidden;
-    }
-    .feat-sm {
-      background: var(--surface); padding: 28px 22px;
-    }
-    .feat-sm h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-    .feat-sm p { font-size: 12px; color: var(--text-2); line-height: 1.65; }
-
-    /* ─────────── How it works — terminal ─────────── */
-    .how { padding: 80px 0 100px; }
-    .how-head { margin-bottom: 40px; }
-    .how-head h2 {
-      font-family: var(--serif); font-size: clamp(28px, 4vw, 40px);
-      font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 10px;
-    }
-    .how-head p { font-size: 14px; color: var(--text-2); }
-    .how-term {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden; max-width: 700px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-    }
-    .how-term-bar {
-      display: flex; align-items: center; gap: 7px;
-      padding: 10px 14px; background: rgba(255,255,255,0.02);
-      border-bottom: 1px solid var(--border);
-    }
-    .how-term-body {
-      padding: 20px 24px; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-      font-size: 13px; line-height: 2;
-    }
-    .how-prompt { color: var(--text-3); }
-    .how-prompt .cmd { color: var(--accent); }
-    .how-prompt .arg { color: var(--text); }
-    .how-out { color: var(--text-2); padding-left: 16px; }
-    .how-out .ok { color: var(--green); }
-    .how-out .val { color: var(--text); }
-    .how-blank { height: 8px; }
-
-    /* ─────────── AI / MCP ─────────── */
-    .ai { padding: 80px 0 100px; }
-    .ai-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-    .ai-tag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; }
     .ai h2 {
-      font-family: var(--serif); font-size: clamp(28px, 3.5vw, 38px);
-      font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 14px;
+      font-family: var(--serif); font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
     }
-    .ai-p { font-size: 14px; color: var(--text-2); line-height: 1.75; max-width: 420px; margin-bottom: 24px; }
+    .ai-p { font-size: 14px; color: var(--text-2); line-height: 1.75; max-width: 420px; margin-bottom: 28px; }
+    .ai-p strong { color: var(--text); font-weight: 600; }
     .ai-list { display: flex; flex-direction: column; gap: 10px; }
     .ai-li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-2); }
     .ai-li-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 
-    .ai-terminal {
-      background: #0a0a12; border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-    .ai-bar {
-      display: flex; align-items: center; gap: 7px;
-      padding: 10px 14px; background: rgba(255,255,255,0.02);
-      border-bottom: 1px solid var(--border);
-    }
-    .ai-bar-t { flex: 1; text-align: center; font-size: 11px; color: var(--text-3); margin-right: 30px; }
-    .ai-chat { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
-    .ai-msg { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.6; }
+    .ai-terminal { overflow: hidden; }
+    .ai-chat { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .ai-msg { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; line-height: 1.6; }
     .ai-av {
-      width: 26px; height: 26px; border-radius: 7px;
+      width: 28px; height: 28px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; font-size: 12px; font-weight: 700;
     }
@@ -364,8 +317,8 @@
     .ai-fn {
       display: inline-flex; align-items: center; gap: 4px;
       background: var(--accent-soft); border: 1px solid rgba(59,130,246,0.12);
-      border-radius: 5px; padding: 1px 7px; font-size: 10px;
-      color: var(--accent); font-family: ui-monospace, monospace; margin: 3px 0;
+      border-radius: 5px; padding: 2px 8px; font-size: 10px;
+      color: var(--accent); font-family: ui-monospace, monospace; margin: 4px 0;
     }
     .ai-ok {
       background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.1);
@@ -373,21 +326,22 @@
       font-size: 11px; color: var(--green); font-family: ui-monospace, monospace;
     }
 
-    /* ─────────── Catalog ─────────── */
+    /* ── Catalog ── */
     .catalog { padding: 80px 0; text-align: center; }
     .catalog h2 {
-      font-family: var(--serif); font-size: clamp(28px, 4vw, 40px);
-      font-weight: 400; line-height: 1.15; margin-bottom: 8px;
+      font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 8px;
     }
     .catalog-sub { font-size: 14px; color: var(--text-2); margin-bottom: 48px; }
     .cat-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
     .cat-tile {
-      background: var(--surface); border: 1px solid var(--border);
+      background: rgba(11,11,18,0.5); border: 1px solid var(--border);
       border-radius: 10px; padding: 14px 12px; text-align: left;
       transition: border-color 0.2s;
+      backdrop-filter: blur(8px);
     }
     .cat-tile:hover { border-color: var(--border-h); }
     .cat-tile-icon { font-size: 22px; margin-bottom: 6px; }
@@ -401,28 +355,33 @@
     .app-chip {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 5px 12px 5px 5px; border-radius: 99px;
-      background: var(--surface-2); border: 1px solid var(--border);
+      background: rgba(16,16,26,0.6); border: 1px solid var(--border);
       font-size: 11px; font-weight: 500; color: var(--text-2);
       transition: border-color 0.15s;
+      backdrop-filter: blur(8px);
     }
     .app-chip:hover { border-color: var(--border-h); }
     .app-chip img { width: 18px; height: 18px; border-radius: 5px; }
 
-    /* ─────────── CTA ─────────── */
+    /* ── CTA ── */
     .cta {
-      padding: 100px 0 80px; text-align: center; position: relative;
-      border-top: 1px solid var(--border);
+      padding: 120px 0 100px; text-align: center; position: relative;
+    }
+    .cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(59,130,246,0.05) 0%, transparent 60%);
+      pointer-events: none;
     }
     .cta h2 {
-      font-family: var(--serif); font-size: clamp(32px, 5vw, 52px);
-      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
-      margin-bottom: 16px;
+      font-family: var(--serif); font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400; line-height: 1.08; letter-spacing: -0.02em;
+      margin-bottom: 16px; position: relative;
     }
     .cta h2 em { font-style: italic; color: var(--accent); }
-    .cta-sub { font-size: 14px; color: var(--text-3); margin-bottom: 36px; }
-    .cta .btn-primary { font-size: 15px; padding: 14px 32px; }
+    .cta-sub { font-size: 14px; color: var(--text-3); margin-bottom: 40px; position: relative; }
+    .cta .btn-primary { font-size: 15px; padding: 15px 36px; position: relative; }
 
-    /* ─────────── Footer ─────────── */
+    /* ── Footer ── */
     footer { border-top: 1px solid var(--border); padding: 28px 0; }
     .foot {
       max-width: 1100px; margin: 0 auto; padding: 0 24px;
@@ -433,366 +392,926 @@
     .foot-r a { font-size: 11px; color: var(--text-3); transition: color 0.15s; }
     .foot-r a:hover { color: var(--text); }
 
-    /* ─────────── Responsive ─────────── */
-    @media (max-width: 820px) {
-      .hero-grid { grid-template-columns: 1fr; }
-      .mock-app { margin-top: 40px; }
-      .feat-row, .feat-row.flip { grid-template-columns: 1fr; }
-      .feat-row.flip .feat-visual { order: 0; }
-      .feat-visual { margin-top: 24px; }
-      .feat-grid { grid-template-columns: 1fr 1fr; }
+    /* ── Section Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Section Divider ── */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .speed-grid { grid-template-columns: 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
       .ai-lay { grid-template-columns: 1fr; }
       .ai-terminal { margin-top: 32px; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .hero-actions { flex-direction: column; }
-      .nav-r a:not(.nav-dl) { display: none; }
-      .foot { flex-direction: column; gap: 10px; }
+      .hero-actions { flex-direction: column; align-items: center; }
     }
-    @media (max-width: 480px) {
-      .feat-grid { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      .nav-r a:not(.nav-dl) { display: none; }
+      .hero h1 { font-size: clamp(36px, 9vw, 56px); }
       .cat-grid { grid-template-columns: 1fr 1fr; }
-      .mock-cats { grid-template-columns: 1fr 1fr; }
+      .hero-meta { flex-direction: column; align-items: center; gap: 8px; }
+      .foot { flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Nav -->
-  <nav>
-    <div class="nav-in">
-      <a href="index.html" class="nav-b">
-        <div class="nav-mark">G</div>
-        <span class="nav-t">GitStore</span>
-      </a>
-      <div class="nav-r">
-        <a href="browse.html">Browse</a>
-        <a href="#features">Features</a>
-        <a href="changelog.html">What's New</a>
-        <a href="download.html">Download</a>
-        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
-        <a href="download.html" class="nav-dl">Get GitStore</a>
-      </div>
-    </div>
-  </nav>
+  <!-- Physarum Background Canvas -->
+  <canvas id="physarum-canvas"></canvas>
 
-  <!-- Hero: asymmetric — text left, live mock right -->
-  <section class="hero w">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1>The app store<br><em>GitHub</em> never built</h1>
-        <p class="hero-p">
-          GitHub has 400 million repositories.<br>You've installed maybe ten.
-          <strong>GitStore is the missing layer</strong> &mdash; discover, install, and run open-source software with a single click.
-        </p>
-        <div class="hero-actions">
-          <a href="download.html" class="btn btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download for macOS
-          </a>
-          <a href="https://github.com/SvetimFM/GitStore" class="btn btn-dim">View Source</a>
-        </div>
-        <p style="font-size:11px;color:var(--text-3);margin-top:16px;max-width:360px;">
-          macOS will warn about unsigned apps. After install, run:
-          <code style="background:var(--accent-soft);color:var(--accent);padding:1px 5px;border-radius:3px;font-size:10px;">xattr -cr /Applications/GitStore.app</code>
-        </p>
-        <div class="hero-meta">
-          <span><span class="dot"></span> 3,547 curated repos</span>
-          <span>3.7 MB</span>
-          <span>Free &amp; open source</span>
+  <div class="page-content">
+
+    <!-- Nav -->
+    <nav>
+      <div class="nav-in">
+        <a href="index.html" class="nav-b">
+          <div class="nav-mark">G</div>
+          <span class="nav-t">GitStore</span>
+        </a>
+        <div class="nav-r">
+          <a href="browse.html">Browse</a>
+          <a href="changelog.html">What's New</a>
+          <a href="https://github.com/SvetimFM/GitStore" target="_blank" rel="noopener">GitHub</a>
+          <a href="download.html" class="nav-dl">Get GitStore</a>
         </div>
       </div>
+    </nav>
 
-      <!-- Mock of the actual app -->
-      <div class="mock-app">
-        <div class="mock-bar">
-          <div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div>
-          <div class="mock-bar-t">GitStore</div>
-        </div>
-        <div class="mock-body">
-          <div class="mock-search">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            Search apps, tools, frameworks...
-          </div>
-          <div class="mock-label">Featured</div>
-          <div class="mock-cards">
-            <div class="mock-card">
-              <img src="https://github.com/ollama.png?size=56" alt="" loading="lazy">
-              <div class="mock-card-info"><div class="mock-card-name">ollama</div><div class="mock-card-sub">Run LLMs locally</div></div>
-              <div class="mock-card-btn">GET</div>
-            </div>
-            <div class="mock-card">
-              <img src="https://github.com/immich-app.png?size=56" alt="" loading="lazy">
-              <div class="mock-card-info"><div class="mock-card-name">immich</div><div class="mock-card-sub">Photo backup</div></div>
-              <div class="mock-card-btn">GET</div>
-            </div>
-            <div class="mock-card">
-              <img src="https://github.com/grafana.png?size=56" alt="" loading="lazy">
-              <div class="mock-card-info"><div class="mock-card-name">grafana</div><div class="mock-card-sub">Observability</div></div>
-              <div class="mock-card-btn">GET</div>
-            </div>
-          </div>
-          <div class="mock-label">Categories</div>
-          <div class="mock-cats">
-            <div class="mock-cat"><span class="mock-cat-emoji">🏠</span><span class="mock-cat-t">Self-Hosted</span></div>
-            <div class="mock-cat"><span class="mock-cat-emoji">🤖</span><span class="mock-cat-t">AI &amp; LLM</span></div>
-            <div class="mock-cat"><span class="mock-cat-emoji">🔧</span><span class="mock-cat-t">Dev Tools</span></div>
-            <div class="mock-cat"><span class="mock-cat-emoji">⌨️</span><span class="mock-cat-t">CLI Tools</span></div>
-            <div class="mock-cat"><span class="mock-cat-emoji">🔒</span><span class="mock-cat-t">Security</span></div>
-            <div class="mock-cat"><span class="mock-cat-emoji">📡</span><span class="mock-cat-t">DevOps</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Problem — editorial, emotional, lots of space -->
-  <section class="problem">
-    <div class="w">
-      <blockquote>
-        You find an incredible repo.<br>
-        You read the README. The <span class="highlight">setup instructions</span>.<br>
-        Then you close the tab.
-      </blockquote>
-      <p class="answer">
-        GitStore is the bridge between discovery and running.
-        No more cloning, reading docs, installing dependencies, or guessing runtimes.
-        One click. It just works.
+    <!-- Hero -->
+    <section class="hero w reveal">
+      <h1>Install GitHub repos<br>in <em>seconds</em>, not hours</h1>
+      <p class="hero-sub">
+        GitStore checks GitHub Releases for pre-built binaries first.
+        No cloning, no compiling. When binaries aren't available,
+        it <strong>auto-detects the runtime</strong> and builds from source.
       </p>
-    </div>
-  </section>
-
-  <!-- Features — two hero features with inline mocks -->
-  <section id="features" class="feat w">
-    <div class="feat-row">
-      <div>
-        <div class="feat-tag">Runtime Detection</div>
-        <h2 class="feat-h">Knows how to run<br>every repo you throw at it</h2>
-        <p class="feat-p">GitStore scans the repo's manifest &mdash; <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">package.json</code>, <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">Cargo.toml</code>, <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">go.mod</code>, <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">requirements.txt</code>, or <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">Dockerfile</code> &mdash; and figures out the install command, build step, start command, and port. Automatically.</p>
+      <div class="hero-actions">
+        <a href="download.html" class="btn btn-primary hero-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for macOS
+        </a>
+        <a href="https://github.com/SvetimFM/GitStore" class="btn btn-ghost" target="_blank" rel="noopener">View Source</a>
       </div>
-      <div class="feat-visual">
-        <div class="det-mock">
-          <div class="det-head">
-            <img src="https://github.com/fastapi.png?size=72" alt="" loading="lazy">
-            <div><div class="det-head-t">fastapi</div><div class="det-head-sub">fastapi/fastapi</div></div>
+      <div class="hero-meta">
+        <span><span class="dot"></span> 3,547 curated repos</span>
+        <span>3.7 MB</span>
+        <span>Free &amp; open source</span>
+      </div>
+    </section>
+
+    <!-- Speed Demo -->
+    <section class="speed w reveal">
+      <div class="speed-grid">
+        <div class="speed-col">
+          <div class="speed-label slow">Without GitStore</div>
+          <div class="glass speed-term">
+            <div class="prompt">$ <span class="cmd">git</span> <span class="arg">clone https://github.com/sharkdp/bat</span></div>
+            <div class="out dim">Cloning into 'bat'...</div>
+            <div class="out dim">Receiving objects: 100% (18432/18432)</div>
+            <div class="prompt" style="margin-top:4px">$ <span class="cmd">cargo</span> <span class="arg">build --release</span></div>
+            <div class="out dim">Compiling libc v0.2.155</div>
+            <div class="out dim">Compiling unicode-width v0.1.13</div>
+            <div class="out warn">... 312 crates to compile</div>
+            <div class="out dim" style="margin-top:4px">$ <span class="val">./target/release/bat</span></div>
+            <div class="speed-time slow">45 minutes later</div>
+            <div class="speed-bar"><div class="speed-bar-fill slow"></div></div>
           </div>
-          <div class="det-rows">
-            <div class="det-row"><span class="det-k">Runtime</span><span class="det-v">Python <span class="det-pill blue">high confidence</span></span></div>
-            <div class="det-row"><span class="det-k">Install</span><span class="det-v mono">pip install -r requirements.txt</span></div>
-            <div class="det-row"><span class="det-k">Start</span><span class="det-v mono">uvicorn main:app</span></div>
-            <div class="det-row"><span class="det-k">Port</span><span class="det-v">8000</span></div>
-            <div class="det-row"><span class="det-k">Risk</span><span class="det-v"><span class="det-pill green">Low &middot; 5/100</span></span></div>
+        </div>
+        <div class="speed-col">
+          <div class="speed-label fast">With GitStore</div>
+          <div class="glass speed-term">
+            <div class="prompt">$ <span class="cmd">gitstore</span> <span class="arg">install sharkdp/bat</span></div>
+            <div class="out"><span class="ok">&#10003;</span> Found release: bat-v0.26.1-aarch64-apple-darwin.tar.gz</div>
+            <div class="out"><span class="ok">&#10003;</span> Downloaded (3.2 MB)</div>
+            <div class="out"><span class="ok">&#10003;</span> Extracted &amp; linked to PATH</div>
+            <div class="out" style="margin-top:4px"><span class="ok">&#10003;</span> <span class="val">bat</span> is ready</div>
+            <div class="speed-time fast">2 seconds</div>
+            <div class="speed-bar"><div class="speed-bar-fill fast"></div></div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="feat-row flip">
-      <div>
-        <div class="feat-tag">Trending</div>
-        <h2 class="feat-h">See what's blowing up<br>before everyone else</h2>
-        <p class="feat-p">GitHub Trending, built in. Filter by daily, weekly, or monthly. See new repos that are gaining hundreds of stars right now &mdash; and install them instantly.</p>
-      </div>
-      <div class="feat-visual">
-        <div class="trend-mock">
-          <div class="trend-tabs">
-            <div class="trend-tab active">Daily</div>
-            <div class="trend-tab">Weekly</div>
-            <div class="trend-tab">Monthly</div>
+    <div class="section-divider"></div>
+
+    <!-- Features -->
+    <section class="features w reveal">
+      <div class="feat-grid">
+        <div class="glass feat-card">
+          <div class="feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           </div>
-          <div class="trend-items">
-            <div class="trend-item">
-              <img src="https://github.com/ollama.png?size=56" alt="" loading="lazy">
-              <div class="trend-item-info"><div class="trend-item-name">ollama/ollama</div><div class="trend-item-desc">Run large language models locally</div></div>
-              <div class="trend-item-stars">&#9733; 128k</div>
-            </div>
-            <div class="trend-item">
-              <img src="https://github.com/supabase.png?size=56" alt="" loading="lazy">
-              <div class="trend-item-info"><div class="trend-item-name">supabase/supabase</div><div class="trend-item-desc">The open-source Firebase alternative</div></div>
-              <div class="trend-item-stars">&#9733; 78k</div>
-            </div>
-            <div class="trend-item">
-              <img src="https://github.com/n8n-io.png?size=56" alt="" loading="lazy">
-              <div class="trend-item-info"><div class="trend-item-name">n8n-io/n8n</div><div class="trend-item-desc">Workflow automation platform</div></div>
-              <div class="trend-item-stars">&#9733; 52k</div>
-            </div>
+          <h3>Binary First</h3>
+          <p>Checks GitHub Releases for pre-built binaries matching your platform. Go, Rust, and C tools install in seconds &mdash; no compiler needed.</p>
+        </div>
+        <div class="glass feat-card">
+          <div class="feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           </div>
+          <h3>Smart Detection</h3>
+          <p>Scans package.json, Cargo.toml, go.mod, requirements.txt, Dockerfile. Figures out install, build, start, and port automatically.</p>
+        </div>
+        <div class="glass feat-card">
+          <div class="feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <h3>Version Pinning</h3>
+          <p><code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:12px;">gitstore install repo@v2.1.0</code> &mdash; install specific releases. Works for both binary downloads and source builds.</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Small features — single row, no icons, separated by borders -->
-    <div class="feat-grid">
-      <div class="feat-sm">
-        <h3>Risk Scoring</h3>
-        <p>Every repo gets a safety score based on stars, age, license, and suspicious patterns before you install it.</p>
+    <!-- How It Works -->
+    <section class="how w reveal">
+      <div class="how-head">
+        <h2>From discovery to running<br>in three commands</h2>
+        <p>Or one click. Your choice.</p>
       </div>
-      <div class="feat-sm">
-        <h3>README Preview</h3>
-        <p>Read the full README with GitHub-rendered markdown, dark-themed, right inside the app. No browser tab needed.</p>
-      </div>
-      <div class="feat-sm">
-        <h3>Process Management</h3>
-        <p>Start, stop, restart, update apps from one dashboard. View logs. Configure environment variables.</p>
-      </div>
-      <div class="feat-sm">
-        <h3>Community Curation</h3>
-        <p>Catalog sourced from 30+ awesome-lists. Suggest repos and sources. Collections grow organically.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works — terminal, not cards -->
-  <section id="how-it-works" class="how w">
-    <div class="how-head">
-      <h2>From URL to running<br>in three commands</h2>
-      <p>Or one click. Your choice.</p>
-    </div>
-    <div class="how-term">
-      <div class="how-term-bar">
-        <div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div>
-      </div>
-      <div class="how-term-body">
-        <div class="how-prompt"><span class="cmd">$</span> <span class="arg">gitstore search "photo backup"</span></div>
-        <div class="how-out">&rarr; <span class="val">immich-app/immich</span> &nbsp; &#9733; 55k &nbsp; Docker &nbsp; <span class="ok">Low Risk</span></div>
-        <div class="how-blank"></div>
-        <div class="how-prompt"><span class="cmd">$</span> <span class="arg">gitstore install immich-app/immich</span></div>
-        <div class="how-out"><span class="ok">&#10003;</span> Cloned &rarr; Detected Docker &rarr; Built &rarr; <span class="ok">Ready</span></div>
-        <div class="how-blank"></div>
-        <div class="how-prompt"><span class="cmd">$</span> <span class="arg">gitstore start immich-app/immich</span></div>
-        <div class="how-out"><span class="ok">&#10003;</span> Running at <span class="val">http://localhost:2283</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AI / MCP — kept, restyled to match new typography -->
-  <section class="ai w">
-    <div class="ai-lay">
-      <div>
-        <div class="ai-tag">AI-Native</div>
-        <h2>Or just tell your AI<br>to do it for you</h2>
-        <p class="ai-p">
-          GitStore ships with a built-in <strong style="color:var(--text)">MCP server</strong>. Connect it to Claude, and your AI assistant can search, inspect, install, and run apps on your behalf.
-        </p>
-        <div class="ai-list">
-          <div class="ai-li"><span class="ai-li-dot"></span> Searches GitHub and curated collections</div>
-          <div class="ai-li"><span class="ai-li-dot"></span> Reads the README to understand the app</div>
-          <div class="ai-li"><span class="ai-li-dot"></span> Checks risk, license, and prerequisites</div>
-          <div class="ai-li"><span class="ai-li-dot"></span> Installs, configures, and launches it</div>
+      <div class="glass how-term">
+        <div class="term-bar">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="term-bar-title">Terminal</div>
+        </div>
+        <div class="term-body">
+          <div class="t-prompt"><span class="t-cmd">$</span> <span class="t-arg">gitstore search "photo backup"</span></div>
+          <div class="t-out">&rarr; <span class="t-val">immich-app/immich</span> &nbsp; &#9733; 55k &nbsp; Docker &nbsp; <span class="t-ok">Low Risk</span></div>
+          <div class="t-blank"></div>
+          <div class="t-prompt"><span class="t-cmd">$</span> <span class="t-arg">gitstore install immich-app/immich</span></div>
+          <div class="t-out"><span class="t-ok">&#10003;</span> Cloned &rarr; Detected Docker &rarr; Built &rarr; <span class="t-ok">Ready</span></div>
+          <div class="t-blank"></div>
+          <div class="t-prompt"><span class="t-cmd">$</span> <span class="t-arg">gitstore start immich-app/immich</span></div>
+          <div class="t-out"><span class="t-ok">&#10003;</span> Running at <span class="t-val">http://localhost:2283</span></div>
         </div>
       </div>
+    </section>
 
-      <div class="ai-terminal">
-        <div class="ai-bar">
-          <div class="mock-dot r"></div><div class="mock-dot y"></div><div class="mock-dot g"></div>
-          <div class="ai-bar-t">Claude &mdash; GitStore MCP</div>
-        </div>
-        <div class="ai-chat">
-          <div class="ai-msg">
-            <div class="ai-av u">Y</div>
-            <div class="ai-bb">
-              <div class="n">You</div>
-              <div class="c">Find me a self-hosted photo backup app and install it</div>
-            </div>
+    <div class="section-divider"></div>
+
+    <!-- AI / MCP -->
+    <section class="ai w reveal">
+      <div class="ai-lay">
+        <div>
+          <div class="ai-tag">AI-Native</div>
+          <h2>Or just tell your AI<br>to do it for you</h2>
+          <p class="ai-p">
+            GitStore ships with a built-in <strong>MCP server</strong>. Connect it to Claude and your AI assistant can search, inspect, install, and run apps on your behalf.
+          </p>
+          <div class="ai-list">
+            <div class="ai-li"><span class="ai-li-dot"></span> Searches GitHub and curated collections</div>
+            <div class="ai-li"><span class="ai-li-dot"></span> Reads the README to understand the app</div>
+            <div class="ai-li"><span class="ai-li-dot"></span> Checks risk, license, and prerequisites</div>
+            <div class="ai-li"><span class="ai-li-dot"></span> Installs, configures, and launches it</div>
           </div>
-          <div class="ai-msg">
-            <div class="ai-av a">C</div>
-            <div class="ai-bb">
-              <div class="n">Claude</div>
-              <div class="c">
-                I'll search for that now.
-                <div class="ai-fn">gitstore_search "self-hosted photo backup"</div>
-                Found <strong>immich</strong> &mdash; 55k stars, actively maintained. Let me inspect it.
-                <div class="ai-fn">gitstore_inspect immich-app/immich</div>
-                Docker app, low risk (5/100). MIT licensed. Installing now.
-                <div class="ai-fn">gitstore_install immich-app/immich</div>
-                <div class="ai-ok">&#10003; Installed &mdash; ready on port 2283</div>
+        </div>
+
+        <div class="glass ai-terminal">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <div class="term-bar-title">Claude &mdash; GitStore MCP</div>
+          </div>
+          <div class="ai-chat">
+            <div class="ai-msg">
+              <div class="ai-av u">Y</div>
+              <div class="ai-bb">
+                <div class="n">You</div>
+                <div class="c">Find me a self-hosted photo backup app and install it</div>
+              </div>
+            </div>
+            <div class="ai-msg">
+              <div class="ai-av a">C</div>
+              <div class="ai-bb">
+                <div class="n">Claude</div>
+                <div class="c">
+                  I'll search for that now.
+                  <div class="ai-fn">gitstore_search "self-hosted photo backup"</div>
+                  Found <strong>immich</strong> &mdash; 55k stars, actively maintained. Let me inspect it.
+                  <div class="ai-fn">gitstore_inspect immich-app/immich</div>
+                  Docker app, low risk (5/100). MIT licensed. Installing now.
+                  <div class="ai-fn">gitstore_install immich-app/immich</div>
+                  <div class="ai-ok">&#10003; Installed &mdash; ready on port 2283</div>
+                </div>
+              </div>
+            </div>
+            <div class="ai-msg">
+              <div class="ai-av u">Y</div>
+              <div class="ai-bb"><div class="n">You</div><div class="c">Start it</div></div>
+            </div>
+            <div class="ai-msg">
+              <div class="ai-av a">C</div>
+              <div class="ai-bb">
+                <div class="n">Claude</div>
+                <div class="c">
+                  <div class="ai-fn">gitstore_start immich-app/immich</div>
+                  Running at <strong>http://localhost:2283</strong>
+                </div>
               </div>
             </div>
           </div>
-          <div class="ai-msg">
-            <div class="ai-av u">Y</div>
-            <div class="ai-bb"><div class="n">You</div><div class="c">Start it</div></div>
-          </div>
-          <div class="ai-msg">
-            <div class="ai-av a">C</div>
-            <div class="ai-bb">
-              <div class="n">Claude</div>
-              <div class="c">
-                <div class="ai-fn">gitstore_start immich-app/immich</div>
-                Running at <strong>http://localhost:2283</strong>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Catalog -->
-  <section class="catalog w">
-    <h2>3,547 repos. 13 categories.</h2>
-    <p class="catalog-sub">Curated from 30+ awesome-lists. Every repo is real, maintained, and installable.</p>
+    <div class="section-divider"></div>
 
-    <div class="cat-grid">
-      <div class="cat-tile"><div class="cat-tile-icon">⌨️</div><div class="cat-tile-name">CLI Tools</div><div class="cat-tile-n">645 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🌐</div><div class="cat-tile-name">Web Frameworks</div><div class="cat-tile-n">553 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🏠</div><div class="cat-tile-name">Self-Hosted</div><div class="cat-tile-n">547 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🔒</div><div class="cat-tile-name">Security</div><div class="cat-tile-n">336 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🔧</div><div class="cat-tile-name">Dev Tools</div><div class="cat-tile-n">284 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">📡</div><div class="cat-tile-name">DevOps</div><div class="cat-tile-n">199 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">📝</div><div class="cat-tile-name">Productivity</div><div class="cat-tile-n">175 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🎮</div><div class="cat-tile-name">Games</div><div class="cat-tile-n">163 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">💬</div><div class="cat-tile-name">Communication</div><div class="cat-tile-n">162 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">🤖</div><div class="cat-tile-name">AI &amp; LLM</div><div class="cat-tile-n">160 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">📊</div><div class="cat-tile-name">Data Science</div><div class="cat-tile-n">140 repos</div></div>
-      <div class="cat-tile"><div class="cat-tile-icon">💰</div><div class="cat-tile-name">Finance</div><div class="cat-tile-n">121 repos</div></div>
-    </div>
+    <!-- Catalog -->
+    <section class="catalog w reveal">
+      <h2>3,547 repos. 13 categories.</h2>
+      <p class="catalog-sub">Curated from 30+ awesome-lists. Every repo is real, maintained, and installable.</p>
 
-    <div class="app-river">
-      <a class="app-chip" href="https://github.com/ollama/ollama"><img src="https://github.com/ollama.png?size=36" alt="" loading="lazy">ollama</a>
-      <a class="app-chip" href="https://github.com/immich-app/immich"><img src="https://github.com/immich-app.png?size=36" alt="" loading="lazy">immich</a>
-      <a class="app-chip" href="https://github.com/nextcloud/server"><img src="https://github.com/nextcloud.png?size=36" alt="" loading="lazy">nextcloud</a>
-      <a class="app-chip" href="https://github.com/jellyfin/jellyfin"><img src="https://github.com/jellyfin.png?size=36" alt="" loading="lazy">jellyfin</a>
-      <a class="app-chip" href="https://github.com/grafana/grafana"><img src="https://github.com/grafana.png?size=36" alt="" loading="lazy">grafana</a>
-      <a class="app-chip" href="https://github.com/vercel/next.js"><img src="https://github.com/vercel.png?size=36" alt="" loading="lazy">next.js</a>
-      <a class="app-chip" href="https://github.com/tailscale/tailscale"><img src="https://github.com/tailscale.png?size=36" alt="" loading="lazy">tailscale</a>
-      <a class="app-chip" href="https://github.com/supabase/supabase"><img src="https://github.com/supabase.png?size=36" alt="" loading="lazy">supabase</a>
-      <a class="app-chip" href="https://github.com/hoppscotch/hoppscotch"><img src="https://github.com/hoppscotch.png?size=36" alt="" loading="lazy">hoppscotch</a>
-      <a class="app-chip" href="https://github.com/godotengine/godot"><img src="https://github.com/godotengine.png?size=36" alt="" loading="lazy">godot</a>
-      <a class="app-chip" href="https://github.com/n8n-io/n8n"><img src="https://github.com/n8n-io.png?size=36" alt="" loading="lazy">n8n</a>
-      <a class="app-chip" href="https://github.com/louislam/uptime-kuma"><img src="https://github.com/louislam.png?size=36" alt="" loading="lazy">uptime-kuma</a>
-      <a class="app-chip" href="https://github.com/fastapi/fastapi"><img src="https://github.com/fastapi.png?size=36" alt="" loading="lazy">fastapi</a>
-      <a class="app-chip" href="https://github.com/BurntSushi/ripgrep"><img src="https://github.com/BurntSushi.png?size=36" alt="" loading="lazy">ripgrep</a>
-      <a class="app-chip" href="https://github.com/pi-hole/pi-hole"><img src="https://github.com/pi-hole.png?size=36" alt="" loading="lazy">pi-hole</a>
-      <a class="app-chip" href="https://github.com/syncthing/syncthing"><img src="https://github.com/syncthing.png?size=36" alt="" loading="lazy">syncthing</a>
-      <a class="app-chip" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui"><img src="https://github.com/AUTOMATIC1111.png?size=36" alt="" loading="lazy">stable-diffusion</a>
-      <a class="app-chip" href="https://github.com/actualbudget/actual"><img src="https://github.com/actualbudget.png?size=36" alt="" loading="lazy">actual</a>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta">
-    <div class="w">
-      <h2>Stop reading READMEs.<br>Start <em>running</em> apps.</h2>
-      <p class="cta-sub">3,547 repos &middot; 13 categories &middot; 3.7 MB &middot; Free forever</p>
-      <a href="download.html" class="btn btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download GitStore
-      </a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="foot">
-      <div class="foot-l">GitStore &middot; PolyForm Noncommercial 1.0.0</div>
-      <div class="foot-r">
-        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
-        <a href="https://github.com/SvetimFM/GitStore/releases">Releases</a>
-        <a href="https://github.com/SvetimFM/GitStore/blob/main/LICENSE">License</a>
+      <div class="cat-grid">
+        <div class="cat-tile"><div class="cat-tile-icon">⌨️</div><div class="cat-tile-name">CLI Tools</div><div class="cat-tile-n">645 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🌐</div><div class="cat-tile-name">Web Frameworks</div><div class="cat-tile-n">553 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🏠</div><div class="cat-tile-name">Self-Hosted</div><div class="cat-tile-n">547 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🔒</div><div class="cat-tile-name">Security</div><div class="cat-tile-n">336 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🔧</div><div class="cat-tile-name">Dev Tools</div><div class="cat-tile-n">284 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">📡</div><div class="cat-tile-name">DevOps</div><div class="cat-tile-n">199 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">📝</div><div class="cat-tile-name">Productivity</div><div class="cat-tile-n">175 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🎮</div><div class="cat-tile-name">Games</div><div class="cat-tile-n">163 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">💬</div><div class="cat-tile-name">Communication</div><div class="cat-tile-n">162 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">🤖</div><div class="cat-tile-name">AI &amp; LLM</div><div class="cat-tile-n">160 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">📊</div><div class="cat-tile-name">Data Science</div><div class="cat-tile-n">140 repos</div></div>
+        <div class="cat-tile"><div class="cat-tile-icon">💰</div><div class="cat-tile-name">Finance</div><div class="cat-tile-n">121 repos</div></div>
       </div>
-    </div>
-  </footer>
+
+      <div class="app-river">
+        <a class="app-chip" href="https://github.com/ollama/ollama"><img src="https://github.com/ollama.png?size=36" alt="" loading="lazy">ollama</a>
+        <a class="app-chip" href="https://github.com/immich-app/immich"><img src="https://github.com/immich-app.png?size=36" alt="" loading="lazy">immich</a>
+        <a class="app-chip" href="https://github.com/nextcloud/server"><img src="https://github.com/nextcloud.png?size=36" alt="" loading="lazy">nextcloud</a>
+        <a class="app-chip" href="https://github.com/jellyfin/jellyfin"><img src="https://github.com/jellyfin.png?size=36" alt="" loading="lazy">jellyfin</a>
+        <a class="app-chip" href="https://github.com/grafana/grafana"><img src="https://github.com/grafana.png?size=36" alt="" loading="lazy">grafana</a>
+        <a class="app-chip" href="https://github.com/vercel/next.js"><img src="https://github.com/vercel.png?size=36" alt="" loading="lazy">next.js</a>
+        <a class="app-chip" href="https://github.com/tailscale/tailscale"><img src="https://github.com/tailscale.png?size=36" alt="" loading="lazy">tailscale</a>
+        <a class="app-chip" href="https://github.com/supabase/supabase"><img src="https://github.com/supabase.png?size=36" alt="" loading="lazy">supabase</a>
+        <a class="app-chip" href="https://github.com/hoppscotch/hoppscotch"><img src="https://github.com/hoppscotch.png?size=36" alt="" loading="lazy">hoppscotch</a>
+        <a class="app-chip" href="https://github.com/godotengine/godot"><img src="https://github.com/godotengine.png?size=36" alt="" loading="lazy">godot</a>
+        <a class="app-chip" href="https://github.com/n8n-io/n8n"><img src="https://github.com/n8n-io.png?size=36" alt="" loading="lazy">n8n</a>
+        <a class="app-chip" href="https://github.com/louislam/uptime-kuma"><img src="https://github.com/louislam.png?size=36" alt="" loading="lazy">uptime-kuma</a>
+        <a class="app-chip" href="https://github.com/fastapi/fastapi"><img src="https://github.com/fastapi.png?size=36" alt="" loading="lazy">fastapi</a>
+        <a class="app-chip" href="https://github.com/BurntSushi/ripgrep"><img src="https://github.com/BurntSushi.png?size=36" alt="" loading="lazy">ripgrep</a>
+        <a class="app-chip" href="https://github.com/pi-hole/pi-hole"><img src="https://github.com/pi-hole.png?size=36" alt="" loading="lazy">pi-hole</a>
+        <a class="app-chip" href="https://github.com/syncthing/syncthing"><img src="https://github.com/syncthing.png?size=36" alt="" loading="lazy">syncthing</a>
+        <a class="app-chip" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui"><img src="https://github.com/AUTOMATIC1111.png?size=36" alt="" loading="lazy">stable-diffusion</a>
+        <a class="app-chip" href="https://github.com/actualbudget/actual"><img src="https://github.com/actualbudget.png?size=36" alt="" loading="lazy">actual</a>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta reveal">
+      <div class="w">
+        <h2>Stop reading READMEs.<br>Start <em>running</em> apps.</h2>
+        <p class="cta-sub">3,547 repos &middot; 13 categories &middot; 3.7 MB &middot; Free forever</p>
+        <a href="download.html" class="btn btn-primary hero-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download GitStore
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="foot">
+        <div class="foot-l">GitStore &middot; PolyForm Noncommercial 1.0.0</div>
+        <div class="foot-r">
+          <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
+          <a href="https://github.com/SvetimFM/GitStore/releases">Releases</a>
+          <a href="https://github.com/SvetimFM/GitStore/blob/main/LICENSE">License</a>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- .page-content -->
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════
+     SECTION REVEAL — IntersectionObserver
+     ═══════════════════════════════════════════════════════════ */
+  (function() {
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+  })();
+
+  /* ═══════════════════════════════════════════════════════════
+     PHYSARUM SIMULATION — Full WebGL2 port
+     ═══════════════════════════════════════════════════════════ */
+  (function() {
+    'use strict';
+
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    var canvas = document.getElementById('physarum-canvas');
+    if (!canvas) return;
+
+    var gl = canvas.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+    if (!gl) {
+      // WebGL2 not available — hide canvas, graceful fallback
+      canvas.style.display = 'none';
+      return;
+    }
+
+    // Check for float texture support
+    var extColorFloat = gl.getExtension('EXT_color_buffer_float');
+    if (!extColorFloat) {
+      canvas.style.display = 'none';
+      return;
+    }
+
+    // ─── Configuration ───
+    var AGENT_COUNT = 40000;
+    var SENSOR_ANGLE = 0.45;
+    var SENSOR_DIST = 14.0;
+    var TURN_SPEED = 0.35;
+    var MOVE_SPEED = 1.2;
+    var DEPOSIT_AMOUNT = 0.7;
+    var DECAY_RATE = 0.015;
+    var DIFFUSE_RADIUS = 1;
+    var EXPLORER_RATIO = 0.3;
+    var EXPLORER_SENSOR_ANGLE = 0.9;
+    var EXPLORER_SENSOR_DIST = 20.0;
+    var EXPLORER_TURN_SPEED = 0.5;
+    var EXPLORER_MOVE_SPEED = 0.8;
+    var EXPLORER_DEPOSIT = 0.3;
+    var FOOD_STRENGTH = 3.0;
+    var FOOD_RADIUS = 60.0;
+    var MOUSE_STRENGTH = 4.0;
+    var MOUSE_RADIUS = 100.0;
+    var MAX_FOOD_SOURCES = 32;
+
+    var simWidth, simHeight, trailWidth, trailHeight;
+    var mouseX = -1000, mouseY = -1000;
+    var foodSources = [];
+    var animId = null;
+
+    // ─── WebGL Helpers ───
+    function compileShader(type, source) {
+      var shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+      }
+      return shader;
+    }
+
+    function linkProgram(vsSrc, fsSrc) {
+      var vs = compileShader(gl.VERTEX_SHADER, vsSrc);
+      var fs = compileShader(gl.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error('Program link error:', gl.getProgramInfoLog(prog));
+        gl.deleteProgram(prog);
+        return null;
+      }
+      gl.detachShader(prog, vs);
+      gl.detachShader(prog, fs);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+      return prog;
+    }
+
+    function createFBO(tex) {
+      var fbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+      return fbo;
+    }
+
+    function createFloatTex(w, h, data) {
+      var tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w, h, 0, gl.RGBA, gl.FLOAT, data);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return tex;
+    }
+
+    function createTrailTex(w, h) {
+      var tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return tex;
+    }
+
+    // ─── Shaders ───
+    var FULLSCREEN_VS = '#version 300 es\nin vec2 a_pos;out vec2 v_uv;void main(){v_uv=a_pos*0.5+0.5;gl_Position=vec4(a_pos,0,1);}';
+
+    var AGENT_UPDATE_VS = [
+      '#version 300 es',
+      'precision highp float;',
+      'uniform sampler2D u_agents;',
+      'uniform sampler2D u_trail;',
+      'uniform vec2 u_resolution;',
+      'uniform float u_time;',
+      'uniform float u_dt;',
+      'uniform int u_agentCount;',
+      'uniform vec4 u_foodSources[' + MAX_FOOD_SOURCES + '];',
+      'uniform int u_foodCount;',
+      'uniform vec2 u_mouse;',
+      'uniform float u_mouseStrength;',
+      'uniform float u_mouseRadius;',
+      '',
+      'in vec2 a_pos;',
+      'out vec4 v_newState;',
+      '',
+      'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+      '',
+      'void main(){',
+      '  int id=gl_VertexID;',
+      '  int texW=textureSize(u_agents,0).x;',
+      '  ivec2 coord=ivec2(id%texW,id/texW);',
+      '  vec4 state=texelFetch(u_agents,coord,0);',
+      '  vec2 pos=state.xy;',
+      '  float angle=state.z;',
+      '  float type=state.w;',
+      '  bool isExplorer=type>0.5;',
+      '',
+      '  float sAngle=isExplorer?' + EXPLORER_SENSOR_ANGLE.toFixed(4) + ':' + SENSOR_ANGLE.toFixed(4) + ';',
+      '  float sDist=isExplorer?' + EXPLORER_SENSOR_DIST.toFixed(4) + ':' + SENSOR_DIST.toFixed(4) + ';',
+      '  float tSpeed=isExplorer?' + EXPLORER_TURN_SPEED.toFixed(4) + ':' + TURN_SPEED.toFixed(4) + ';',
+      '  float mSpeed=isExplorer?' + EXPLORER_MOVE_SPEED.toFixed(4) + ':' + MOVE_SPEED.toFixed(4) + ';',
+      '',
+      '  vec2 trailRes=vec2(textureSize(u_trail,0));',
+      '  vec2 uvC=pos/u_resolution;',
+      '  vec2 dirF=vec2(cos(angle),sin(angle));',
+      '  vec2 dirL=vec2(cos(angle+sAngle),sin(angle+sAngle));',
+      '  vec2 dirR=vec2(cos(angle-sAngle),sin(angle-sAngle));',
+      '',
+      '  float sF=texture(u_trail,(pos+dirF*sDist)/u_resolution).r;',
+      '  float sL=texture(u_trail,(pos+dirL*sDist)/u_resolution).r;',
+      '  float sR=texture(u_trail,(pos+dirR*sDist)/u_resolution).r;',
+      '',
+      // Food attraction for primary agents
+      '  if(!isExplorer){',
+      '    for(int i=0;i<' + MAX_FOOD_SOURCES + ';i++){',
+      '      if(i>=u_foodCount)break;',
+      '      vec2 fp=u_foodSources[i].xy;',
+      '      float fr=u_foodSources[i].z;',
+      '      float fs=u_foodSources[i].w;',
+      '      float d=distance(pos,fp);',
+      '      if(d<fr){',
+      '        float influence=fs*(1.0-d/fr);',
+      '        vec2 toFood=normalize(fp-pos);',
+      '        sF+=influence*max(0.0,dot(dirF,toFood));',
+      '        sL+=influence*max(0.0,dot(dirL,toFood));',
+      '        sR+=influence*max(0.0,dot(dirR,toFood));',
+      '      }',
+      '    }',
+      '  }',
+      '',
+      // Mouse attraction
+      '  if(u_mouseStrength>0.0){',
+      '    float md=distance(pos,u_mouse);',
+      '    if(md<u_mouseRadius){',
+      '      float mi=u_mouseStrength*(1.0-md/u_mouseRadius);',
+      '      vec2 toM=normalize(u_mouse-pos);',
+      '      sF+=mi*max(0.0,dot(dirF,toM));',
+      '      sL+=mi*max(0.0,dot(dirL,toM));',
+      '      sR+=mi*max(0.0,dot(dirR,toM));',
+      '    }',
+      '  }',
+      '',
+      '  float rnd=hash(pos+vec2(u_time));',
+      '  if(sF>=sL&&sF>=sR){',
+      '    // keep going',
+      '  }else if(sL>sR){',
+      '    angle+=tSpeed*u_dt;',
+      '  }else if(sR>sL){',
+      '    angle-=tSpeed*u_dt;',
+      '  }else{',
+      '    angle+=(rnd-0.5)*tSpeed*2.0*u_dt;',
+      '  }',
+      '',
+      '  pos+=vec2(cos(angle),sin(angle))*mSpeed*u_dt;',
+      '',
+      // Wrap
+      '  if(pos.x<0.0)pos.x+=u_resolution.x;',
+      '  if(pos.x>=u_resolution.x)pos.x-=u_resolution.x;',
+      '  if(pos.y<0.0)pos.y+=u_resolution.y;',
+      '  if(pos.y>=u_resolution.y)pos.y-=u_resolution.y;',
+      '',
+      '  v_newState=vec4(pos,angle,type);',
+      '  vec2 ndc=((vec2(coord)+0.5)/vec2(textureSize(u_agents,0)))*2.0-1.0;',
+      '  gl_Position=vec4(ndc,0,1);',
+      '  gl_PointSize=1.0;',
+      '}'
+    ].join('\n');
+
+    var AGENT_UPDATE_FS = [
+      '#version 300 es',
+      'precision highp float;',
+      'in vec4 v_newState;',
+      'out vec4 fragColor;',
+      'void main(){fragColor=v_newState;}'
+    ].join('\n');
+
+    var DEPOSIT_FS = [
+      '#version 300 es',
+      'precision highp float;',
+      'uniform sampler2D u_trail;',
+      'uniform sampler2D u_agents;',
+      'uniform vec2 u_trailRes;',
+      'uniform vec2 u_simRes;',
+      'uniform int u_agentCount;',
+      'uniform float u_depositPrimary;',
+      'uniform float u_depositExplorer;',
+      'in vec2 v_uv;',
+      'out vec4 fragColor;',
+      'void main(){',
+      '  vec4 current=texture(u_trail,v_uv);',
+      '  fragColor=current;',
+      '}'
+    ].join('\n');
+
+    // Agent deposit pass via points
+    var DEPOSIT_POINT_VS = [
+      '#version 300 es',
+      'precision highp float;',
+      'uniform sampler2D u_agents;',
+      'uniform vec2 u_trailRes;',
+      'uniform vec2 u_simRes;',
+      'flat out float v_deposit;',
+      'void main(){',
+      '  int id=gl_VertexID;',
+      '  int texW=textureSize(u_agents,0).x;',
+      '  ivec2 coord=ivec2(id%texW,id/texW);',
+      '  vec4 state=texelFetch(u_agents,coord,0);',
+      '  vec2 pos=state.xy;',
+      '  float type=state.w;',
+      '  bool isExplorer=type>0.5;',
+      '  v_deposit=isExplorer?' + EXPLORER_DEPOSIT.toFixed(4) + ':' + DEPOSIT_AMOUNT.toFixed(4) + ';',
+      '  vec2 ndc=(pos/u_simRes)*2.0-1.0;',
+      '  gl_Position=vec4(ndc,0,1);',
+      '  gl_PointSize=1.0;',
+      '}'
+    ].join('\n');
+
+    var DEPOSIT_POINT_FS = [
+      '#version 300 es',
+      'precision highp float;',
+      'flat in float v_deposit;',
+      'out vec4 fragColor;',
+      'void main(){fragColor=vec4(v_deposit,v_deposit*0.5,0,1);}'
+    ].join('\n');
+
+    var DIFFUSE_FS = [
+      '#version 300 es',
+      'precision highp float;',
+      'uniform sampler2D u_trail;',
+      'uniform vec2 u_texelSize;',
+      'uniform float u_decay;',
+      'in vec2 v_uv;',
+      'out vec4 fragColor;',
+      'void main(){',
+      '  vec4 sum=vec4(0);',
+      '  for(int y=-' + DIFFUSE_RADIUS + ';y<=' + DIFFUSE_RADIUS + ';y++){',
+      '    for(int x=-' + DIFFUSE_RADIUS + ';x<=' + DIFFUSE_RADIUS + ';x++){',
+      '      sum+=texture(u_trail,v_uv+vec2(x,y)*u_texelSize);',
+      '    }',
+      '  }',
+      '  float count=float((' + (DIFFUSE_RADIUS*2+1) + ')*(' + (DIFFUSE_RADIUS*2+1) + '));',
+      '  vec4 blurred=sum/count;',
+      '  fragColor=max(vec4(0),blurred-u_decay);',
+      '}'
+    ].join('\n');
+
+    var DISPLAY_FS = [
+      '#version 300 es',
+      'precision highp float;',
+      'uniform sampler2D u_trail;',
+      'uniform vec2 u_mouse;',
+      'uniform vec2 u_resolution;',
+      'uniform float u_mouseRadius;',
+      'in vec2 v_uv;',
+      'out vec4 fragColor;',
+      'void main(){',
+      '  vec4 t=texture(u_trail,v_uv);',
+      '  float primary=t.r;',
+      '  float explorer=t.g;',
+      '',
+      '  vec3 blue=vec3(0.231,0.510,0.965);',     // #3b82f6
+      '  vec3 cyan=vec3(0.133,0.827,0.933);',      // #22d3ee
+      '  vec3 indigo=vec3(0.263,0.302,0.549);',    // indigo-ish
+      '  vec3 fogColor=vec3(0.20,0.22,0.33);',     // dark indigo fog
+      '  vec3 bgColor=vec3(0.020,0.020,0.039);',   // #05050a
+      '',
+      '  vec3 primaryColor=mix(blue,cyan,smoothstep(0.0,1.5,primary));',
+      '  vec3 explorerColor=mix(indigo,fogColor,smoothstep(0.0,0.8,explorer));',
+      '',
+      '  float pI=smoothstep(0.0,0.3,primary)*0.85;',
+      '  float eI=smoothstep(0.0,0.2,explorer)*0.15;',
+      '',
+      '  vec3 color=bgColor;',
+      '  color=mix(color,explorerColor,eI);',
+      '  color=mix(color,primaryColor,pI);',
+      '',
+      // Mouse glow — blue
+      '  vec2 fragPos=v_uv*u_resolution;',
+      '  float md=distance(fragPos,u_mouse);',
+      '  if(md<u_mouseRadius){',
+      '    float glow=(1.0-md/u_mouseRadius)*0.08;',
+      '    color+=blue*glow;',
+      '  }',
+      '',
+      '  fragColor=vec4(color,1.0);',
+      '}'
+    ].join('\n');
+
+    // ─── State ───
+    var agentProgram, depositPointProgram, diffuseProgram, displayProgram;
+    var agentTexA, agentTexB, agentFboA, agentFboB;
+    var trailTexA, trailTexB, trailFboA, trailFboB;
+    var quadVAO, quadVBO, agentVAO;
+    var agentTexWidth, agentTexHeight;
+    var currentAgentRead = 'A'; // A or B
+    var currentTrailRead = 'A';
+    var frameTime = 0;
+
+    function init() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+
+      simWidth = canvas.width;
+      simHeight = canvas.height;
+      // Trail at half resolution for performance
+      trailWidth = Math.floor(simWidth / 2);
+      trailHeight = Math.floor(simHeight / 2);
+
+      // ── Build Programs ──
+      agentProgram = linkProgram(AGENT_UPDATE_VS, AGENT_UPDATE_FS);
+      depositPointProgram = linkProgram(DEPOSIT_POINT_VS, DEPOSIT_POINT_FS);
+      diffuseProgram = linkProgram(FULLSCREEN_VS, DIFFUSE_FS);
+      displayProgram = linkProgram(FULLSCREEN_VS, DISPLAY_FS);
+
+      if (!agentProgram || !depositPointProgram || !diffuseProgram || !displayProgram) {
+        console.error('Physarum: Failed to compile shaders');
+        canvas.style.display = 'none';
+        return false;
+      }
+
+      // ── Quad VAO ──
+      quadVBO = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadVBO);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+      quadVAO = gl.createVertexArray();
+      gl.bindVertexArray(quadVAO);
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadVBO);
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.bindVertexArray(null);
+
+      // ── Agent VAO (empty, we use gl_VertexID) ──
+      agentVAO = gl.createVertexArray();
+
+      // ── Initialize Agent Data ──
+      agentTexWidth = Math.ceil(Math.sqrt(AGENT_COUNT));
+      agentTexHeight = Math.ceil(AGENT_COUNT / agentTexWidth);
+      var totalPixels = agentTexWidth * agentTexHeight;
+      var agentData = new Float32Array(totalPixels * 4);
+      var explorerCount = Math.floor(AGENT_COUNT * EXPLORER_RATIO);
+
+      for (var i = 0; i < AGENT_COUNT; i++) {
+        var idx = i * 4;
+        agentData[idx] = Math.random() * simWidth;
+        agentData[idx + 1] = Math.random() * simHeight;
+        agentData[idx + 2] = Math.random() * Math.PI * 2;
+        agentData[idx + 3] = i < explorerCount ? 1.0 : 0.0;
+      }
+
+      agentTexA = createFloatTex(agentTexWidth, agentTexHeight, agentData);
+      agentTexB = createFloatTex(agentTexWidth, agentTexHeight, null);
+      agentFboA = createFBO(agentTexA);
+      agentFboB = createFBO(agentTexB);
+
+      // ── Trail Textures ──
+      trailTexA = createTrailTex(trailWidth, trailHeight);
+      trailTexB = createTrailTex(trailWidth, trailHeight);
+      trailFboA = createFBO(trailTexA);
+      trailFboB = createFBO(trailTexB);
+
+      currentAgentRead = 'A';
+      currentTrailRead = 'A';
+
+      return true;
+    }
+
+    function scanFoodSources() {
+      foodSources = [];
+      var selectors = '.glass, h1, h2, h3, .hero-cta, nav a, .feat-card';
+      var elements = document.querySelectorAll(selectors);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      elements.forEach(function(el) {
+        if (foodSources.length >= MAX_FOOD_SOURCES) return;
+        var rect = el.getBoundingClientRect();
+        var cx = (rect.left + rect.width / 2) * dpr;
+        var cy = (rect.top + rect.height / 2) * dpr;
+        var radius = Math.max(rect.width, rect.height) * 0.5 * dpr;
+        if (radius < 10) radius = FOOD_RADIUS * dpr * 0.5;
+        foodSources.push({ x: cx, y: cy, radius: Math.min(radius, FOOD_RADIUS * dpr), strength: FOOD_STRENGTH });
+      });
+    }
+
+    function render(time) {
+      var dt = Math.min((time - frameTime) / 16.67, 3.0); // normalize to ~60fps
+      if (dt <= 0 || isNaN(dt)) dt = 1.0;
+      frameTime = time;
+
+      var readAgentTex = currentAgentRead === 'A' ? agentTexA : agentTexB;
+      var writeAgentFbo = currentAgentRead === 'A' ? agentFboB : agentFboA;
+      var writeAgentTex = currentAgentRead === 'A' ? agentTexB : agentTexA;
+      var readTrailTex = currentTrailRead === 'A' ? trailTexA : trailTexB;
+      var writeTrailFbo = currentTrailRead === 'A' ? trailFboB : trailFboA;
+      var writeTrailTex = currentTrailRead === 'A' ? trailTexB : trailTexA;
+
+      // ── Pass 1: Update agents (transform feedback via render-to-texture) ──
+      gl.bindFramebuffer(gl.FRAMEBUFFER, writeAgentFbo);
+      gl.viewport(0, 0, agentTexWidth, agentTexHeight);
+      gl.useProgram(agentProgram);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, readAgentTex);
+      gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_agents'), 0);
+
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, readTrailTex);
+      gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_trail'), 1);
+
+      gl.uniform2f(gl.getUniformLocation(agentProgram, 'u_resolution'), simWidth, simHeight);
+      gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_time'), time * 0.001);
+      gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_dt'), dt);
+      gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_agentCount'), AGENT_COUNT);
+
+      // Food sources
+      var foodData = new Float32Array(MAX_FOOD_SOURCES * 4);
+      for (var i = 0; i < foodSources.length && i < MAX_FOOD_SOURCES; i++) {
+        foodData[i * 4] = foodSources[i].x;
+        foodData[i * 4 + 1] = foodSources[i].y;
+        foodData[i * 4 + 2] = foodSources[i].radius;
+        foodData[i * 4 + 3] = foodSources[i].strength;
+      }
+      gl.uniform4fv(gl.getUniformLocation(agentProgram, 'u_foodSources[0]'), foodData);
+      gl.uniform1i(gl.getUniformLocation(agentProgram, 'u_foodCount'), Math.min(foodSources.length, MAX_FOOD_SOURCES));
+
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      gl.uniform2f(gl.getUniformLocation(agentProgram, 'u_mouse'), mouseX * dpr, mouseY * dpr);
+      gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseStrength'), mouseX > 0 ? MOUSE_STRENGTH : 0.0);
+      gl.uniform1f(gl.getUniformLocation(agentProgram, 'u_mouseRadius'), MOUSE_RADIUS * dpr);
+
+      gl.bindVertexArray(agentVAO);
+      gl.drawArrays(gl.POINTS, 0, AGENT_COUNT);
+
+      currentAgentRead = currentAgentRead === 'A' ? 'B' : 'A';
+
+      // ── Pass 2: Deposit trails ──
+      // Draw agent positions as points onto the trail texture with additive blending
+      gl.bindFramebuffer(gl.FRAMEBUFFER, currentTrailRead === 'A' ? trailFboA : trailFboB);
+      gl.viewport(0, 0, trailWidth, trailHeight);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE);
+
+      gl.useProgram(depositPointProgram);
+      var newAgentTex = currentAgentRead === 'A' ? agentTexA : agentTexB;
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, newAgentTex);
+      gl.uniform1i(gl.getUniformLocation(depositPointProgram, 'u_agents'), 0);
+      gl.uniform2f(gl.getUniformLocation(depositPointProgram, 'u_trailRes'), trailWidth, trailHeight);
+      gl.uniform2f(gl.getUniformLocation(depositPointProgram, 'u_simRes'), simWidth, simHeight);
+
+      gl.bindVertexArray(agentVAO);
+      gl.drawArrays(gl.POINTS, 0, AGENT_COUNT);
+      gl.disable(gl.BLEND);
+
+      // ── Pass 3: Diffuse + Decay ──
+      var readTrailForDiffuse = currentTrailRead === 'A' ? trailTexA : trailTexB;
+      var writeTrailForDiffuse = currentTrailRead === 'A' ? trailFboB : trailFboA;
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, writeTrailForDiffuse);
+      gl.viewport(0, 0, trailWidth, trailHeight);
+      gl.useProgram(diffuseProgram);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, readTrailForDiffuse);
+      gl.uniform1i(gl.getUniformLocation(diffuseProgram, 'u_trail'), 0);
+      gl.uniform2f(gl.getUniformLocation(diffuseProgram, 'u_texelSize'), 1.0 / trailWidth, 1.0 / trailHeight);
+      gl.uniform1f(gl.getUniformLocation(diffuseProgram, 'u_decay'), DECAY_RATE * dt);
+
+      gl.bindVertexArray(quadVAO);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      currentTrailRead = currentTrailRead === 'A' ? 'B' : 'A';
+
+      // ── Pass 4: Display ──
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.useProgram(displayProgram);
+
+      var finalTrailTex = currentTrailRead === 'A' ? trailTexA : trailTexB;
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, finalTrailTex);
+      gl.uniform1i(gl.getUniformLocation(displayProgram, 'u_trail'), 0);
+      gl.uniform2f(gl.getUniformLocation(displayProgram, 'u_mouse'), mouseX * dpr, mouseY * dpr);
+      gl.uniform2f(gl.getUniformLocation(displayProgram, 'u_resolution'), canvas.width, canvas.height);
+      gl.uniform1f(gl.getUniformLocation(displayProgram, 'u_mouseRadius'), MOUSE_RADIUS * dpr);
+
+      gl.bindVertexArray(quadVAO);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      animId = requestAnimationFrame(render);
+    }
+
+    // ─── Mouse tracking (allow pointer events on canvas for this) ───
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    document.addEventListener('mouseleave', function() {
+      mouseX = -1000;
+      mouseY = -1000;
+    });
+
+    // ─── Resize ───
+    var resizeTimeout;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function() {
+        if (animId) cancelAnimationFrame(animId);
+        // Cleanup old textures
+        gl.deleteTexture(agentTexA);
+        gl.deleteTexture(agentTexB);
+        gl.deleteTexture(trailTexA);
+        gl.deleteTexture(trailTexB);
+        gl.deleteFramebuffer(agentFboA);
+        gl.deleteFramebuffer(agentFboB);
+        gl.deleteFramebuffer(trailFboA);
+        gl.deleteFramebuffer(trailFboB);
+        if (init()) {
+          scanFoodSources();
+          frameTime = performance.now();
+          animId = requestAnimationFrame(render);
+        }
+      }, 250);
+    });
+
+    // ─── Periodic food source rescan ───
+    setInterval(scanFoodSources, 2000);
+
+    // ─── Boot ───
+    if (init()) {
+      scanFoodSources();
+      frameTime = performance.now();
+      animId = requestAnimationFrame(render);
+    }
+
+  })();
+  </script>
 
 </body>
 </html>
