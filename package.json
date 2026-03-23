@@ -1,5 +1,5 @@
 {
-  "name": "gitstore",
+  "name": "@svetfm/gitstore",
   "version": "0.3.0",
   "description": "App store for GitHub — install and run repos as applications",
   "type": "module",
@@ -33,7 +33,7 @@
     "web/dist/"
   ],
   "scripts": {
-    "build": "tsc && cp -r src/data dist/data && cd web && npx vite build",
+    "build": "tsc && cp -r src/data/. dist/data/ && cd web && npx vite build",
     "build:backend": "tsc",
     "build:web": "cd web && npx vite build",
     "dev": "tsc --watch",

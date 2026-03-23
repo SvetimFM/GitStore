@@ -1,7 +1,7 @@
 class Gitstore < Formula
   desc "App store for GitHub — install and run repos as applications"
   homepage "https://svetimfm.github.io/GitStore/"
-  url "https://registry.npmjs.org/gitstore/-/gitstore-0.3.0.tgz"
+  url "https://registry.npmjs.org/@svetfm/gitstore/-/gitstore-0.3.0.tgz"
   license "PolyForm-Noncommercial-1.0.0"
 
   depends_on "node@18"
