@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -16,30 +16,41 @@
       --border: rgba(255,255,255,0.06); --border-h: rgba(255,255,255,0.1);
       --text: #dddde4; --text-2: #8b8ba0; --text-3: #55556a;
       --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.12);
-      --serif: 'Instrument Serif', Georgia, serif;
       --sans: 'DM Sans', system-ui, sans-serif;
     }
-    body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden; }
     a { color: inherit; text-decoration: none; }
 
+    /* Physarum Canvas */
+    #physarum-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+
+    .page-content { position: relative; z-index: 1; }
+    .page-content::before {
+      content: ''; position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(5,5,10,0.75) 10%, rgba(5,5,10,0.92) 22%, rgba(5,5,10,0.92) 78%, rgba(5,5,10,0.75) 90%, transparent 100%);
+      z-index: -1; pointer-events: none;
+    }
+
     /* Nav */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5,5,10,0.75); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
-    .nav-in { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5,5,10,0.7); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
+    .nav-in { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
     .nav-b { display: flex; align-items: center; gap: 9px; }
-    .nav-mark { width: 26px; height: 26px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white; }
-    .nav-t { font-weight: 700; font-size: 14px; letter-spacing: -0.02em; }
+    .nav-mark { width: 28px; height: 28px; border-radius: 7px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; }
+    .nav-t { font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
     .nav-r { display: flex; gap: 24px; align-items: center; }
     .nav-r a { font-size: 13px; color: var(--text-2); transition: color 0.15s; }
     .nav-r a:hover { color: var(--text); }
     .nav-r .active { color: var(--text); }
-    .nav-dl { font-size: 12px; font-weight: 600; color: white !important; background: var(--accent); padding: 6px 16px; border-radius: 6px; }
+    .nav-dl { font-size: 12px; font-weight: 600; color: white !important; background: var(--accent); padding: 7px 18px; border-radius: 7px; transition: all 0.2s; }
+    .nav-dl:hover { box-shadow: 0 2px 12px rgba(59,130,246,0.3); transform: translateY(-1px); }
 
     /* Page */
     .page { max-width: 1200px; margin: 0 auto; padding: 80px 24px 60px; }
 
     /* Header */
     .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
-    .header h1 { font-family: var(--serif); font-size: 36px; font-weight: 400; }
+    .header h1 { font-family: var(--sans); font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
     .header-stats { font-size: 13px; color: var(--text-3); }
 
     /* Search */
@@ -47,9 +58,11 @@
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-3); }
     .search {
       width: 100%; padding: 11px 14px 11px 40px; border-radius: 10px;
-      background: var(--surface); border: 1px solid var(--border);
+      background: rgba(11,11,18,0.6); backdrop-filter: blur(20px) brightness(1.1) saturate(1.4);
+      border: 1px solid var(--border);
       color: var(--text); font-size: 14px; font-family: var(--sans);
       outline: none; transition: border-color 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
     }
     .search:focus { border-color: var(--accent); }
     .search::placeholder { color: var(--text-3); }
@@ -58,9 +71,9 @@
     .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 28px; }
     .tab {
       padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
-      background: var(--surface); border: 1px solid var(--border);
+      background: rgba(11,11,18,0.5); border: 1px solid var(--border);
       color: var(--text-2); cursor: pointer; transition: all 0.15s;
-      white-space: nowrap;
+      white-space: nowrap; backdrop-filter: blur(8px);
     }
     .tab:hover { border-color: var(--border-h); color: var(--text); }
     .tab.active { background: var(--accent-soft); border-color: rgba(59,130,246,0.2); color: var(--accent); }
@@ -73,12 +86,22 @@
     .collection-count { font-size: 11px; color: var(--text-3); }
     .collection-toggle { font-size: 11px; color: var(--text-3); margin-left: auto; }
 
+    /* Glass Panel */
+    .glass {
+      backdrop-filter: blur(20px) brightness(1.1) saturate(1.4);
+      background: rgba(11, 11, 18, 0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+      border-radius: 16px;
+    }
+
     /* Repo grid */
     .repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
     .repo {
       display: flex; align-items: center; gap: 10px;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      background: rgba(11,11,18,0.5); border: 1px solid var(--border); border-radius: 10px;
       padding: 12px; transition: border-color 0.15s, transform 0.15s;
+      backdrop-filter: blur(8px);
     }
     .repo:hover { border-color: var(--border-h); transform: translateY(-1px); }
     .repo-avatar { width: 32px; height: 32px; border-radius: 7px; flex-shrink: 0; }
@@ -95,8 +118,9 @@
     .pagination { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 32px 0 8px; }
     .page-btn {
       padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
-      background: var(--surface); border: 1px solid var(--border); color: var(--text-2);
+      background: rgba(11,11,18,0.5); border: 1px solid var(--border); color: var(--text-2);
       cursor: pointer; font-family: var(--sans); transition: all 0.15s;
+      backdrop-filter: blur(8px);
     }
     .page-btn:hover:not(:disabled) { border-color: var(--border-h); color: var(--text); }
     .page-btn:disabled { opacity: 0.3; cursor: default; }
@@ -127,6 +151,10 @@
 </head>
 <body>
 
+  <canvas id="physarum-canvas"></canvas>
+
+  <div class="page-content">
+
   <nav>
     <div class="nav-in">
       <a href="index.html" class="nav-b"><div class="nav-mark">G</div><span class="nav-t">GitStore</span></a>
@@ -134,8 +162,8 @@
         <a href="index.html">Home</a>
         <a href="browse.html" class="active">Browse</a>
         <a href="changelog.html">What's New</a>
-        <a href="https://github.com/SvetimFM/GitStore">GitHub</a>
-        <a href="download.html" class="nav-dl">Download</a>
+        <a href="https://github.com/SvetimFM/GitStore" target="_blank" rel="noopener">GitHub</a>
+        <a href="download.html" class="nav-dl">Get GitStore</a>
       </div>
     </div>
   </nav>
@@ -172,6 +200,8 @@
       </div>
     </div>
   </footer>
+
+  </div><!-- .page-content -->
 
   <script>
     var data = null;
@@ -236,7 +266,6 @@
         return;
       }
 
-      // Paginate collections
       var totalCollections = collections.length;
       var totalPages = Math.ceil(totalCollections / PAGE_SIZE);
       if (currentPage > totalPages) currentPage = totalPages;
@@ -268,7 +297,6 @@
         html += '</div></div>';
       });
 
-      // Pagination controls
       if (totalPages > 1) {
         html += '<div class="pagination">';
         html += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')"' + (currentPage <= 1 ? ' disabled' : '') + '>&larr; Prev</button>';
@@ -297,5 +325,6 @@
       return div.innerHTML;
     }
   </script>
+  <script src="physarum.js"></script>
 </body>
 </html>
