@@ -1,6 +1,6 @@
 {
   "name": "@svetfm/gitstore",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "App store for GitHub — install and run repos as applications",
   "type": "module",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -8,7 +8,7 @@
   "homepage": "https://svetimfm.github.io/GitStore/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SvetimFM/GitStore.git"
+    "url": "git+https://github.com/SvetimFM/GitStore.git"
   },
   "keywords": [
     "github",
@@ -25,8 +25,8 @@
     "node": ">=18.0.0"
   },
   "bin": {
-    "gitstore": "./dist/cli.js",
-    "gitstore-mcp": "./dist/mcp/index.js"
+    "gitstore": "dist/cli.js",
+    "gitstore-mcp": "dist/mcp/index.js"
   },
   "files": [
     "dist/",
