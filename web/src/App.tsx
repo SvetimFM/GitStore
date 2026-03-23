@@ -14,6 +14,7 @@ import { TrendingSection } from './components/TrendingSection';
 import { StarsPage } from './components/StarsPage';
 import { ListsPage } from './components/ListsPage';
 import { ListDetailPage } from './components/ListDetailPage';
+import { AppManagement } from './pages/AppManagement';
 import { useSearch } from './hooks/useSearch';
 import { useDiscovery } from './hooks/useCollections';
 import { useUpdateCheck } from './hooks/useUpdateCheck';
@@ -52,8 +53,7 @@ function StorePage() {
       {!hasSearched && (
         <div className="pt-4 pb-2">
           <h1
-            className="text-5xl font-normal text-white tracking-tight leading-tight"
-            style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+            className="text-5xl font-bold text-white tracking-tight leading-tight"
           >
             Discover
           </h1>
@@ -214,6 +214,7 @@ function Layout() {
         <Routes>
           <Route path="/" element={<StorePage />} />
           <Route path="/my-apps" element={<InstalledApps />} />
+          <Route path="/my-apps/:id" element={<AppManagement />} />
           <Route path="/my-stars" element={<StarsPage />} />
           <Route path="/lists" element={<ListsPage />} />
           <Route path="/lists/:id" element={<ListDetailPage />} />

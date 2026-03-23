@@ -20,7 +20,7 @@ export function FeaturedApps({ apps, loading }: FeaturedAppsProps) {
   if (loading) {
     return (
       <div className="space-y-5">
-        <h2 className="text-xl font-semibold text-white" style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}>Featured</h2>
+        <h2 className="text-xl font-semibold text-white">Featured</h2>
         <div className="flex gap-4 overflow-hidden">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className="min-w-[300px] h-[180px] rounded-2xl animate-shimmer" />
@@ -34,7 +34,7 @@ export function FeaturedApps({ apps, loading }: FeaturedAppsProps) {
 
   return (
     <div className="space-y-5">
-      <h2 className="text-xl font-semibold text-white" style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}>Featured</h2>
+      <h2 className="text-xl font-semibold text-white">Featured</h2>
       <div className="flex overflow-x-auto gap-4 pb-2 no-scrollbar">
         {apps.map((app, i) => {
           const [owner, repo] = app.fullName.split('/');
@@ -53,7 +53,7 @@ export function FeaturedApps({ apps, loading }: FeaturedAppsProps) {
                   loading="lazy"
                 />
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-semibold text-sm truncate" style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: '1.05rem' }}>{repo}</h3>
+                  <h3 className="text-white font-semibold text-sm truncate">{repo}</h3>
                   <p className="text-gray-400 text-xs truncate">{owner}</p>
                 </div>
                 {app.info && (

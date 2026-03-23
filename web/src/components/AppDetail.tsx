@@ -290,7 +290,7 @@ export function AppDetail() {
             className="w-20 h-20 rounded-2xl shadow-xl"
           />
           <div className="flex-1 min-w-0">
-            <h1 className="text-3xl font-normal text-white" style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}>{r.name}</h1>
+            <h1 className="text-3xl font-bold text-white">{r.name}</h1>
             <p className="text-gray-500 text-sm">{r.owner}</p>
             <p className="text-gray-400 mt-2 text-sm leading-relaxed">{r.description ?? 'No description'}</p>
           </div>

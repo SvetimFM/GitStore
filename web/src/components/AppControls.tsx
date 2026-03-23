@@ -6,6 +6,7 @@ import { EnvConfigPanel } from './EnvConfigPanel';
 interface AppControlsProps {
   app: App;
   onUpdate: () => void;
+  compact?: boolean;
 }
 
 const statusConfig: Record<string, { color: string; glow?: boolean; label: string }> = {
@@ -16,7 +17,7 @@ const statusConfig: Record<string, { color: string; glow?: boolean; label: strin
   installing: { color: 'bg-blue-400',    label: 'Installing' },
 };
 
-export function AppControls({ app, onUpdate }: AppControlsProps) {
+export function AppControls({ app, onUpdate, compact }: AppControlsProps) {
   const [loading, setLoading] = useState<string | null>(null);
   const [showEnvConfig, setShowEnvConfig] = useState(false);
 
@@ -34,6 +35,73 @@ export function AppControls({ app, onUpdate }: AppControlsProps) {
 
   const status = statusConfig[app.status] ?? statusConfig.installed;
   const [owner] = app.fullName.split('/');
+
+  const buttons = (
+    <div className="flex items-center gap-1.5 shrink-0">
+      {app.status !== 'running' && (
+        <ActionBtn
+          onClick={() => action('start', () => api.start(app.id))}
+          disabled={loading !== null}
+          loading={loading === 'start'}
+          variant="green"
+          icon={<PlayIcon />}
+          label="Start"
+        />
+      )}
+      {app.status === 'running' && (
+        <ActionBtn
+          onClick={() => action('stop', () => api.stop(app.id))}
+          disabled={loading !== null}
+          loading={loading === 'stop'}
+          variant="red"
+          icon={<StopIcon />}
+          label="Stop"
+        />
+      )}
+      {app.status === 'running' && (
+        <ActionBtn
+          onClick={() => action('restart', () => api.restart(app.id))}
+          disabled={loading !== null}
+          loading={loading === 'restart'}
+          variant="amber"
+          icon={<RestartIcon />}
+          label="Restart"
+        />
+      )}
+      {!compact && (
+        <>
+          <ActionBtn
+            onClick={() => action('update', () => api.update(app.id))}
+            disabled={loading !== null}
+            loading={loading === 'update'}
+            variant="blue"
+            icon={<UpdateIcon />}
+            label="Update"
+          />
+          <ActionBtn
+            onClick={() => setShowEnvConfig(v => !v)}
+            variant={showEnvConfig ? 'purple-active' : 'purple'}
+            icon={<SettingsIcon />}
+            label="Configure"
+          />
+          <ActionBtn
+            onClick={() => {
+              if (confirm(`Uninstall ${app.fullName}?`)) {
+                action('uninstall', () => api.uninstall(app.id));
+              }
+            }}
+            disabled={loading !== null}
+            loading={loading === 'uninstall'}
+            variant="ghost"
+            icon={<TrashIcon />}
+            label="Uninstall"
+          />
+        </>
+      )}
+    </div>
+  );
+
+  if (compact) return buttons;
 
   return (
     <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 hover:border-white/[0.08] transition-all">
@@ -73,65 +141,7 @@ export function AppControls({ app, onUpdate }: AppControlsProps) {
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-1.5 shrink-0">
-          {app.status !== 'running' && (
-            <ActionBtn
-              onClick={() => action('start', () => api.start(app.id))}
-              disabled={loading !== null}
-              loading={loading === 'start'}
-              variant="green"
-              icon={<PlayIcon />}
-              label="Start"
-            />
-          )}
-          {app.status === 'running' && (
-            <ActionBtn
-              onClick={() => action('stop', () => api.stop(app.id))}
-              disabled={loading !== null}
-              loading={loading === 'stop'}
-              variant="red"
-              icon={<StopIcon />}
-              label="Stop"
-            />
-          )}
-          {app.status === 'running' && (
-            <ActionBtn
-              onClick={() => action('restart', () => api.restart(app.id))}
-              disabled={loading !== null}
-              loading={loading === 'restart'}
-              variant="amber"
-              icon={<RestartIcon />}
-              label="Restart"
-            />
-          )}
-          <ActionBtn
-            onClick={() => action('update', () => api.update(app.id))}
-            disabled={loading !== null}
-            loading={loading === 'update'}
-            variant="blue"
-            icon={<UpdateIcon />}
-            label="Update"
-          />
-          <ActionBtn
-            onClick={() => setShowEnvConfig(v => !v)}
-            variant={showEnvConfig ? 'purple-active' : 'purple'}
-            icon={<SettingsIcon />}
-            label="Configure"
-          />
-          <ActionBtn
-            onClick={() => {
-              if (confirm(`Uninstall ${app.fullName}?`)) {
-                action('uninstall', () => api.uninstall(app.id));
-              }
-            }}
-            disabled={loading !== null}
-            loading={loading === 'uninstall'}
-            variant="ghost"
-            icon={<TrashIcon />}
-            label="Uninstall"
-          />
-        </div>
+        {buttons}
       </div>
 
       {showEnvConfig && (

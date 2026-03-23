@@ -45,7 +45,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         G
       </div>
       <div className="space-y-3">
-        <h1 className="text-4xl font-normal text-white" style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}>Welcome to GitStore</h1>
+        <h1 className="text-4xl font-bold text-white">Welcome to GitStore</h1>
         <p className="text-gray-400 text-base max-w-md leading-relaxed">
           Your personal app store for GitHub. Discover, install, and run open-source apps with one click.
         </p>

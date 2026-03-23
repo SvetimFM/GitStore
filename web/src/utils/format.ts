@@ -22,3 +22,40 @@ export const langColors: Record<string, string> = {
 export function githubAvatarUrl(owner: string, size = 96): string {
   return `https://github.com/${owner}.png?size=${size}`;
 }
+
+export function formatTimeAgo(dateStr: string): string {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return '1 day ago';
+  if (diffDays < 30) return `${diffDays} days ago`;
+  const months = Math.floor(diffDays / 30);
+  if (months < 12) return months === 1 ? '1 month ago' : `${months} months ago`;
+  const years = Math.floor(diffDays / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
+}
+
+export function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
+}
+
+export const runtimeIcons: Record<string, string> = {
+  node: '🟢',
+  python: '🐍',
+  go: '🔵',
+  rust: '🦀',
+  docker: '🐳',
+  static: '📄',
+  binary: '⚡',
+};
