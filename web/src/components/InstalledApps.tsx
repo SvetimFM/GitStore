@@ -83,6 +83,11 @@ export function InstalledApps() {
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-glow shrink-0" />
                       </div>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        {app.envVarsRequired.length > 0 && !app.envConfigured && (
+                          <span className="text-amber-400 text-[10px] bg-amber-500/10 px-1.5 py-0.5 rounded font-medium">
+                            Env vars needed
+                          </span>
+                        )}
                         <span className="text-gray-500 text-xs flex items-center gap-1">
                           {runtimeIcons[app.runtime] ?? '📦'} {app.runtime}
                         </span>
@@ -155,6 +160,11 @@ export function InstalledApps() {
                         <span className={`w-2 h-2 rounded-full shrink-0 ${app.status === 'error' ? 'bg-red-400' : 'bg-gray-600'}`} />
                       </div>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        {app.envVarsRequired.length > 0 && !app.envConfigured && (
+                          <span className="text-amber-400 text-[10px] bg-amber-500/10 px-1.5 py-0.5 rounded font-medium">
+                            Env vars needed
+                          </span>
+                        )}
                         <span className="text-gray-600 text-xs flex items-center gap-1">
                           {runtimeIcons[app.runtime] ?? '📦'} {app.runtime}
                         </span>

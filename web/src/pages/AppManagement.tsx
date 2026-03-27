@@ -4,34 +4,7 @@ import { api, type App, type AppEnvVar } from '../api/client';
 import { githubAvatarUrl, formatStars, formatTimeAgo, langColors, runtimeIcons } from '../utils/format';
 import { ReadmePreview } from '../components/ReadmePreview';
 import { ReleaseInfo } from '../components/ReleaseInfo';
-
-// ─── Hook ───
-
-function useAppDetail(id: string) {
-  const [app, setApp] = useState<App | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const refresh = useCallback(async () => {
-    try {
-      const data = await api.getApp(id);
-      setApp(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load app');
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    refresh();
-    const interval = setInterval(refresh, 3000);
-    return () => clearInterval(interval);
-  }, [refresh]);
-
-  return { app, loading, error, refresh };
-}
+import { useAppDetail } from '../hooks/useAppDetail';
 
 // ─── Status config ───
 
@@ -260,7 +233,7 @@ function VersionInfo({ app }: { app: App }) {
       .catch(() => {});
   }, [app.owner, app.repo]);
 
-  const installedRef = app.installedAt ? (app as any).installedRef : null;
+  const installedRef = app.installedRef ?? null;
 
   return (
     <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">

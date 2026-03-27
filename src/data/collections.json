@@ -20249,6 +20249,90 @@
           "note": "A fluent mocking library for TypeScript ported from NSubstitute."
         }
       ]
+    },
+    {
+      "id": "travel-planning",
+      "name": "Travel Planning",
+      "description": "Self-hosted trip planners with maps, budgets, and collaboration",
+      "categoryId": "self-hosted",
+      "repos": [
+        {
+          "fullName": "mauriceboe/NOMAD",
+          "note": "Collaborative trip planner with maps, budgets, and packing lists"
+        }
+      ]
+    },
+    {
+      "id": "osint-platforms",
+      "name": "OSINT Platforms",
+      "description": "Open source intelligence gathering and analysis dashboards",
+      "categoryId": "security",
+      "repos": [
+        {
+          "fullName": "smicallef/spiderfoot",
+          "note": "OSINT automation for threat intelligence and attack surface mapping"
+        },
+        {
+          "fullName": "aenoshrajora/OSINTel-Dashboard",
+          "note": "Flask-based OSINT dashboard with 43 integrated tools"
+        }
+      ]
+    },
+    {
+      "id": "simulation-prediction",
+      "name": "Simulation & Prediction",
+      "description": "Multi-agent simulation engines for forecasting and social modeling",
+      "categoryId": "ai-llm",
+      "repos": [
+        {
+          "fullName": "666ghj/MiroFish",
+          "note": "Swarm intelligence engine — spawns thousands of agents to predict outcomes"
+        },
+        {
+          "fullName": "camel-ai/oasis",
+          "note": "Open agent social simulations supporting up to 1M agents"
+        }
+      ]
+    },
+    {
+      "id": "saas-deployment",
+      "name": "SaaS Replacements — Deployment",
+      "description": "Self-hosted PaaS platforms that replace Heroku, Vercel, and Netlify",
+      "categoryId": "devops",
+      "repos": [
+        {
+          "fullName": "coollabsio/coolify",
+          "note": "Self-hosted Vercel/Heroku/Netlify alternative with 280+ one-click services"
+        },
+        {
+          "fullName": "dokku/dokku",
+          "note": "Docker-powered mini-Heroku with git-push deploys"
+        },
+        {
+          "fullName": "caprover/caprover",
+          "note": "Scalable PaaS on Docker Swarm — Heroku on steroids"
+        }
+      ]
+    },
+    {
+      "id": "saas-business",
+      "name": "SaaS Replacements — Business",
+      "description": "Self-hosted CRM and ERP platforms replacing Salesforce, SAP, and more",
+      "categoryId": "self-hosted",
+      "repos": [
+        {
+          "fullName": "frappe/erpnext",
+          "note": "Full ERP covering accounting, inventory, HR, manufacturing, and CRM"
+        },
+        {
+          "fullName": "twentyhq/twenty",
+          "note": "Modern open-source Salesforce alternative"
+        },
+        {
+          "fullName": "frappe/crm",
+          "note": "Lightweight open-source CRM by the ERPNext team"
+        }
+      ]
     }
   ],
   "featured": [

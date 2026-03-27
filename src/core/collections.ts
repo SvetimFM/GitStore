@@ -21,13 +21,19 @@ interface CollectionsData {
   featured: FeaturedApp[];
 }
 
-let data: CollectionsData = { version: 1, categories: [], collections: [], featured: [] };
+let data: CollectionsData | null = null;
 
-try {
-  const raw = readFileSync(join(__dirname, '../data/collections.json'), 'utf-8');
-  data = JSON.parse(raw) as CollectionsData;
-} catch (err) {
-  logger.warn('Failed to load collections.json, using empty defaults', err);
+function getData(): CollectionsData {
+  if (!data) {
+    try {
+      const raw = readFileSync(join(__dirname, '../data/collections.json'), 'utf-8');
+      data = JSON.parse(raw) as CollectionsData;
+    } catch (err) {
+      logger.warn('Failed to load collections.json, using empty defaults', err);
+      data = { version: 1, categories: [], collections: [], featured: [] };
+    }
+  }
+  return data;
 }
 
 // Cache for enriched repo info (10-minute TTL)
@@ -52,22 +58,23 @@ async function getCachedRepoInfo(fullName: string): Promise<RepoInfo | null> {
 }
 
 export function getCategories(): Category[] {
-  return data.categories;
+  return getData().categories;
 }
 
 export function getCollections(categoryId?: string): Collection[] {
+  const d = getData();
   if (categoryId) {
-    return data.collections.filter(c => c.categoryId === categoryId);
+    return d.collections.filter(c => c.categoryId === categoryId);
   }
-  return data.collections;
+  return d.collections;
 }
 
 export function getCollection(id: string): Collection | undefined {
-  return data.collections.find(c => c.id === id);
+  return getData().collections.find(c => c.id === id);
 }
 
 export function getFeatured(): FeaturedApp[] {
-  return data.featured;
+  return getData().featured;
 }
 
 export async function enrichCollectionRepos(collection: Collection): Promise<EnrichedCollection> {
@@ -89,7 +96,7 @@ export async function enrichCollectionRepos(collection: Collection): Promise<Enr
 
 export async function enrichFeatured(): Promise<EnrichedFeatured[]> {
   return Promise.all(
-    data.featured.map(async (app) => ({
+    getData().featured.map(async (app) => ({
       fullName: app.fullName,
       tagline: app.tagline,
       info: await getCachedRepoInfo(app.fullName),

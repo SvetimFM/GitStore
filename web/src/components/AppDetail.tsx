@@ -37,13 +37,17 @@ function InstallWizard({
     const es = new EventSource(url);
 
     es.addEventListener('status', (e) => {
-      const data = JSON.parse(e.data);
-      setStatusText(data.message);
+      try {
+        const data = JSON.parse(e.data);
+        setStatusText(data.message);
+      } catch { /* malformed event */ }
     });
 
     es.addEventListener('output', (e) => {
-      const data = JSON.parse(e.data);
-      setLogOutput(prev => prev + data.text);
+      try {
+        const data = JSON.parse(e.data);
+        setLogOutput(prev => prev + data.text);
+      } catch { /* malformed event */ }
     });
 
     es.addEventListener('complete', () => {
@@ -180,11 +184,16 @@ function InstallWizard({
               <p className="text-white font-semibold text-lg">Installed Successfully</p>
               <p className="text-gray-500 text-sm">{owner}/{repo} is ready to use.</p>
             </div>
+            {d && d.envVarsRequired.length > 0 && (
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-xs text-amber-300 text-center w-full">
+                This app requires environment variables ({d.envVarsRequired.join(', ')}). Configure them in the app management page.
+              </div>
+            )}
             <button
               onClick={onSuccess}
               className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-400 transition-colors shadow-lg shadow-blue-500/20"
             >
-              Go to My Apps
+              {d && d.envVarsRequired.length > 0 ? 'Configure Env Vars' : 'Go to My Apps'}
             </button>
           </div>
         )}

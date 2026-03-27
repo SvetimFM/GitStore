@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import DOMPurify from 'dompurify';
 import { api } from '../api/client';
 
 interface ReadmePreviewProps {
@@ -15,12 +16,14 @@ export function ReadmePreview({ owner, repo }: ReadmePreviewProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setError(false);
     api.getReadme(owner, repo)
-      .then(data => setHtml(data.html))
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .then(data => { if (!cancelled) setHtml(DOMPurify.sanitize(data.html)); })
+      .catch(() => { if (!cancelled) setError(true); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [owner, repo]);
 
   useEffect(() => {
@@ -82,7 +85,6 @@ export function ReadmePreview({ owner, repo }: ReadmePreviewProps) {
           className={`readme-content overflow-hidden transition-[max-height] duration-300 ${
             !expanded && needsCollapse ? 'max-h-[400px]' : ''
           }`}
-          style={!expanded && needsCollapse ? { maxHeight: '400px' } : undefined}
           dangerouslySetInnerHTML={{ __html: html }}
         />
 

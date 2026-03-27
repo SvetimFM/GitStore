@@ -3,24 +3,26 @@ import { api, type Category } from '../api/client';
 
 type Tab = 'repo' | 'source';
 
+interface FormState {
+  submitting: boolean;
+  success: boolean;
+  error: string | null;
+}
+
+const initialFormState: FormState = { submitting: false, success: false, error: null };
+
 export function SubmitPage() {
   const [tab, setTab] = useState<Tab>('repo');
   const [categories, setCategories] = useState<Category[]>([]);
 
-  // Repo form
   const [repoUrl, setRepoUrl] = useState('');
   const [repoCategoryId, setRepoCategoryId] = useState('');
   const [repoNote, setRepoNote] = useState('');
-  const [repoSubmitting, setRepoSubmitting] = useState(false);
-  const [repoSuccess, setRepoSuccess] = useState(false);
-  const [repoError, setRepoError] = useState<string | null>(null);
+  const [repoForm, setRepoForm] = useState<FormState>(initialFormState);
 
-  // Source form
   const [sourceUrl, setSourceUrl] = useState('');
   const [sourceDescription, setSourceDescription] = useState('');
-  const [sourceSubmitting, setSourceSubmitting] = useState(false);
-  const [sourceSuccess, setSourceSuccess] = useState(false);
-  const [sourceError, setSourceError] = useState<string | null>(null);
+  const [sourceForm, setSourceForm] = useState<FormState>(initialFormState);
 
   useEffect(() => {
     api.getCollections()
@@ -32,20 +34,15 @@ export function SubmitPage() {
     e.preventDefault();
     if (!repoUrl.trim()) return;
 
-    setRepoSubmitting(true);
-    setRepoError(null);
-    setRepoSuccess(false);
-
+    setRepoForm({ submitting: true, success: false, error: null });
     try {
       await api.suggest('repo', repoUrl.trim(), repoCategoryId || undefined, repoNote.trim() || undefined);
-      setRepoSuccess(true);
+      setRepoForm({ submitting: false, success: true, error: null });
       setRepoUrl('');
       setRepoCategoryId('');
       setRepoNote('');
     } catch (err) {
-      setRepoError(err instanceof Error ? err.message : 'Failed to submit suggestion');
-    } finally {
-      setRepoSubmitting(false);
+      setRepoForm({ submitting: false, success: false, error: err instanceof Error ? err.message : 'Failed to submit suggestion' });
     }
   };
 
@@ -53,19 +50,14 @@ export function SubmitPage() {
     e.preventDefault();
     if (!sourceUrl.trim()) return;
 
-    setSourceSubmitting(true);
-    setSourceError(null);
-    setSourceSuccess(false);
-
+    setSourceForm({ submitting: true, success: false, error: null });
     try {
       await api.suggest('source', sourceUrl.trim(), undefined, sourceDescription.trim() || undefined);
-      setSourceSuccess(true);
+      setSourceForm({ submitting: false, success: true, error: null });
       setSourceUrl('');
       setSourceDescription('');
     } catch (err) {
-      setSourceError(err instanceof Error ? err.message : 'Failed to submit suggestion');
-    } finally {
-      setSourceSubmitting(false);
+      setSourceForm({ submitting: false, success: false, error: err instanceof Error ? err.message : 'Failed to submit suggestion' });
     }
   };
 
@@ -115,7 +107,7 @@ export function SubmitPage() {
               <input
                 type="text"
                 value={repoUrl}
-                onChange={e => { setRepoUrl(e.target.value); setRepoSuccess(false); }}
+                onChange={e => { setRepoUrl(e.target.value); setRepoForm(f => ({ ...f, success: false })); }}
                 placeholder="owner/repo or https://github.com/owner/repo"
                 className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 transition-colors"
                 required
@@ -148,13 +140,13 @@ export function SubmitPage() {
             </div>
           </div>
 
-          {repoError && (
+          {repoForm.error && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
-              {repoError}
+              {repoForm.error}
             </div>
           )}
 
-          {repoSuccess && (
+          {repoForm.success && (
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-emerald-400 text-sm">
               Suggestion submitted successfully. Thank you!
             </div>
@@ -162,10 +154,10 @@ export function SubmitPage() {
 
           <button
             type="submit"
-            disabled={repoSubmitting || !repoUrl.trim()}
+            disabled={repoForm.submitting || !repoUrl.trim()}
             className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
           >
-            {repoSubmitting ? (
+            {repoForm.submitting ? (
               <>
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Submitting...
@@ -189,7 +181,7 @@ export function SubmitPage() {
               <input
                 type="text"
                 value={sourceUrl}
-                onChange={e => { setSourceUrl(e.target.value); setSourceSuccess(false); }}
+                onChange={e => { setSourceUrl(e.target.value); setSourceForm(f => ({ ...f, success: false })); }}
                 placeholder="https://github.com/sindresorhus/awesome"
                 className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 transition-colors"
                 required
@@ -208,13 +200,13 @@ export function SubmitPage() {
             </div>
           </div>
 
-          {sourceError && (
+          {sourceForm.error && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
-              {sourceError}
+              {sourceForm.error}
             </div>
           )}
 
-          {sourceSuccess && (
+          {sourceForm.success && (
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-emerald-400 text-sm">
               Source suggestion submitted successfully. Thank you!
             </div>
@@ -222,10 +214,10 @@ export function SubmitPage() {
 
           <button
             type="submit"
-            disabled={sourceSubmitting || !sourceUrl.trim()}
+            disabled={sourceForm.submitting || !sourceUrl.trim()}
             className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
           >
-            {sourceSubmitting ? (
+            {sourceForm.submitting ? (
               <>
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Submitting...

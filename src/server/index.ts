@@ -16,6 +16,7 @@ import { listsRouter } from './routes/lists.js';
 import { installStreamRouter } from './routes/install-stream.js';
 import { ensureDirs } from '../utils/paths.js';
 import { logger } from '../utils/logger.js';
+import { errorHandler, securityHeaders } from './middleware.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -23,6 +24,7 @@ export function createExpressApp() {
   ensureDirs();
 
   const app = express();
+  app.use(securityHeaders);
   app.use(express.json());
 
   // CORS — restrict to Tauri webview and local dev origins only
@@ -61,6 +63,9 @@ export function createExpressApp() {
   app.use('/api', starsRouter);
   app.use('/api/lists', listsRouter);
   app.use('/api', installStreamRouter);
+
+  // Error handling middleware (must be after routes)
+  app.use(errorHandler);
 
   // Serve static frontend (production)
   // Check multiple locations: standard dev path and Tauri bundle path

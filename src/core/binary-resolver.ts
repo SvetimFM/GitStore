@@ -186,6 +186,12 @@ export async function downloadAndExtractBinary(
   targetDir: string,
   repoName: string,
 ): Promise<string> {
+  // Only allow downloads from GitHub (prevents SSRF via crafted release URLs)
+  const url = new URL(downloadUrl);
+  if (url.hostname !== 'github.com' && !url.hostname.endsWith('.githubusercontent.com')) {
+    throw new Error('Binary downloads are only allowed from GitHub');
+  }
+
   mkdirSync(targetDir, { recursive: true });
 
   const ext = getAssetExtension(assetName.toLowerCase());
@@ -204,14 +210,15 @@ export async function downloadAndExtractBinary(
 
   // Extract or use directly
   if (ext === '.tar.gz' || ext === '.tgz') {
-    await execFileAsync('tar', ['xzf', assetPath, '-C', targetDir]);
+    // --no-absolute-filenames prevents writing to absolute paths (Zip Slip defense)
+    await execFileAsync('tar', ['xzf', assetPath, '-C', targetDir, '--no-absolute-filenames']);
   } else if (ext === '.zip') {
     await execFileAsync('unzip', ['-o', assetPath, '-d', targetDir]);
   } else {
     // Bare binary — make it executable directly
     const binaryPath = join(targetDir, repoName);
     renameSync(assetPath, binaryPath);
-    chmodSync(binaryPath, 0o755);
+    chmodSync(binaryPath, 0o700);
     return binaryPath;
   }
 

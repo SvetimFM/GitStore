@@ -31,6 +31,7 @@ export interface App {
   stars: number;
   language: string | null;
   license: string | null;
+  installedRef: string;
   installedAt: string;
   updatedAt: string | null;
   envVarsRequired: string[];
